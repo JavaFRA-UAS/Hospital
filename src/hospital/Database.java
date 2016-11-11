@@ -16,6 +16,9 @@ public class Database {
 
 	}
 	
+	private static Database instance = new Database(); 
+	public static Database getInstance(){return instance;}
+	
 	public ArrayList<Doctor> getDoctors() {
 		return doctors;
 	}
@@ -27,5 +30,21 @@ public class Database {
 	}
 	public ArrayList<Room> getRooms() {
 		return rooms;
+	}
+	
+	public void addPatient(Patient p) {
+		patients.add(p);
+	}
+	
+	public void addNurse(Nurse n) {
+		nurses.add(n);
+	}
+	
+	public void addDoctor(Doctor d) {
+		doctors.add(d);
+	}
+	
+	public void addRoom(Room r) {
+		rooms.add(r);
 	}
 }

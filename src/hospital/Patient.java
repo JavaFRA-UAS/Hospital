@@ -1,6 +1,15 @@
 package hospital;
 
-public class Patient {
+public abstract class Patient {
+
+	private static int LastId = 2000;
+	
+	int id = ++LastId;
+	
+	public int getId() {
+		return id;
+	}
+
 	Doctor doctor;
 	
 	int age;
