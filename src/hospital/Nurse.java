@@ -10,8 +10,21 @@ public class Nurse {
 	public int getId() {
 		return id;
 	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
 
+	String name;
 	ArrayList<Room> rooms;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public ArrayList<Room> getRooms() {
 		return rooms;

@@ -20,8 +20,14 @@ public class main {
 
 			@Override
 			public void run() {
-				
+
+				DatabaseConnection.initialize();
+
 				Database db = Database.getInstance();
+				
+				DatabaseConnection.initialize();
+				db.load();
+				db.save();
 
 				Doctor doc1 = new Doctor();
 				doc1.setName("Dr. Heisenberg");
