@@ -11,7 +11,8 @@ public class main {
 
 			@Override
 			public void run() {
-				MainWindow mw = new MainWindow ();
+				LoginWindow mw = new LoginWindow ();
+				mw.setVisible(true);
 			}});
 	}
 
@@ -21,13 +22,12 @@ public class main {
 			@Override
 			public void run() {
 
-				DatabaseConnection.initialize();
+				//DatabaseConnection.initialize();
 
 				Database db = Database.getInstance();
 				
-				DatabaseConnection.initialize();
-				db.load();
-				db.save();
+				//db.load();
+				//db.save();
 
 				Doctor doc1 = new Doctor();
 				doc1.setName("Dr. Heisenberg");

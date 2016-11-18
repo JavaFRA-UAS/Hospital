@@ -108,7 +108,7 @@ public class Database {
 				rooms.add(r);
 			}
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -125,7 +125,7 @@ public class Database {
 				statement.executeUpdate();
 			}
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

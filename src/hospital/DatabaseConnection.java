@@ -37,7 +37,7 @@ public class DatabaseConnection {
 			statement.executeUpdate("create table if not exists inpatient (name string)");
 			statement.executeUpdate("create table if not exists outpatient (name string)");
 			
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// if the error message is "out of memory",
 			// it probably means no database file is found
 			System.err.println(e.getMessage());
