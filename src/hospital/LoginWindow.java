@@ -64,10 +64,21 @@ public class LoginWindow extends JFrame {
 		JComboBox comboBox = new JComboBox();
 		contentPane.add(comboBox, "6, 2, fill, default");
 		
-		JButton btnLogin = new JButton("Login");
+		// create an empty combo box with items of type String
+		JComboBox<String> comboLanguage = new JComboBox<String>();
+		 
+		// add items to the combo box
+		comboBox.addItem("Doctor");
+		comboBox.addItem("Nurse");
+		
+		
+		JButton btnLogin = new JButton("Next");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				
+				 
+		        
 			}
 		});
 		contentPane.add(btnLogin, "6, 6");
