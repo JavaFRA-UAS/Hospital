@@ -2,8 +2,11 @@ package hospital;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.image.*;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
@@ -12,12 +15,20 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.FormSpecs;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.imageio.*;
 
 public class LoginWindow extends JFrame {
+	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	/**
@@ -39,7 +50,10 @@ public class LoginWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
 	public LoginWindow() {
+		
+		
 		setTitle("Hospital");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 469, 330);
@@ -61,13 +75,15 @@ public class LoginWindow extends JFrame {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		contentPane.add(comboBox, "6, 2, fill, default");
 		
-		// create an empty combo box with items of type String
-		JComboBox<String> comboLanguage = new JComboBox<String>();
-		 
 		// add items to the combo box
+		comboBox.addItem("Choose Account");
 		comboBox.addItem("Doctor");
 		comboBox.addItem("Nurse");
 		
@@ -77,11 +93,14 @@ public class LoginWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				
+				
+				
 				 
 		        
 			}
 		});
 		contentPane.add(btnLogin, "6, 6");
 	}
+	
 
 }

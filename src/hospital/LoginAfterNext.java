@@ -6,12 +6,14 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JTextPane;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class LoginAfterNext {
 
 	private JFrame frmLogin;
-	private JTextField txtUsername;
-	private JTextField txtPassword;
 	private JPasswordField passwordField;
 
 	/**
@@ -47,18 +49,6 @@ public class LoginAfterNext {
 		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLogin.getContentPane().setLayout(null);
 		
-		txtUsername = new JTextField();
-		txtUsername.setText("Username: ");
-		txtUsername.setBounds(10, 42, 66, 20);
-		frmLogin.getContentPane().add(txtUsername);
-		txtUsername.setColumns(10);
-		
-		txtPassword = new JTextField();
-		txtPassword.setText("Password:");
-		txtPassword.setBounds(10, 82, 58, 20);
-		frmLogin.getContentPane().add(txtPassword);
-		txtPassword.setColumns(10);
-		
 		passwordField = new JPasswordField();
 		passwordField.setBounds(112, 82, 78, 20);
 		frmLogin.getContentPane().add(passwordField);
@@ -66,5 +56,25 @@ public class LoginAfterNext {
 		JTextPane textPane = new JTextPane();
 		textPane.setBounds(112, 42, 78, 20);
 		frmLogin.getContentPane().add(textPane);
+		
+		JLabel lblUsername = new JLabel("Username:");
+		lblUsername.setBounds(27, 48, 75, 14);
+		frmLogin.getContentPane().add(lblUsername);
+		
+		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setBounds(27, 85, 60, 14);
+		frmLogin.getContentPane().add(lblPassword);
+		
+		JButton btnLogin = new JButton("Login");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnLogin.setBounds(189, 161, 89, 23);
+		frmLogin.getContentPane().add(btnLogin);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(62, 161, 89, 23);
+		frmLogin.getContentPane().add(btnCancel);
 	}
 }
