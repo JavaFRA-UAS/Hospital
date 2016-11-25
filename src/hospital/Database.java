@@ -73,7 +73,7 @@ public class Database {
 			ResultSet resultset = statement.executeQuery("select * from doctor");
 			while (resultset.next()) {
 				Doctor d = new Doctor();
-				d.setId(Integer.parseInt(resultset.getString("rowid")));
+				d.setId(Integer.parseInt(resultset.getString("id")));
 				d.setName(resultset.getString("name"));
 				doctors.add(d);
 			}
@@ -81,7 +81,7 @@ public class Database {
 			resultset = statement.executeQuery("select * from nurse");
 			while (resultset.next()) {
 				Nurse n = new Nurse();
-				n.setId(Integer.parseInt(resultset.getString("rowid")));
+				n.setId(Integer.parseInt(resultset.getString("id")));
 				n.setName(resultset.getString("name"));
 				nurses.add(n);
 			}
@@ -89,7 +89,7 @@ public class Database {
 			resultset = statement.executeQuery("select * from inpatient");
 			while (resultset.next()) {
 				Inpatient p = new Inpatient();
-				p.setId(Integer.parseInt(resultset.getString("rowid")));
+				p.setId(Integer.parseInt(resultset.getString("id")));
 				p.setName(resultset.getString("name"));
 				patients.add(p);
 			}
@@ -97,7 +97,7 @@ public class Database {
 			resultset = statement.executeQuery("select * from outpatient");
 			while (resultset.next()) {
 				Outpatient p = new Outpatient();
-				p.setId(Integer.parseInt(resultset.getString("rowid")));
+				p.setId(Integer.parseInt(resultset.getString("id")));
 				p.setName(resultset.getString("name"));
 				patients.add(p);
 			}
@@ -105,7 +105,7 @@ public class Database {
 			resultset = statement.executeQuery("select * from room");
 			while (resultset.next()) {
 				Room r = new Room();
-				r.setId(Integer.parseInt(resultset.getString("rowid")));
+				r.setId(Integer.parseInt(resultset.getString("id")));
 				rooms.add(r);
 			}
 
@@ -123,7 +123,15 @@ public class Database {
 
 			for (Doctor d : doctors) {
 				PreparedStatement statement = connection
-						.prepareStatement("REPLACE INTO doctor (rowid, name) VALUES (?, ?)");
+						.prepareStatement("REPLACE INTO doctor (id, name) VALUES (?, ?)");
+				statement.setInt(1, d.getId());
+				statement.setString(2, d.getName());
+				statement.executeUpdate();
+			}
+
+			for (Doctor d : doctors) {
+				PreparedStatement statement = connection
+						.prepareStatement("REPLACE INTO doctor (id, name) VALUES (?, ?)");
 				statement.setInt(1, d.getId());
 				statement.setString(2, d.getName());
 				statement.executeUpdate();

@@ -1,17 +1,30 @@
 package hospital;
 
+import java.nio.file.*;
+
 import javax.swing.*;
 
 public class Main {
 
-	public static void Main(String[] args) {
+	public static void main(String[] args) {
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-	        @Override
-	        public void uncaughtException(Thread t, Throwable ex) {
-	            JOptionPane.showMessageDialog(null, ex);
-	        }
-	    });
-		
+			@Override
+			public void uncaughtException(Thread t, Throwable ex) {
+				JOptionPane.showMessageDialog(null, ex);
+			}
+		});
+
+		Database db = Database.getInstance();
+
+		try {
+			DatabaseConnection.initialize();
+
+			db.load();
+			db.save();
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "Datenbank konnte nicht geöffnet werden: \n\n" + ex);
+		}
+
 		startSimulation();
 		Database.getInstance().waitUntilReady();
 
@@ -31,41 +44,39 @@ public class Main {
 			@Override
 			public void run() {
 				try {
-
 					Database db = Database.getInstance();
 
-					try {
-						DatabaseConnection.initialize();
+					// if there are no doctors in the database
+					if (db.getDoctors().length == 0) {
+						// ... add some doctors
+						Doctor doc1 = new Doctor();
+						doc1.setName("Dr. Heisenberg");
+						db.addDoctor(doc1);
 
-						db.load();
-						db.save();
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, "Datenbank konnte nicht geöffnet werden: \n\n" + ex);
+						Doctor doc2 = new Doctor();
+						doc2.setName("Dr. Bergmann");
+						db.addDoctor(doc2);
+
+						Doctor doc3 = new Doctor();
+						doc3.setName("Dr. Schwarzkopf");
+						db.addDoctor(doc3);
 					}
 
-					Doctor doc1 = new Doctor();
-					doc1.setName("Dr. Heisenberg");
-					db.addDoctor(doc1);
+					// if there are no patients in the database
+					if (db.getPatients().length == 0) {
+						// ... add some patients
+						Patient pat1 = new Inpatient();
+						pat1.setName("Fr. Hildegard");
+						db.addPatient(pat1);
 
-					Doctor doc2 = new Doctor();
-					doc2.setName("Dr. Bergmann");
-					db.addDoctor(doc2);
+						Patient pat2 = new Outpatient();
+						pat2.setName("Fr. Esmeralda");
+						db.addPatient(pat2);
 
-					Doctor doc3 = new Doctor();
-					doc3.setName("Dr. Schwarzkopf");
-					db.addDoctor(doc3);
-
-					Patient pat1 = new Inpatient();
-					pat1.setName("Fr. Hildegard");
-					db.addPatient(pat1);
-
-					Patient pat2 = new Outpatient();
-					pat2.setName("Fr. Esmeralda");
-					db.addPatient(pat2);
-
-					Patient pat3 = new Inpatient();
-					pat3.setName("Hr. Wagner");
-					db.addPatient(pat3);
+						Patient pat3 = new Inpatient();
+						pat3.setName("Hr. Wagner");
+						db.addPatient(pat3);
+					}
 
 					try {
 						db.save();

@@ -1,5 +1,7 @@
 package hospital;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,7 +20,7 @@ public class DatabaseConnection {
 			conn = DriverManager.getConnection(url);
 		} catch (SQLException ex) {
 			// log an exception
-			System.out.println("Failed to create the database connection.");
+			System.out.println("Failed to create the database connection: \n\n" + ex);
 		}
 		return conn;
 
@@ -26,16 +28,20 @@ public class DatabaseConnection {
 
 	public static void initialize() {
 		try {
+			Path currentRelativePath = Paths.get("");
+			String s = currentRelativePath.toAbsolutePath().toString();
+			System.out.println("Working directory: " + s);
+
 			// create a database connection
 			Connection connection = getConnection();
 			Statement statement = connection.createStatement();
 			statement.setQueryTimeout(30);
 			
-			statement.executeUpdate("create table if not exists doctor (name string)");
-			statement.executeUpdate("create table if not exists room (name string)");
-			statement.executeUpdate("create table if not exists nurse (name string)");
-			statement.executeUpdate("create table if not exists inpatient (name string)");
-			statement.executeUpdate("create table if not exists outpatient (name string)");
+			statement.executeUpdate("create table if not exists doctor (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
+			statement.executeUpdate("create table if not exists room (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
+			statement.executeUpdate("create table if not exists nurse (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
+			statement.executeUpdate("create table if not exists inpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
+			statement.executeUpdate("create table if not exists outpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
 			
 		} catch (Exception e) {
 			// if the error message is "out of memory",
