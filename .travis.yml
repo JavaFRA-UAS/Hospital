@@ -7,7 +7,7 @@ deploy:
   provider: releases
   api_key:
     secure: 0kT6p9PHadH3KMONc85Zq09k0ttoKhdIgVvKyVhLuocsjnxUwU5nC33KcZdH0H2l0mEG+tTPSjg1RdSBewKjgrL7puvZeKPJl5fA8V+B8haC+nuNRPZnLqmsq0t4gdWrXsTAri8OToxYJFfpQcQcbYsoJ8+T4F/BhzKOkLMdUPlalBv8tcAfS1O5HVjgN4KU2CLCSgxKoZ2SM2avrfKm6bYNySK2t7gxFS7mqXnFl8F6nAy/E8FA16EPYQMYvX209Td2gvQQpqedwTZ/Iocdccz7mUeYeKlhjsql3H0xyt0HMwS0RtK0Q3PV58OA7qyXjDeF+K/RX2neoAMfjAdeQVqDj+eCoUbsa2I/Kzwpo87y1WTxqsYjkeJnqEZ54a5I8ENn/BGqQw/Ti6ZPBgauLW5CICWiDxbhOqAQ0ErviFTTai+e8ZKysnmVp2BLW02rkiwLzfimv3tujjU6dhGNa/rTzlH0AD+IUSiX5XxBy5dzTlFOxKRYtynGD9I11tE5cf++0vKfDINo++acYzBNEAPYUCzL17VwOjhDM5fgW2PzIxshELdWHL9Yx8mBx2vLhpuihAOATn4wpNVOmTmE7CdwpOikt+DhEyA/53eBhOImqvlDTskoS0N3XqfaabnMgYABPLk3F57UFgPE1Urtu3/ol3hEm6iJmzgzOJNIkT0=
-  file: target/Hospital-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+  file: /home/travis/build/JavaFRA-UAS/Hospital/target/Hospital-0.0.1-SNAPSHOT-jar-with-dependencies.jar
   on:
     repo: JavaFRA-UAS/Hospital
 script:
