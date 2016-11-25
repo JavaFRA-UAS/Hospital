@@ -1,0 +1,15 @@
+language: java
+jdk:
+  - oraclejdk8
+notifications:
+  email: false
+deploy:
+  provider: releases
+  user: tobiasschulz
+  password:
+    - secure: "DKK3KZ0Bcpv3jOoWT2GWAN1KGgCrjGeTxxNYCZ+Qs01YMavEOSvOX5RqlaFSMDj+9YSk2FvI1rP4GM66MdIk6for/kiEGMy/GoxT5ocvNaOaLRLg1VebBlAPoyC9LC6DKYdSdaPei9Xe0b95Doynlx2GvQ8T/2x9Uix4MigXuqV13o1Nz09f+F5wmFT63SSsvGX6HRGY2Xb0pemeRoti1cfMq4dttqnM9qdvdAKjdD4WPTuT+/HijA8WXVP1ERzH735H1hOyEJRGUm7OvnuEFPvntm3neCTfl+HRVK0pNV2uGMCnERyMoTdc911LvnWF9rX/DNJSyN/FQ7bILNnLiAO3Js4cOyP5X2db1SoP124BqaLPxOe6FpPG7zA0NLAPy10eoMDjQC2FqcajSzfhnGiqIbvDDFyLaxtvu0gSGrOx7j0ig5wv8CXXm5fq3F15G5nTz7/qcdrkTXUipewTfGcbQ9H3dLFOygzYYF/cCOnvpFgcN4vrejKdHM3OquVV0KsFrWx91Fr6Z9Tau3X4ewKa92XCtH9AK1hb7bA+PwzPBnWkqUd6gRPkkfpf76PoQB4gSBrnNZHKvhUFVyUDibuwj9CjfR10nPuEEp/oj+p4a8siOD0rfq5VbtQMBe04QHJ0z+GKInzXPIaNvcW8WKdNJA9Qpy2teIkl5uZA47A="
+  file: "target/Hospital-0.0.1-SNAPSHOT-jar-with-dependencies.jar"
+  skip_cleanup: true
+script:
+  - mvn clean compile assembly:single
+
