@@ -15,7 +15,6 @@ public abstract class Patient {
 	}
 
 	Doctor doctor;
-	
 	int age;
 	String name;
 	String gender;
@@ -96,4 +95,10 @@ public abstract class Patient {
 	public void setBodytemperature(int bodytemperature) {
 		this.bodytemperature = bodytemperature;
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
+
 }

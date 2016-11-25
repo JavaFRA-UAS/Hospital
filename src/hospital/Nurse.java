@@ -33,4 +33,9 @@ public class Nurse {
 	public void setRooms(ArrayList<Room> rooms) {
 		this.rooms = rooms;
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

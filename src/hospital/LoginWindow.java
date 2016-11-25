@@ -23,6 +23,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.imageio.*;
+import javax.swing.JPasswordField;
+import java.awt.Color;
 
 public class LoginWindow extends JFrame {
 
@@ -32,12 +34,14 @@ public class LoginWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanelWithBackground contentPane;
 	private JComboBox<String> comboBox;
+	private JPasswordField passwordField;
 
 	/**
 	 * Create the frame.
 	 */
 
 	public LoginWindow() {
+		final LoginWindow lw = this;
 
 		setTitle("Hospital");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,7 +59,8 @@ public class LoginWindow extends JFrame {
 						FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC,
 						ColumnSpec.decode("default:grow"), },
 				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
 
 		comboBox = new JComboBox<String>();
 		comboBox.addActionListener(new ActionListener() {
@@ -67,12 +72,18 @@ public class LoginWindow extends JFrame {
 		// add items to the combo box
 		fillCombobox();
 
-		JButton btnLogin = new JButton("Next");
+		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				DoctorWindow w = new DoctorWindow();
+				w.setVisible(true);
+				lw.setVisible(false);
 			}
 		});
+
+		passwordField = new JPasswordField();
+		passwordField.setBackground(Color.WHITE);
+		contentPane.add(passwordField, "6, 4");
 		contentPane.add(btnLogin, "6, 6");
 	}
 

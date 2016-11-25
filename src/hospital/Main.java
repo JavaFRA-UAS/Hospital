@@ -77,7 +77,24 @@ public class Main {
 						pat3.setName("Hr. Wagner");
 						db.addPatient(pat3);
 					}
+					
+					if (db.getNurses().length == 0) {
+						// ... add some patients
+						Nurse nur1 = new Nurse();
+						nur1.setName("Fr. Müller");
+						db.addNurse(nur1);
 
+						Nurse nur2 = new Nurse();
+						nur2.setName("Fr. Gieselmann");
+						db.addNurse(nur2);
+
+						Nurse nur3 = new Nurse();
+						nur3.setName("Fr. Otto");
+						db.addNurse(nur3);
+					}
+					
+					
+					
 					try {
 						db.save();
 					} catch (Exception ex) {
