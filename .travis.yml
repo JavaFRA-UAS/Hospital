@@ -1,15 +1,14 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 notifications:
   email: false
 deploy:
   provider: releases
-  user: tobiasschulz
-  password:
-    - secure: "DKK3KZ0Bcpv3jOoWT2GWAN1KGgCrjGeTxxNYCZ+Qs01YMavEOSvOX5RqlaFSMDj+9YSk2FvI1rP4GM66MdIk6for/kiEGMy/GoxT5ocvNaOaLRLg1VebBlAPoyC9LC6DKYdSdaPei9Xe0b95Doynlx2GvQ8T/2x9Uix4MigXuqV13o1Nz09f+F5wmFT63SSsvGX6HRGY2Xb0pemeRoti1cfMq4dttqnM9qdvdAKjdD4WPTuT+/HijA8WXVP1ERzH735H1hOyEJRGUm7OvnuEFPvntm3neCTfl+HRVK0pNV2uGMCnERyMoTdc911LvnWF9rX/DNJSyN/FQ7bILNnLiAO3Js4cOyP5X2db1SoP124BqaLPxOe6FpPG7zA0NLAPy10eoMDjQC2FqcajSzfhnGiqIbvDDFyLaxtvu0gSGrOx7j0ig5wv8CXXm5fq3F15G5nTz7/qcdrkTXUipewTfGcbQ9H3dLFOygzYYF/cCOnvpFgcN4vrejKdHM3OquVV0KsFrWx91Fr6Z9Tau3X4ewKa92XCtH9AK1hb7bA+PwzPBnWkqUd6gRPkkfpf76PoQB4gSBrnNZHKvhUFVyUDibuwj9CjfR10nPuEEp/oj+p4a8siOD0rfq5VbtQMBe04QHJ0z+GKInzXPIaNvcW8WKdNJA9Qpy2teIkl5uZA47A="
-  file: "target/Hospital-0.0.1-SNAPSHOT-jar-with-dependencies.jar"
-  skip_cleanup: true
+  api_key:
+    secure: 0kT6p9PHadH3KMONc85Zq09k0ttoKhdIgVvKyVhLuocsjnxUwU5nC33KcZdH0H2l0mEG+tTPSjg1RdSBewKjgrL7puvZeKPJl5fA8V+B8haC+nuNRPZnLqmsq0t4gdWrXsTAri8OToxYJFfpQcQcbYsoJ8+T4F/BhzKOkLMdUPlalBv8tcAfS1O5HVjgN4KU2CLCSgxKoZ2SM2avrfKm6bYNySK2t7gxFS7mqXnFl8F6nAy/E8FA16EPYQMYvX209Td2gvQQpqedwTZ/Iocdccz7mUeYeKlhjsql3H0xyt0HMwS0RtK0Q3PV58OA7qyXjDeF+K/RX2neoAMfjAdeQVqDj+eCoUbsa2I/Kzwpo87y1WTxqsYjkeJnqEZ54a5I8ENn/BGqQw/Ti6ZPBgauLW5CICWiDxbhOqAQ0ErviFTTai+e8ZKysnmVp2BLW02rkiwLzfimv3tujjU6dhGNa/rTzlH0AD+IUSiX5XxBy5dzTlFOxKRYtynGD9I11tE5cf++0vKfDINo++acYzBNEAPYUCzL17VwOjhDM5fgW2PzIxshELdWHL9Yx8mBx2vLhpuihAOATn4wpNVOmTmE7CdwpOikt+DhEyA/53eBhOImqvlDTskoS0N3XqfaabnMgYABPLk3F57UFgPE1Urtu3/ol3hEm6iJmzgzOJNIkT0=
+  file: target/Hospital-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+  on:
+    repo: JavaFRA-UAS/Hospital
 script:
-  - mvn clean compile assembly:single
-
+- mvn clean compile assembly:single
