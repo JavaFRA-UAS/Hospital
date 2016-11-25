@@ -81,7 +81,7 @@ public class Main {
 					if (db.getNurses().length == 0) {
 						// ... add some patients
 						Nurse nur1 = new Nurse();
-						nur1.setName("Fr. Müller");
+						nur1.setName("Fr. MÃ¼ller");
 						db.addNurse(nur1);
 
 						Nurse nur2 = new Nurse();

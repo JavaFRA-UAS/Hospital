@@ -115,27 +115,37 @@ public class NewPatientWindow extends JFrame {
 		JLabel lblProblem = new JLabel("Problem:");
 		contentPane.add(lblProblem, "2, 14");
 		
-		JTextArea textArea = new JTextArea();
+		final JTextArea textArea = new JTextArea();
 		contentPane.add(textArea, "4, 14, fill, fill");
 		
 		JButton btnNewButton = new JButton("New button");
 		
-		JRadioButton rdbtnInpatient = new JRadioButton("Inpatient");
+		final JRadioButton rdbtnInpatient = new JRadioButton("Inpatient");
 		contentPane.add(rdbtnInpatient, "4, 16");
 		
-		JRadioButton rdbtOutpatient = new JRadioButton("Outpatient");
-		contentPane.add(rdbtOutpatient, "4, 18");
+		final JRadioButton rdbtnOutpatient = new JRadioButton("Outpatient");
+		contentPane.add(rdbtnOutpatient, "4, 18");
 		contentPane.add(btnNewButton, "4, 20, default, bottom");
 		
 
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Database db = Database.getInstance();
 				if (rdbtnInpatient.isSelected()) {
 					Inpatient p = new Inpatient();
 					p.setName(textField.getText());
 					p.setAge(Integer.parseInt(textField_2.getText()));
 					p.setProblem(textArea.getText());
+					db.addPatient(p);
 				}
+				else if (rdbtnOutpatient.isSelected()) {
+					Outpatient p = new Outpatient();
+					p.setName(textField.getText());
+					p.setAge(Integer.parseInt(textField_2.getText()));
+					p.setProblem(textArea.getText());
+					db.addPatient(p);
+				}
+				db.save();
 				
 			}
 		});
