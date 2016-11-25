@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Database {
+	private boolean isLoaded = false;
 	private ArrayList<Doctor> doctors;
 	private ArrayList<Patient> patients;
 	private ArrayList<Nurse> nurses;
@@ -27,20 +28,20 @@ public class Database {
 		return instance;
 	}
 
-	public ArrayList<Doctor> getDoctors() {
-		return doctors;
+	public Doctor[] getDoctors() {
+		return doctors.toArray(new Doctor[0]);
 	}
 
-	public ArrayList<Patient> getPatients() {
-		return patients;
+	public Patient[] getPatients() {
+		return patients.toArray(new Patient[0]);
 	}
 
-	public ArrayList<Nurse> getNurses() {
-		return nurses;
+	public Nurse[] getNurses() {
+		return nurses.toArray(new Nurse[0]);
 	}
 
-	public ArrayList<Room> getRooms() {
-		return rooms;
+	public Room[] getRooms() {
+		return rooms.toArray(new Room[0]);
 	}
 
 	public void addPatient(Patient p) {
@@ -111,15 +112,18 @@ public class Database {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			isLoaded = true;
 		}
 	}
 
 	public void save() {
 		try {
 			Connection connection = DatabaseConnection.getConnection();
-			
+
 			for (Doctor d : doctors) {
-				PreparedStatement statement = connection.prepareStatement("REPLACE INTO doctor (rowid, name) VALUES (?, ?)");
+				PreparedStatement statement = connection
+						.prepareStatement("REPLACE INTO doctor (rowid, name) VALUES (?, ?)");
 				statement.setInt(1, d.getId());
 				statement.setString(2, d.getName());
 				statement.executeUpdate();
@@ -128,6 +132,19 @@ public class Database {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	public boolean isLoaded() {
+		return isLoaded;
+	}
+
+	public void waitUntilReady() {
+		while (!isLoaded) {
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+			}
 		}
 	}
 }

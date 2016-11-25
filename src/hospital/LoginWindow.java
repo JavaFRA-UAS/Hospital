@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.image.*;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,13 +25,13 @@ import java.awt.event.ActionEvent;
 import javax.imageio.*;
 
 public class LoginWindow extends JFrame {
-	
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private JPanelWithBackground contentPane;
+	private JComboBox<String> comboBox;
 
 	/**
 	 * Launch the application.
@@ -50,57 +52,55 @@ public class LoginWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	
+
 	public LoginWindow() {
-		
-		
+
 		setTitle("Hospital");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 469, 330);
-		contentPane = new JPanel();
+		contentPane = new JPanelWithBackground();
+		try {
+			contentPane.setImage(ImageIO.read(new File("img/Bild1.jpg")));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
-		
-		JComboBox<String> comboBox = new JComboBox<String>();
+		contentPane.setLayout(new FormLayout(
+				new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC,
+						FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC,
+						ColumnSpec.decode("default:grow"), },
+				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
+
+		comboBox = new JComboBox<String>();
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
 		contentPane.add(comboBox, "6, 2, fill, default");
-		
+
 		// add items to the combo box
-		comboBox.addItem("Choose Account");
-		comboBox.addItem("Doctor");
-		comboBox.addItem("Nurse");
-		
-		
+		fillCombobox();
+
 		JButton btnLogin = new JButton("Next");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
-				
-				
-				 
-		        
+
 			}
 		});
 		contentPane.add(btnLogin, "6, 6");
 	}
-	
 
+	void fillCombobox() {
+		comboBox.addItem("");
+
+		Database db = Database.getInstance();
+		for (Doctor doc : db.getDoctors()) {
+			comboBox.addItem(doc.getName());
+		}
+		for (Nurse nurse : db.getNurses()) {
+			comboBox.addItem(nurse.getName());
+		}
+	}
 }
