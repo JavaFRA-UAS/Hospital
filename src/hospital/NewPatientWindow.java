@@ -127,6 +127,7 @@ public class NewPatientWindow extends JFrame {
 
 		JLabel lblProblem = new JLabel("Problem:");
 		contentPane.add(lblProblem, "2, 14");
+<<<<<<< HEAD
 
 		JTextArea textArea = new JTextArea();
 		contentPane.add(textArea, "4, 14, fill, fill");
@@ -138,6 +139,18 @@ public class NewPatientWindow extends JFrame {
 
 		JRadioButton rdbtOutpatient = new JRadioButton("Outpatient");
 		contentPane.add(rdbtOutpatient, "4, 18");
+=======
+		
+		final JTextArea textArea = new JTextArea();
+		contentPane.add(textArea, "4, 14, fill, fill");
+		
+		JButton btnNewButton = new JButton("New button");
+		
+		final JRadioButton rdbtnInpatient = new JRadioButton("Inpatient");
+		contentPane.add(rdbtnInpatient, "4, 16");
+		
+		final JRadioButton rdbtnOutpatient = new JRadioButton("Outpatient");
+		contentPane.add(rdbtnOutpatient, "4, 18");
 		contentPane.add(btnNewButton, "4, 20, default, bottom");
 
 		ButtonGroup buttonGroup = new ButtonGroup();
@@ -149,7 +162,6 @@ public class NewPatientWindow extends JFrame {
 
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				if (rdbtnInpatient.isSelected()) {
 					Inpatient p = new Inpatient();
 					p.setName(textField.getText());
@@ -174,7 +186,7 @@ public class NewPatientWindow extends JFrame {
 					db.addPatient(p);
 					db.save();
 				}
-
+				
 			}
 		});
 	}
