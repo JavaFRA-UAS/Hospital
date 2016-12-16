@@ -1,13 +1,19 @@
 package hospital;
 
 public class Inpatient extends Patient {
-	Room room;
+	int room_id;
 
 	public Room getRoom() {
-		return room;
+		Database db = Database.getInstance();
+		for (Room r : db.getRooms()) {
+			if (r.getId() == room_id) {
+				return r;
+			}
+		}
+		return null;
 	}
 
-	public void setRoom(Room room) {
-		this.room = room;
+	public void setRoomId(int room_id) {
+		this.room_id = room_id;
 	}
 }

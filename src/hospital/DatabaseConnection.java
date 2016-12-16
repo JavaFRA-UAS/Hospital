@@ -40,8 +40,10 @@ public class DatabaseConnection {
 			statement.executeUpdate("create table if not exists doctor (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
 			statement.executeUpdate("create table if not exists room (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
 			statement.executeUpdate("create table if not exists nurse (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
-			statement.executeUpdate("create table if not exists inpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
-			statement.executeUpdate("create table if not exists outpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
+			statement.executeUpdate("create table if not exists inpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, name string, address string, birthday integer, gender string, problem string, phone string, room_id integer)");
+			statement.executeUpdate("create table if not exists outpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, name string, address string, birthday integer, gender string, problem string, phone string)");
+			
+
 			
 		} catch (Exception e) {
 			// if the error message is "out of memory",

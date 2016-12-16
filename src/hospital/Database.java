@@ -6,19 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Database {
 	private boolean isLoaded = false;
-	private ArrayList<Doctor> doctors;
-	private ArrayList<Patient> patients;
-	private ArrayList<Nurse> nurses;
-	private ArrayList<Room> rooms;
+	private HashMap<Integer, Doctor> doctors;
+	private HashMap<Integer, Patient> patients;
+	private HashMap<Integer, Nurse> nurses;
+	private HashMap<Integer, Room> rooms;
 
 	public Database() {
-		doctors = new ArrayList<Doctor>();
-		patients = new ArrayList<Patient>();
-		nurses = new ArrayList<Nurse>();
-		rooms = new ArrayList<Room>();
+		doctors = new HashMap<Integer, Doctor>();
+		patients = new HashMap<Integer, Patient>();
+		nurses = new HashMap<Integer, Nurse>();
+		rooms = new HashMap<Integer, Room>();
 
 	}
 
@@ -29,23 +30,23 @@ public class Database {
 	}
 
 	public Doctor[] getDoctors() {
-		return doctors.toArray(new Doctor[0]);
+		return doctors.values().toArray(new Doctor[0]);
 	}
 
 	public Patient[] getPatients() {
-		return patients.toArray(new Patient[0]);
+		return patients.values().toArray(new Patient[0]);
 	}
 
 	public Nurse[] getNurses() {
-		return nurses.toArray(new Nurse[0]);
+		return nurses.values().toArray(new Nurse[0]);
 	}
 
 	public Room[] getRooms() {
-		return rooms.toArray(new Room[0]);
+		return rooms.values().toArray(new Room[0]);
 	}
 
 	public void addPatient(Patient p) {
-		patients.add(p);
+		patients.put(p.getId(), p);
 	}
 
 	public void addNurse(Nurse n) {
@@ -91,6 +92,12 @@ public class Database {
 				Inpatient p = new Inpatient();
 				p.setId(Integer.parseInt(resultset.getString("id")));
 				p.setName(resultset.getString("name"));
+				p.setAddress(resultset.getString("address"));
+				p.setBirthday(resultset.getLong("birthday"));
+				p.setGender(resultset.getString("gender"));
+				p.setProblem(resultset.getString("problem"));
+				p.setPhone(resultset.getString("phone"));
+				p.setRoomId(resultset.getInt("room_id"));
 				patients.add(p);
 			}
 
@@ -99,6 +106,11 @@ public class Database {
 				Outpatient p = new Outpatient();
 				p.setId(Integer.parseInt(resultset.getString("id")));
 				p.setName(resultset.getString("name"));
+				p.setAddress(resultset.getString("address"));
+				p.setBirthday(resultset.getLong("birthday"));
+				p.setGender(resultset.getString("gender"));
+				p.setProblem(resultset.getString("problem"));
+				p.setPhone(resultset.getString("phone"));
 				patients.add(p);
 			}
 
@@ -129,12 +141,32 @@ public class Database {
 				statement.executeUpdate();
 			}
 
-			for (Doctor d : doctors) {
-				PreparedStatement statement = connection
-						.prepareStatement("REPLACE INTO doctor (id, name) VALUES (?, ?)");
-				statement.setInt(1, d.getId());
-				statement.setString(2, d.getName());
-				statement.executeUpdate();
+			for (Patient p : patients) {
+				if (p instanceof Inpatient) {
+					PreparedStatement statement = connection.prepareStatement(
+							"REPLACE INTO inpatient (id, name, address, birthday, gender, problem, phone, room_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+					statement.setInt(1, p.getId());
+					statement.setString(2, p.getName());
+					statement.setString(3, p.getAddress());
+					statement.setLong(4, p.getBirthday());
+					statement.setString(5, p.getGender());
+					statement.setString(6, p.getProblem());
+					statement.setString(7, p.getPhone());
+					Room room = ((Inpatient)p).getRoom();
+					statement.setInt(8, room != null ? room.getId() : 0);
+					statement.executeUpdate();
+				} else if (p instanceof Outpatient) {
+					PreparedStatement statement = connection.prepareStatement(
+							"REPLACE INTO inpatient (id, name, address, birthday, gender, problem, phone) VALUES (?, ?, ?, ?, ?, ?, ?)");
+					statement.setInt(1, p.getId());
+					statement.setString(2, p.getName());
+					statement.setString(3, p.getAddress());
+					statement.setLong(4, p.getBirthday());
+					statement.setString(5, p.getGender());
+					statement.setString(6, p.getProblem());
+					statement.setString(7, p.getPhone());
+					statement.executeUpdate();
+				}
 			}
 
 		} catch (Exception e) {

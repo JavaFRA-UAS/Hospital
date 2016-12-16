@@ -31,7 +31,7 @@ import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
-public class NewPatientWindow extends JFrame {
+public class EditPatientWindow extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -39,8 +39,9 @@ public class NewPatientWindow extends JFrame {
 	private JTextField textField_4;
 	private JTextField textField_5;
 	JFrame parentWindow;
+	private Patient patient;
 
-	public NewPatientWindow(JFrame parentWindow) {
+	public EditPatientWindow(JFrame parentWindow) {
 		this.parentWindow = parentWindow;
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,32 +49,16 @@ public class NewPatientWindow extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(76dlu;default):grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),}));
+		contentPane.setLayout(new FormLayout(
+				new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("max(76dlu;default):grow"),
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"), },
+				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("default:grow"), FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("default:grow"), }));
 
 		JLabel lblName = new JLabel("Name:");
 		contentPane.add(lblName, "2, 2, left, default");
@@ -87,20 +72,20 @@ public class NewPatientWindow extends JFrame {
 
 		JLabel lblBirthday = new JLabel("Birthday:");
 		contentPane.add(lblBirthday, "2, 4, left, default");
-		
+
 		JLabel labelAge = new JLabel("");
 		contentPane.add(labelAge, "4, 6");
-		
+
 		DatePickerSettings dateSettings = new DatePickerSettings();
-        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-        DatePicker datePickerBirthday = new DatePicker(dateSettings);
+		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+		DatePicker datePickerBirthday = new DatePicker(dateSettings);
 		datePickerBirthday.addDateChangeListener(new DateChangeListener() {
 
 			@Override
 			public void dateChanged(DateChangeEvent arg0) {
-				labelAge.setText(java.time.temporal.ChronoUnit.YEARS.between(arg0.getNewDate(), LocalDate.now())+"");
+				labelAge.setText(java.time.temporal.ChronoUnit.YEARS.between(arg0.getNewDate(), LocalDate.now()) + "");
 			}
-		
+
 		});
 		contentPane.add(datePickerBirthday, "4, 4");
 
@@ -132,26 +117,15 @@ public class NewPatientWindow extends JFrame {
 		contentPane.add(textArea, "4, 14, fill, fill");
 
 		JButton btnNewButton = new JButton("Next >>");
-
-		JRadioButton rdbtnInpatient = new JRadioButton("Inpatient");
-		contentPane.add(rdbtnInpatient, "4, 16");
-
-		JRadioButton rdbtOutpatient = new JRadioButton("Outpatient");
-		contentPane.add(rdbtOutpatient, "4, 18");
 		contentPane.add(btnNewButton, "4, 20, default, bottom");
 
 		ButtonGroup buttonGroup = new ButtonGroup();
-		buttonGroup.add(rdbtnInpatient);
-		buttonGroup.add(rdbtOutpatient);
-		
-
-        
 
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				if (rdbtnInpatient.isSelected()) {
-					Inpatient p = new Inpatient();
+
+				if (patient instanceof Inpatient) {
+					p = patient;
 					p.setName(textField.getText());
 					p.setBirthdayAsLocalDate(datePickerBirthday.getDate());
 					p.setProblem(textArea.getText());
@@ -161,9 +135,9 @@ public class NewPatientWindow extends JFrame {
 					Database db = Database.getInstance();
 					db.addPatient(p);
 					db.save();
-					
-				} else if (rdbtOutpatient.isSelected()) {
-					Outpatient p = new Outpatient();
+
+				} else if (patient instanceof Outpatient) {
+					p = patient;
 					p.setName(textField.getText());
 					p.setBirthdayAsLocalDate(datePickerBirthday.getDate());
 					p.setProblem(textArea.getText());
@@ -177,6 +151,11 @@ public class NewPatientWindow extends JFrame {
 
 			}
 		});
+	}
+
+	public void setPatient(Patient p) {
+		this.patient = p;
+		
 	}
 
 }
