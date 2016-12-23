@@ -12,13 +12,15 @@ import javax.swing.JList;
 import java.awt.Panel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
-public class DoctorWindow extends JFrame {
+public class DoctorWindow extends JFrame implements RefreshableWindow {
 
 	private JPanel contentPane;
-	JList listPatients;
-	DefaultListModel listModelPatients;
+	JList<Patient> listPatients;
+	DefaultListModel<Patient> listModelPatients;
 
 	/**
 	 * Create the frame.
@@ -35,28 +37,52 @@ public class DoctorWindow extends JFrame {
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane);
-		
-		listPatients = new JList();
 		listModelPatients = new DefaultListModel<Patient>();
-		listPatients.setModel(listModelPatients);
 		
 		JPanel panel1 = new JPanel();
 		panel1.setLayout(new BorderLayout(0, 0));
-		panel1.add(listPatients);
 		tabbedPane.addTab("Patients", null, panel1, null);
 		
 		JPanel panel = new JPanel();
 		panel1.add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new BorderLayout(0, 0));
 		
-		JButton btnNewButton = new JButton("New Patient");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnNew = new JButton("New Patient");
+		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				NewPatientWindow w = new NewPatientWindow(dw);
 				w.setVisible(true);
 			}
 		});
-		panel.add(btnNewButton, BorderLayout.NORTH);
+		panel.add(btnNew, BorderLayout.EAST);
+		
+		JButton btnDelete = new JButton("Delete Patient");
+		panel.add(btnDelete, BorderLayout.WEST);
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Patient p = dw.listPatients.getSelectedValue();
+				Database db = Database.getInstance();
+				db.removePatient(p);
+				refresh();
+			}
+		});
+		
+		listPatients = new JList<Patient>();
+		panel.add(listPatients, BorderLayout.NORTH);
+		listPatients.setModel(listModelPatients);
+		
+		listPatients.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		       System.out.println(evt.getClickCount());
+		        if (evt.getClickCount() == 2) {
+		            int index = dw.listPatients.locationToIndex(evt.getPoint());
+		            
+		            EditPatientWindow w = new EditPatientWindow(dw);
+		            w.setPatient((Patient)listModelPatients.getElementAt(index));
+		            w.setVisible(true);
+		        }
+		    }
+		});
 		
 		JList list_1 = new JList();
 		tabbedPane.addTab("...", null, list_1, null);
@@ -65,10 +91,15 @@ public class DoctorWindow extends JFrame {
 	}
 
 	void fillList() {
+		listModelPatients.clear();
 		Database db = Database.getInstance();
 		for (Patient pat : db.getPatients()) {
+			System.out.println("load patient: "+pat.toString());
 			listModelPatients.addElement(pat);
 		}
 	}
 
+	public void refresh() {
+		fillList();
+	}
 }

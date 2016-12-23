@@ -34,17 +34,19 @@ import javax.swing.JRadioButton;
 public class EditPatientWindow extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	JFrame parentWindow;
+	private JTextField textName;
+	private JTextField textGender;
+	private JTextField textAddress;
+	private JTextField textPhone;
+	final RefreshableWindow parentWindow;
 	private Patient patient;
+	DatePicker datePickerBirthday;
+	JTextArea textProblem ;
 
-	public EditPatientWindow(JFrame parentWindow) {
+	public EditPatientWindow(RefreshableWindow parentWindow) {
 		this.parentWindow = parentWindow;
+		final EditPatientWindow window = this;
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 576, 543);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -63,9 +65,9 @@ public class EditPatientWindow extends JFrame {
 		JLabel lblName = new JLabel("Name:");
 		contentPane.add(lblName, "2, 2, left, default");
 
-		textField = new JTextField();
-		contentPane.add(textField, "4, 2, fill, default");
-		textField.setColumns(10);
+		textName = new JTextField();
+		contentPane.add(textName, "4, 2, fill, default");
+		textName.setColumns(10);
 
 		JLabel lblNewLabel = new JLabel("Age:");
 		contentPane.add(lblNewLabel, "2, 6, left, default");
@@ -73,12 +75,12 @@ public class EditPatientWindow extends JFrame {
 		JLabel lblBirthday = new JLabel("Birthday:");
 		contentPane.add(lblBirthday, "2, 4, left, default");
 
-		JLabel labelAge = new JLabel("");
+		final JLabel labelAge = new JLabel("");
 		contentPane.add(labelAge, "4, 6");
 
 		DatePickerSettings dateSettings = new DatePickerSettings();
 		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-		DatePicker datePickerBirthday = new DatePicker(dateSettings);
+		 datePickerBirthday = new DatePicker(dateSettings);
 		datePickerBirthday.addDateChangeListener(new DateChangeListener() {
 
 			@Override
@@ -92,45 +94,48 @@ public class EditPatientWindow extends JFrame {
 		JLabel lblGender = new JLabel("Gender:");
 		contentPane.add(lblGender, "2, 8, left, default");
 
-		textField_3 = new JTextField();
-		contentPane.add(textField_3, "4, 8, fill, default");
-		textField_3.setColumns(10);
+		textGender = new JTextField();
+		contentPane.add(textGender, "4, 8, fill, default");
+		textGender.setColumns(10);
 
 		JLabel lblAddress = new JLabel("Address:");
 		contentPane.add(lblAddress, "2, 10, left, default");
 
-		textField_4 = new JTextField();
-		contentPane.add(textField_4, "4, 10, fill, default");
-		textField_4.setColumns(10);
+		textAddress = new JTextField();
+		contentPane.add(textAddress, "4, 10, fill, default");
+		textAddress.setColumns(10);
 
 		JLabel lblPhone = new JLabel("Phone:");
 		contentPane.add(lblPhone, "2, 12, left, default");
 
-		textField_5 = new JTextField();
-		contentPane.add(textField_5, "4, 12, fill, default");
-		textField_5.setColumns(10);
+		textPhone = new JTextField();
+		contentPane.add(textPhone, "4, 12, fill, default");
+		textPhone.setColumns(10);
 
 		JLabel lblProblem = new JLabel("Problem:");
 		contentPane.add(lblProblem, "2, 14");
 
-		JTextArea textArea = new JTextArea();
-		contentPane.add(textArea, "4, 14, fill, fill");
+		textProblem= new JTextArea();
+		contentPane.add(textProblem, "4, 14, fill, fill");
 
-		JButton btnNewButton = new JButton("Next >>");
-		contentPane.add(btnNewButton, "4, 20, default, bottom");
+		JButton btnSave = new JButton("Save");
+		contentPane.add(btnSave, "4, 20, default, bottom");
 
 		ButtonGroup buttonGroup = new ButtonGroup();
 
-		btnNewButton.addActionListener(new ActionListener() {
+		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				Patient p;
 
 				if (patient instanceof Inpatient) {
 					p = patient;
-					p.setName(textField.getText());
+					p.setName(textName.getText());
 					p.setBirthdayAsLocalDate(datePickerBirthday.getDate());
-					p.setProblem(textArea.getText());
-					p.setAddress(textField_4.getText());
-					p.setPhone(textField_5.getText());
+					p.setProblem(textProblem.getText());
+					p.setAddress(textAddress.getText());
+					p.setPhone(textPhone.getText());
+					p.setGender(textGender.getText());
 
 					Database db = Database.getInstance();
 					db.addPatient(p);
@@ -138,24 +143,32 @@ public class EditPatientWindow extends JFrame {
 
 				} else if (patient instanceof Outpatient) {
 					p = patient;
-					p.setName(textField.getText());
+					p.setName(textName.getText());
 					p.setBirthdayAsLocalDate(datePickerBirthday.getDate());
-					p.setProblem(textArea.getText());
-					p.setAddress(textField_4.getText());
-					p.setPhone(textField_5.getText());
+					p.setProblem(textProblem.getText());
+					p.setAddress(textAddress.getText());
+					p.setPhone(textPhone.getText());
+					p.setGender(textGender.getText());
 
 					Database db = Database.getInstance();
 					db.addPatient(p);
 					db.save();
 				}
 
+				window.setVisible(false);
+				window.parentWindow.refresh();
 			}
 		});
 	}
 
 	public void setPatient(Patient p) {
 		this.patient = p;
-		
+		textName.setText(p.getName());
+		datePickerBirthday.setDate(p.getBirthdayAsLocalDate());
+		textProblem.setText(p.getProblem());
+		textAddress.setText(p.getAddress());
+		textPhone.setText(p.getPhone());
+		textGender.setText(p.getGender());
 	}
 
 }

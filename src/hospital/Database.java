@@ -50,15 +50,73 @@ public class Database {
 	}
 
 	public void addNurse(Nurse n) {
-		nurses.add(n);
+		nurses.put(n.getId(), n);
 	}
 
 	public void addDoctor(Doctor d) {
-		doctors.add(d);
+		doctors.put(d.getId(), d);
 	}
 
 	public void addRoom(Room r) {
-		rooms.add(r);
+		rooms.put(r.getId(), r);
+	}
+
+	public void removePatient(Patient p) {
+		patients.remove(p.getId());
+
+		try {
+			Connection connection = DatabaseConnection.getConnection();
+			if (p instanceof Inpatient) {
+				PreparedStatement statement = connection.prepareStatement("DELETE FROM inpatient WHERE id = ?");
+				statement.setInt(1, p.getId());
+				statement.executeUpdate();
+			} else if (p instanceof Outpatient) {
+				PreparedStatement statement = connection.prepareStatement("DELETE FROM outpatient WHERE id = ?");
+				statement.setInt(1, p.getId());
+				statement.executeUpdate();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void removeNurse(Nurse n) {
+		nurses.remove(n.getId());
+
+		try {
+			Connection connection = DatabaseConnection.getConnection();
+			PreparedStatement statement = connection.prepareStatement("DELETE FROM nurse WHERE id = ?");
+			statement.setInt(1, n.getId());
+			statement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void removeDoctor(Doctor d) {
+		doctors.remove(d.getId());
+
+		try {
+			Connection connection = DatabaseConnection.getConnection();
+			PreparedStatement statement = connection.prepareStatement("DELETE FROM doctor WHERE id = ?");
+			statement.setInt(1, d.getId());
+			statement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void removeRoom(Room r) {
+		rooms.remove(r.getId());
+
+		try {
+			Connection connection = DatabaseConnection.getConnection();
+			PreparedStatement statement = connection.prepareStatement("DELETE FROM room WHERE id = ?");
+			statement.setInt(1, r.getId());
+			statement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void load() {
@@ -76,7 +134,7 @@ public class Database {
 				Doctor d = new Doctor();
 				d.setId(Integer.parseInt(resultset.getString("id")));
 				d.setName(resultset.getString("name"));
-				doctors.add(d);
+				doctors.put(d.id, d);
 			}
 
 			resultset = statement.executeQuery("select * from nurse");
@@ -84,7 +142,7 @@ public class Database {
 				Nurse n = new Nurse();
 				n.setId(Integer.parseInt(resultset.getString("id")));
 				n.setName(resultset.getString("name"));
-				nurses.add(n);
+				nurses.put(n.id, n);
 			}
 
 			resultset = statement.executeQuery("select * from inpatient");
@@ -98,7 +156,7 @@ public class Database {
 				p.setProblem(resultset.getString("problem"));
 				p.setPhone(resultset.getString("phone"));
 				p.setRoomId(resultset.getInt("room_id"));
-				patients.add(p);
+				patients.put(p.id, p);
 			}
 
 			resultset = statement.executeQuery("select * from outpatient");
@@ -111,14 +169,14 @@ public class Database {
 				p.setGender(resultset.getString("gender"));
 				p.setProblem(resultset.getString("problem"));
 				p.setPhone(resultset.getString("phone"));
-				patients.add(p);
+				patients.put(p.id, p);
 			}
 
 			resultset = statement.executeQuery("select * from room");
 			while (resultset.next()) {
 				Room r = new Room();
 				r.setId(Integer.parseInt(resultset.getString("id")));
-				rooms.add(r);
+				rooms.put(r.id, r);
 			}
 
 		} catch (Exception e) {
@@ -133,7 +191,7 @@ public class Database {
 		try {
 			Connection connection = DatabaseConnection.getConnection();
 
-			for (Doctor d : doctors) {
+			for (Doctor d : doctors.values()) {
 				PreparedStatement statement = connection
 						.prepareStatement("REPLACE INTO doctor (id, name) VALUES (?, ?)");
 				statement.setInt(1, d.getId());
@@ -141,7 +199,7 @@ public class Database {
 				statement.executeUpdate();
 			}
 
-			for (Patient p : patients) {
+			for (Patient p : patients.values()) {
 				if (p instanceof Inpatient) {
 					PreparedStatement statement = connection.prepareStatement(
 							"REPLACE INTO inpatient (id, name, address, birthday, gender, problem, phone, room_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
@@ -152,7 +210,7 @@ public class Database {
 					statement.setString(5, p.getGender());
 					statement.setString(6, p.getProblem());
 					statement.setString(7, p.getPhone());
-					Room room = ((Inpatient)p).getRoom();
+					Room room = ((Inpatient) p).getRoom();
 					statement.setInt(8, room != null ? room.getId() : 0);
 					statement.executeUpdate();
 				} else if (p instanceof Outpatient) {
@@ -170,7 +228,6 @@ public class Database {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

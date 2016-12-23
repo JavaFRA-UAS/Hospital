@@ -119,7 +119,7 @@ public abstract class Patient {
 	}
 	
 	public LocalDate getBirthdayAsLocalDate() {
-		return Instant.ofEpochMilli(this.birthday).atZone(ZoneId.systemDefault()).toLocalDate();
+		return Instant.ofEpochMilli(this.birthday*1000).atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 
 	public void setBirthdayAsLocalDate(LocalDate birthday) {
