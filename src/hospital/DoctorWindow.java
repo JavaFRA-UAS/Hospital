@@ -71,10 +71,13 @@ public class DoctorWindow extends JFrame implements RefreshableWindow {
 				w.setVisible(true);
 			}
 		});
-		panelPatients.add(btnNew, BorderLayout.EAST);
+		GridBagConstraints gbc_btnNew = new GridBagConstraints();
+		gbc_btnNew.fill = GridBagConstraints.BOTH;
+		gbc_btnNew.gridx = 0;
+		gbc_btnNew.gridy = 0;
+		panelPatients.add(btnNew, gbc_btnNew);
 		
 		JButton btnDelete = new JButton("Delete Patient");
-		panelPatients.add(btnDelete, BorderLayout.WEST);
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Patient p = dw.listPatients.getSelectedValue();
@@ -83,6 +86,11 @@ public class DoctorWindow extends JFrame implements RefreshableWindow {
 				refresh();
 			}
 		});
+		GridBagConstraints gbc_btnDelete = new GridBagConstraints();
+		gbc_btnDelete.fill = GridBagConstraints.BOTH;
+		gbc_btnDelete.gridx = 0;
+		gbc_btnDelete.gridy = 0;
+		panelPatients.add(btnDelete, gbc_btnDelete);
 		
 
 		JPanel panelDoctors = new JPanel();
