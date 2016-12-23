@@ -48,32 +48,16 @@ public class NewPatientWindow extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(76dlu;default):grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),}));
+		contentPane.setLayout(new FormLayout(
+				new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("max(76dlu;default):grow"),
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"), },
+				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("default:grow"), FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("default:grow"), }));
 
 		JLabel lblName = new JLabel("Name:");
 		contentPane.add(lblName, "2, 2, left, default");
@@ -87,20 +71,20 @@ public class NewPatientWindow extends JFrame {
 
 		JLabel lblBirthday = new JLabel("Birthday:");
 		contentPane.add(lblBirthday, "2, 4, left, default");
-		
+
 		final JLabel labelAge = new JLabel("");
 		contentPane.add(labelAge, "4, 6");
-		
+
 		DatePickerSettings dateSettings = new DatePickerSettings();
-        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-        final DatePicker datePickerBirthday = new DatePicker(dateSettings);
+		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+		final DatePicker datePickerBirthday = new DatePicker(dateSettings);
 		datePickerBirthday.addDateChangeListener(new DateChangeListener() {
 
 			@Override
 			public void dateChanged(DateChangeEvent arg0) {
-				labelAge.setText(java.time.temporal.ChronoUnit.YEARS.between(arg0.getNewDate(), LocalDate.now())+"");
+				labelAge.setText(java.time.temporal.ChronoUnit.YEARS.between(arg0.getNewDate(), LocalDate.now()) + "");
 			}
-		
+
 		});
 		contentPane.add(datePickerBirthday, "4, 4");
 
@@ -127,15 +111,16 @@ public class NewPatientWindow extends JFrame {
 
 		JLabel lblProblem = new JLabel("Problem:");
 		contentPane.add(lblProblem, "2, 14");
-		
+
 		final JTextArea textProblem = new JTextArea();
+		textProblem.setLineWrap(true);
 		contentPane.add(textProblem, "4, 14, fill, fill");
-		
+
 		JButton btnSave = new JButton("Save");
-		
+
 		final JRadioButton rdbtnInpatient = new JRadioButton("Inpatient");
 		contentPane.add(rdbtnInpatient, "4, 16");
-		
+
 		final JRadioButton rdbtnOutpatient = new JRadioButton("Outpatient");
 		contentPane.add(rdbtnOutpatient, "4, 18");
 		contentPane.add(btnSave, "4, 20, default, bottom");
@@ -143,9 +128,6 @@ public class NewPatientWindow extends JFrame {
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(rdbtnInpatient);
 		buttonGroup.add(rdbtnOutpatient);
-		
-
-        
 
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -161,7 +143,7 @@ public class NewPatientWindow extends JFrame {
 					Database db = Database.getInstance();
 					db.addPatient(p);
 					db.save();
-					
+
 				} else if (rdbtnOutpatient.isSelected()) {
 					Outpatient p = new Outpatient();
 					p.setName(textName.getText());
@@ -175,7 +157,7 @@ public class NewPatientWindow extends JFrame {
 					db.addPatient(p);
 					db.save();
 				}
-				
+
 				window.setVisible(false);
 				window.parentWindow.refresh();
 			}

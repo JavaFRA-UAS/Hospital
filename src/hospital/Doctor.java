@@ -3,15 +3,15 @@ package hospital;
 import java.util.ArrayList;
 
 public class Doctor {
-	
+
 	private static int LastId = 1000;
-	
+
 	int id = ++LastId;
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -25,7 +25,6 @@ public class Doctor {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	@Override
 	public String toString() {

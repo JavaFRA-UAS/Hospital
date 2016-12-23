@@ -30,30 +30,27 @@ public class DoctorWindow extends JFrame implements RefreshableWindow {
 	 */
 	public DoctorWindow() {
 		final DoctorWindow dw = this;
-		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 797, 404);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		
+
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane);
 		listModelPatients = new DefaultListModel<Patient>();
-		
-		
-		
-		
+
 		JPanel panelPatients = new JPanel();
 		tabbedPane.addTab("Patients", null, panelPatients, null);
 		GridBagLayout gbl_panelPatients = new GridBagLayout();
-		gbl_panelPatients.columnWidths = new int[]{0, 0};
-		gbl_panelPatients.rowHeights = new int[]{0, 0};
-		gbl_panelPatients.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panelPatients.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_panelPatients.columnWidths = new int[] { 0, 0 };
+		gbl_panelPatients.rowHeights = new int[] { 0, 0 };
+		gbl_panelPatients.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
+		gbl_panelPatients.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
 		panelPatients.setLayout(gbl_panelPatients);
-		
+
 		listPatients = new JList<Patient>();
 		listPatients.setModel(listModelPatients);
 		GridBagConstraints gbc_listPatients = new GridBagConstraints();
@@ -61,9 +58,7 @@ public class DoctorWindow extends JFrame implements RefreshableWindow {
 		gbc_listPatients.gridx = 0;
 		gbc_listPatients.gridy = 0;
 		panelPatients.add(listPatients, gbc_listPatients);
-		
 
-		
 		JButton btnNew = new JButton("New Patient");
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -76,7 +71,7 @@ public class DoctorWindow extends JFrame implements RefreshableWindow {
 		gbc_btnNew.gridx = 0;
 		gbc_btnNew.gridy = 0;
 		panelPatients.add(btnNew, gbc_btnNew);
-		
+
 		JButton btnDelete = new JButton("Delete Patient");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -91,17 +86,16 @@ public class DoctorWindow extends JFrame implements RefreshableWindow {
 		gbc_btnDelete.gridx = 0;
 		gbc_btnDelete.gridy = 0;
 		panelPatients.add(btnDelete, gbc_btnDelete);
-		
 
 		JPanel panelDoctors = new JPanel();
 		tabbedPane.addTab("Doctors", null, panelDoctors, null);
 		GridBagLayout gbl_panelDoctors = new GridBagLayout();
-		gbl_panelDoctors.columnWidths = new int[]{0};
-		gbl_panelDoctors.rowHeights = new int[]{0};
-		gbl_panelDoctors.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_panelDoctors.rowWeights = new double[]{Double.MIN_VALUE};
+		gbl_panelDoctors.columnWidths = new int[] { 0 };
+		gbl_panelDoctors.rowHeights = new int[] { 0 };
+		gbl_panelDoctors.columnWeights = new double[] { Double.MIN_VALUE };
+		gbl_panelDoctors.rowWeights = new double[] { Double.MIN_VALUE };
 		panelDoctors.setLayout(gbl_panelDoctors);
-		
+
 		fillList();
 	}
 
@@ -109,7 +103,7 @@ public class DoctorWindow extends JFrame implements RefreshableWindow {
 		listModelPatients.clear();
 		Database db = Database.getInstance();
 		for (Patient pat : db.getPatients()) {
-			System.out.println("load patient: "+pat.toString());
+			System.out.println("load patient: " + pat.toString());
 			listModelPatients.addElement(pat);
 		}
 	}

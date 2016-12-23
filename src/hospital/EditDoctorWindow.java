@@ -41,7 +41,7 @@ public class EditDoctorWindow extends JFrame {
 	final RefreshableWindow parentWindow;
 	private Doctor patient;
 	DatePicker datePickerBirthday;
-	JTextArea textProblem ;
+	JTextArea textProblem;
 
 	public EditDoctorWindow(RefreshableWindow parentWindow) {
 		this.parentWindow = parentWindow;
@@ -80,7 +80,7 @@ public class EditDoctorWindow extends JFrame {
 
 		DatePickerSettings dateSettings = new DatePickerSettings();
 		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-		 datePickerBirthday = new DatePicker(dateSettings);
+		datePickerBirthday = new DatePicker(dateSettings);
 		datePickerBirthday.addDateChangeListener(new DateChangeListener() {
 
 			@Override
@@ -115,7 +115,7 @@ public class EditDoctorWindow extends JFrame {
 		JLabel lblProblem = new JLabel("Problem:");
 		contentPane.add(lblProblem, "2, 14");
 
-		textProblem= new JTextArea();
+		textProblem = new JTextArea();
 		contentPane.add(textProblem, "4, 14, fill, fill");
 
 		JButton btnSave = new JButton("Save");
@@ -125,14 +125,13 @@ public class EditDoctorWindow extends JFrame {
 
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				Doctor p = patient;
 				p.setName(textName.getText());
 
 				Database db = Database.getInstance();
 				db.addDoctor(p);
 				db.save();
-
 
 				window.setVisible(false);
 				window.parentWindow.refresh();

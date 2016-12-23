@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class Nurse {
 	private static int LastId = 3000;
-	
+
 	int id = ++LastId;
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}

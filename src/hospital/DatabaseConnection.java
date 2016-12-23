@@ -36,23 +36,26 @@ public class DatabaseConnection {
 			Connection connection = getConnection();
 			Statement statement = connection.createStatement();
 			statement.setQueryTimeout(30);
-			
-			statement.executeUpdate("create table if not exists doctor (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
-			statement.executeUpdate("create table if not exists room (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
-			statement.executeUpdate("create table if not exists nurse (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
-			statement.executeUpdate("create table if not exists inpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, name string, address string, birthday integer, gender string, problem string, phone string, room_id integer)");
-			statement.executeUpdate("create table if not exists outpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, name string, address string, birthday integer, gender string, problem string, phone string)");
-			
 
-			
+			statement.executeUpdate(
+					"create table if not exists doctor (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
+			statement.executeUpdate(
+					"create table if not exists room (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
+			statement.executeUpdate(
+					"create table if not exists nurse (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
+			statement.executeUpdate(
+					"create table if not exists inpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, name string, address string, birthday integer, gender string, problem string, phone string, room_id integer)");
+			statement.executeUpdate(
+					"create table if not exists outpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, name string, address string, birthday integer, gender string, problem string, phone string)");
+
 		} catch (Exception e) {
 			// if the error message is "out of memory",
 			// it probably means no database file is found
 			System.err.println(e.getMessage());
 		}
 	}
-	
-	//	statement.executeUpdate("insert into person values(2, 'yui')");
+
+	// statement.executeUpdate("insert into person values(2, 'yui')");
 
 	public static ResultSet runMyQuery(Statement statement, Connection connection, String query) {
 		ResultSet resultSet = null;

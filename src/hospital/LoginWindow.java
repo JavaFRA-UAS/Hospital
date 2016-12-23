@@ -77,7 +77,7 @@ public class LoginWindow extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (comboBox.getSelectedIndex() > 0) {					
+				if (comboBox.getSelectedIndex() > 0) {
 					DoctorWindow w = new DoctorWindow();
 					w.setVisible(true);
 					lw.setVisible(false);

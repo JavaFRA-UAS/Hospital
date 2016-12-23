@@ -77,7 +77,7 @@ public class Main {
 						pat3.setName("Hr. Wagner");
 						db.addPatient(pat3);
 					}
-					
+
 					if (db.getNurses().length == 0) {
 						// ... add some patients
 						Nurse nur1 = new Nurse();
@@ -92,9 +92,7 @@ public class Main {
 						nur3.setName("Fr. Otto");
 						db.addNurse(nur3);
 					}
-					
-					
-					
+
 					try {
 						db.save();
 					} catch (Exception ex) {

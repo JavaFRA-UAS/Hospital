@@ -7,13 +7,13 @@ import java.time.ZoneId;
 public abstract class Patient {
 
 	private static int LastId = 2000;
-	
+
 	int id = ++LastId;
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -29,7 +29,7 @@ public abstract class Patient {
 	int ratebreathing;
 	int pulserate;
 	int bodytemperature;
-	
+
 	public Doctor getDoctor() {
 		return doctor;
 	}
@@ -93,7 +93,7 @@ public abstract class Patient {
 	public void setBodytemperature(int bodytemperature) {
 		this.bodytemperature = bodytemperature;
 	}
-	
+
 	public String getAddress() {
 		return address;
 	}
@@ -109,7 +109,7 @@ public abstract class Patient {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+
 	public long getBirthday() {
 		return birthday;
 	}
@@ -117,9 +117,9 @@ public abstract class Patient {
 	public void setBirthday(long birthday) {
 		this.birthday = birthday;
 	}
-	
+
 	public LocalDate getBirthdayAsLocalDate() {
-		return Instant.ofEpochMilli(this.birthday*1000).atZone(ZoneId.systemDefault()).toLocalDate();
+		return Instant.ofEpochMilli(this.birthday * 1000).atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 
 	public void setBirthdayAsLocalDate(LocalDate birthday) {
@@ -128,11 +128,9 @@ public abstract class Patient {
 		this.birthday = epoch;
 	}
 
-
 	public long getAge() {
 		return java.time.temporal.ChronoUnit.YEARS.between(getBirthdayAsLocalDate(), LocalDate.now());
 	}
-
 
 	@Override
 	public String toString() {
