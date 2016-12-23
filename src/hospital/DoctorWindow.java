@@ -2,6 +2,7 @@ package hospital;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -15,12 +16,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 
 public class DoctorWindow extends JFrame implements RefreshableWindow {
 
 	private JPanel contentPane;
-	JList<Patient> listPatients;
 	DefaultListModel<Patient> listModelPatients;
+	JList<Patient> listPatients;
 
 	/**
 	 * Create the frame.
@@ -39,13 +42,27 @@ public class DoctorWindow extends JFrame implements RefreshableWindow {
 		contentPane.add(tabbedPane);
 		listModelPatients = new DefaultListModel<Patient>();
 		
-		JPanel panel1 = new JPanel();
-		panel1.setLayout(new BorderLayout(0, 0));
-		tabbedPane.addTab("Patients", null, panel1, null);
 		
-		JPanel panel = new JPanel();
-		panel1.add(panel, BorderLayout.SOUTH);
-		panel.setLayout(new BorderLayout(0, 0));
+		
+		
+		JPanel panelPatients = new JPanel();
+		tabbedPane.addTab("Patients", null, panelPatients, null);
+		GridBagLayout gbl_panelPatients = new GridBagLayout();
+		gbl_panelPatients.columnWidths = new int[]{0, 0};
+		gbl_panelPatients.rowHeights = new int[]{0, 0};
+		gbl_panelPatients.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_panelPatients.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+		panelPatients.setLayout(gbl_panelPatients);
+		
+		listPatients = new JList<Patient>();
+		listPatients.setModel(listModelPatients);
+		GridBagConstraints gbc_listPatients = new GridBagConstraints();
+		gbc_listPatients.fill = GridBagConstraints.BOTH;
+		gbc_listPatients.gridx = 0;
+		gbc_listPatients.gridy = 0;
+		panelPatients.add(listPatients, gbc_listPatients);
+		
+
 		
 		JButton btnNew = new JButton("New Patient");
 		btnNew.addActionListener(new ActionListener() {
@@ -54,10 +71,10 @@ public class DoctorWindow extends JFrame implements RefreshableWindow {
 				w.setVisible(true);
 			}
 		});
-		panel.add(btnNew, BorderLayout.EAST);
+		panelPatients.add(btnNew, BorderLayout.EAST);
 		
 		JButton btnDelete = new JButton("Delete Patient");
-		panel.add(btnDelete, BorderLayout.WEST);
+		panelPatients.add(btnDelete, BorderLayout.WEST);
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Patient p = dw.listPatients.getSelectedValue();
@@ -67,25 +84,15 @@ public class DoctorWindow extends JFrame implements RefreshableWindow {
 			}
 		});
 		
-		listPatients = new JList<Patient>();
-		panel.add(listPatients, BorderLayout.NORTH);
-		listPatients.setModel(listModelPatients);
-		
-		listPatients.addMouseListener(new MouseAdapter() {
-		    public void mouseClicked(MouseEvent evt) {
-		       System.out.println(evt.getClickCount());
-		        if (evt.getClickCount() == 2) {
-		            int index = dw.listPatients.locationToIndex(evt.getPoint());
-		            
-		            EditPatientWindow w = new EditPatientWindow(dw);
-		            w.setPatient((Patient)listModelPatients.getElementAt(index));
-		            w.setVisible(true);
-		        }
-		    }
-		});
-		
-		JList list_1 = new JList();
-		tabbedPane.addTab("...", null, list_1, null);
+
+		JPanel panelDoctors = new JPanel();
+		tabbedPane.addTab("Doctors", null, panelDoctors, null);
+		GridBagLayout gbl_panelDoctors = new GridBagLayout();
+		gbl_panelDoctors.columnWidths = new int[]{0};
+		gbl_panelDoctors.rowHeights = new int[]{0};
+		gbl_panelDoctors.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_panelDoctors.rowWeights = new double[]{Double.MIN_VALUE};
+		panelDoctors.setLayout(gbl_panelDoctors);
 		
 		fillList();
 	}
