@@ -38,11 +38,11 @@ public class DatabaseConnection {
 			statement.setQueryTimeout(30);
 
 			statement.executeUpdate(
-					"create table if not exists doctor (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
+					"create table if not exists doctor (id INTEGER PRIMARY KEY AUTOINCREMENT, name string, address string, birthday integer, gender string, phone string)");
 			statement.executeUpdate(
 					"create table if not exists room (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
 			statement.executeUpdate(
-					"create table if not exists nurse (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)");
+					"create table if not exists nurse (id INTEGER PRIMARY KEY AUTOINCREMENT, name string, address string, birthday integer, gender string, phone string)");
 			statement.executeUpdate(
 					"create table if not exists inpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, name string, address string, birthday integer, gender string, problem string, phone string, room_id integer)");
 			statement.executeUpdate(

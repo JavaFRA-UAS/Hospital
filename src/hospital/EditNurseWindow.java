@@ -128,6 +128,10 @@ public class EditNurseWindow extends JFrame {
 
 				Nurse p = patient;
 				p.setName(textName.getText());
+				p.setBirthdayAsLocalDate(datePickerBirthday.getDate());
+				p.setAddress(textAddress.getText());
+				p.setPhone(textPhone.getText());
+				p.setGender(textGender.getText());
 
 				Database db = Database.getInstance();
 				db.addNurse(p);
@@ -142,6 +146,10 @@ public class EditNurseWindow extends JFrame {
 	public void setNurse(Nurse p) {
 		this.patient = p;
 		textName.setText(p.getName());
+		datePickerBirthday.setDate(p.getBirthdayAsLocalDate());
+		textAddress.setText(p.getAddress());
+		textPhone.setText(p.getPhone());
+		textGender.setText(p.getGender());
 	}
 
 }

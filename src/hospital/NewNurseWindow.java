@@ -109,24 +109,10 @@ public class NewNurseWindow extends JFrame {
 		contentPane.add(textPhone, "4, 12, fill, default");
 		textPhone.setColumns(10);
 
-		JLabel lblProblem = new JLabel("Problem:");
-		contentPane.add(lblProblem, "2, 14");
-
-		final JTextArea textProblem = new JTextArea();
-		contentPane.add(textProblem, "4, 14, fill, fill");
-
 		JButton btnSave = new JButton("Save");
-
-		final JRadioButton rdbtnInpatient = new JRadioButton("Inpatient");
-		contentPane.add(rdbtnInpatient, "4, 16");
-
-		final JRadioButton rdbtnOutpatient = new JRadioButton("Outpatient");
-		contentPane.add(rdbtnOutpatient, "4, 18");
 		contentPane.add(btnSave, "4, 20, default, bottom");
 
 		ButtonGroup buttonGroup = new ButtonGroup();
-		buttonGroup.add(rdbtnInpatient);
-		buttonGroup.add(rdbtnOutpatient);
 
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

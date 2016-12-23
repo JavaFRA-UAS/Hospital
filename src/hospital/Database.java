@@ -134,6 +134,10 @@ public class Database {
 				Doctor d = new Doctor();
 				d.setId(Integer.parseInt(resultset.getString("id")));
 				d.setName(resultset.getString("name"));
+				d.setAddress(resultset.getString("address"));
+				d.setBirthday(resultset.getLong("birthday"));
+				d.setGender(resultset.getString("gender"));
+				d.setPhone(resultset.getString("phone"));
 				doctors.put(d.id, d);
 			}
 
@@ -142,6 +146,10 @@ public class Database {
 				Nurse n = new Nurse();
 				n.setId(Integer.parseInt(resultset.getString("id")));
 				n.setName(resultset.getString("name"));
+				n.setAddress(resultset.getString("address"));
+				n.setBirthday(resultset.getLong("birthday"));
+				n.setGender(resultset.getString("gender"));
+				n.setPhone(resultset.getString("phone"));
 				nurses.put(n.id, n);
 			}
 
@@ -193,9 +201,25 @@ public class Database {
 
 			for (Doctor d : doctors.values()) {
 				PreparedStatement statement = connection
-						.prepareStatement("REPLACE INTO doctor (id, name) VALUES (?, ?)");
+						.prepareStatement("REPLACE INTO doctor (id, name, address, birthday, gender, phone) VALUES (?, ?, ?, ?, ?, ?)");
 				statement.setInt(1, d.getId());
 				statement.setString(2, d.getName());
+				statement.setString(3, d.getAddress());
+				statement.setLong(4, d.getBirthday());
+				statement.setString(5, d.getGender());
+				statement.setString(6, d.getPhone());
+				statement.executeUpdate();
+			}
+
+			for (Nurse n : nurses.values()) {
+				PreparedStatement statement = connection
+						.prepareStatement("REPLACE INTO nurse (id, name, address, birthday, gender, phone) VALUES (?, ?, ?, ?, ?, ?)");
+				statement.setInt(1, n.getId());
+				statement.setString(2, n.getName());
+				statement.setString(3, n.getAddress());
+				statement.setLong(4, n.getBirthday());
+				statement.setString(5, n.getGender());
+				statement.setString(6, n.getPhone());
 				statement.executeUpdate();
 			}
 

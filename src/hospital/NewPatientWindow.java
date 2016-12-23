@@ -24,6 +24,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
@@ -144,6 +145,9 @@ public class NewPatientWindow extends JFrame {
 					db.addPatient(p);
 					db.save();
 
+					window.setVisible(false);
+					window.parentWindow.refresh();
+
 				} else if (rdbtnOutpatient.isSelected()) {
 					Outpatient p = new Outpatient();
 					p.setName(textName.getText());
@@ -156,10 +160,13 @@ public class NewPatientWindow extends JFrame {
 					Database db = Database.getInstance();
 					db.addPatient(p);
 					db.save();
-				}
 
-				window.setVisible(false);
-				window.parentWindow.refresh();
+					window.setVisible(false);
+					window.parentWindow.refresh();
+					
+				} else {
+					JOptionPane.showMessageDialog(window, "The patient must be an inpatient or an outpatient.");
+				}
 			}
 		});
 	}
