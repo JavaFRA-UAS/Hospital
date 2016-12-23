@@ -8,6 +8,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JTabbedPane;
 import javax.swing.JList;
 import java.awt.Panel;
@@ -94,7 +96,16 @@ public class DoctorWindow extends JFrame implements RefreshableWindow {
 		gbc_btnDelete.gridx = 0;
 		gbc_btnDelete.gridy = 1;
 		panelPatients.add(btnDelete, gbc_btnDelete);
-
+		listPatients.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		    	System.out.println(evt.getClickCount());
+		        if (evt.getClickCount() == 2) {
+					EditPatientWindow w = new EditPatientWindow(dw);
+					w.setPatient(listPatients.getSelectedValue());
+					w.setVisible(true);
+		        }
+		    }
+		});
 		
 		
 
@@ -145,6 +156,16 @@ public class DoctorWindow extends JFrame implements RefreshableWindow {
 		gbc_btnDeleteDoctor.gridx = 0;
 		gbc_btnDeleteDoctor.gridy = 1;
 		panelDoctors.add(btnDeleteDoctor, gbc_btnDeleteDoctor);
+		listDoctors.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		    	System.out.println(evt.getClickCount());
+		        if (evt.getClickCount() == 2) {
+					EditDoctorWindow w = new EditDoctorWindow(dw);
+					w.setDoctor(listDoctors.getSelectedValue());
+					w.setVisible(true);
+		        }
+		    }
+		});
 
 		
 
@@ -194,6 +215,16 @@ public class DoctorWindow extends JFrame implements RefreshableWindow {
         gbc_btnDeleteNurse.gridx = 0;
         gbc_btnDeleteNurse.gridy = 1;
         panelNurses.add(btnDeleteNurse, gbc_btnDeleteNurse);
+		listNurses.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		    	System.out.println(evt.getClickCount());
+		        if (evt.getClickCount() == 2) {
+					EditNurseWindow w = new EditNurseWindow(dw);
+					w.setNurse(listNurses.getSelectedValue());
+					w.setVisible(true);
+		        }
+		    }
+		});
 
 
 

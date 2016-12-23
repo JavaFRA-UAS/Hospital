@@ -41,7 +41,6 @@ public class EditNurseWindow extends JFrame {
 	final RefreshableWindow parentWindow;
 	private Nurse patient;
 	DatePicker datePickerBirthday;
-	JTextArea textProblem;
 
 	public EditNurseWindow(RefreshableWindow parentWindow) {
 		this.parentWindow = parentWindow;
@@ -111,12 +110,6 @@ public class EditNurseWindow extends JFrame {
 		textPhone = new JTextField();
 		contentPane.add(textPhone, "4, 12, fill, default");
 		textPhone.setColumns(10);
-
-		JLabel lblProblem = new JLabel("Problem:");
-		contentPane.add(lblProblem, "2, 14");
-
-		textProblem = new JTextArea();
-		contentPane.add(textProblem, "4, 14, fill, fill");
 
 		JButton btnSave = new JButton("Save");
 		contentPane.add(btnSave, "4, 20, default, bottom");
