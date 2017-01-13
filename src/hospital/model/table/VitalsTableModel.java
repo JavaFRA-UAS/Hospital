@@ -17,8 +17,9 @@ public class VitalsTableModel extends AbstractTableModel {
 
 	public Object[] getRow(Patient p) {
 		Vitals v = p.getVitals();
-		return new Object[] { p.getName(), v.getBodytemperature(), v.getBloodpressure().toString(), v.getPulserate(),
-				v.getRatebreathing(), };
+		return new Object[] { p.getName(), String.format("%.2f", v.getBodytemperature()),
+				v.getBloodpressure().toString(), String.format("%.2f", v.getPulserate()),
+				String.format("%.2f", v.getRatebreathing()), };
 	}
 
 	public int getColumnCount() {

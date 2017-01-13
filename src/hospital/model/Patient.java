@@ -18,10 +18,12 @@ public abstract class Patient {
 	String phone;
 	Vitals vitals;
 	Heart heart;
+	Lungs lungs;
 	
 	protected Patient() {
 		vitals = new Vitals();
 		heart = new Heart(vitals);
+		lungs = new Lungs(vitals);
 	}
 
 	public int getId() {
@@ -108,6 +110,10 @@ public abstract class Patient {
 
 	public Heart getHeart() {
 		return heart;
+	}
+
+	public Lungs getLungs() {
+		return lungs;
 	}
 
 	@Override

@@ -1,6 +1,10 @@
 package hospital.model;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
+
+import hospital.helper.RandomGenerator;
 
 public class Heart {
 
@@ -8,18 +12,36 @@ public class Heart {
 
 	public Heart(Vitals vitals) {
 		this.vitals = vitals;
+
+		// when starting, fill the queue of heartbeats with default data
+		long currentTimestamp = System.currentTimeMillis();
+		for (long i = currentTimestamp - 60000; i < currentTimestamp; i += millisecondsUntilNextHeartbeat) {
+			lastHeartbeats.offer(currentTimestamp);
+		}
 	}
 
-	Random random = new Random();
+	RandomGenerator random = new RandomGenerator();
 	long millisecondsUntilNextHeartbeat = 1000;
+	Queue<Long> lastHeartbeats = new LinkedList<Long>();
 
 	public void beat() {
+
 		// calculate time to next heartbeat (random)
-		long diff = (long) ((random.nextDouble() - 0.5) * 300);
+		long diff = (long) (random.nextDouble() * 300);
 		millisecondsUntilNextHeartbeat += diff;
+
 		// make sure that the time is realistic
 		millisecondsUntilNextHeartbeat = Math.max(millisecondsUntilNextHeartbeat, 150);
 		millisecondsUntilNextHeartbeat = Math.min(millisecondsUntilNextHeartbeat, 5000);
+
+		// calculate the current pulse rate
+		long currentTimestamp = System.currentTimeMillis();
+		lastHeartbeats.offer(currentTimestamp);
+		while (lastHeartbeats.peek() < currentTimestamp - 60000) {
+			lastHeartbeats.poll();
+		}
+		double pulserate = lastHeartbeats.size();
+		vitals.setPulserate(pulserate);
 	}
 
 	public long getMillisecondsUntilNextHeartbeat() {

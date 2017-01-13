@@ -3,9 +3,9 @@ package hospital.model;
 public class Vitals {
 
 	BloodPressure bloodpressure = new BloodPressure();
-	int ratebreathing;
-	int pulserate;
-	double bodytemperature;
+	double ratebreathing;
+	double pulserate;
+	double bodytemperature = 37;
 
 	public BloodPressure getBloodpressure() {
 		return bloodpressure;
@@ -15,19 +15,19 @@ public class Vitals {
 		this.bloodpressure = bloodpressure;
 	}
 
-	public int getRatebreathing() {
+	public double getRatebreathing() {
 		return ratebreathing;
 	}
 
-	public void setRatebreathing(int ratebreathing) {
+	public void setRatebreathing(double ratebreathing) {
 		this.ratebreathing = ratebreathing;
 	}
 
-	public int getPulserate() {
+	public double getPulserate() {
 		return pulserate;
 	}
 
-	public void setPulserate(int pulserate) {
+	public void setPulserate(double pulserate) {
 		this.pulserate = pulserate;
 	}
 

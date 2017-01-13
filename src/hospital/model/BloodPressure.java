@@ -2,6 +2,8 @@ package hospital.model;
 
 import java.util.Random;
 
+import hospital.helper.RandomGenerator;
+
 public class BloodPressure {
 	int sys = 110;
 	int dias = 75;
@@ -27,11 +29,11 @@ public class BloodPressure {
 		return sys + " / " + dias;
 	}
 
-	Random random = new Random();
+	RandomGenerator random = new RandomGenerator();
 	long millisecondsUntilNextHeartbeat = 1000;
 
 	public void randomChange() {
-		sys += (int) ((random.nextDouble() - 0.5) * 5);
-		dias += (int) ((random.nextDouble() - 0.5) * 5);
+		sys += (int) (random.nextDouble() * 5);
+		dias += (int) (random.nextDouble() * 5);
 	}
 }

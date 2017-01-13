@@ -1,5 +1,6 @@
 package hospital.views;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -9,6 +10,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -53,19 +55,24 @@ public class VitalsPanel extends JPanel {
 
 		tableModel = new VitalsTableModel();
 		table = new JTable(tableModel) {
-			
+
 			private static final long serialVersionUID = 1L;
+			DefaultTableCellRenderer renderLeft = new DefaultTableCellRenderer();
 			DefaultTableCellRenderer renderRight = new DefaultTableCellRenderer();
-			
+
 			{
+				renderLeft.setHorizontalAlignment(SwingConstants.LEFT);
 				renderRight.setHorizontalAlignment(SwingConstants.RIGHT);
 			}
 
 			@Override
-			public TableCellRenderer getCellRenderer(int arg0, int arg1) {
-				return renderRight;
+			public TableCellRenderer getCellRenderer(int row, int column) {
+				return column > 0 ? renderRight : renderLeft;
 			}
 		};
+		for (int i = 1; i < tableModel.getColumnCount(); i++) {
+			table.getColumnModel().getColumn(i).setHeaderRenderer(new CustomHeaderRenderer(SwingConstants.RIGHT));
+		}
 
 		GridBagLayout gbl_panelPatients = new GridBagLayout();
 		gbl_panelPatients.columnWidths = new int[] { 0, 0, 0 };
@@ -118,5 +125,22 @@ public class VitalsPanel extends JPanel {
 
 	public void refresh() {
 		fillList();
+	}
+
+	class CustomHeaderRenderer implements TableCellRenderer {
+		private int horizontalAlignment = SwingConstants.LEFT;
+
+		public CustomHeaderRenderer(int horizontalAlignment) {
+			this.horizontalAlignment = horizontalAlignment;
+		}
+
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+				int row, int column) {
+			TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
+			JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			l.setHorizontalAlignment(horizontalAlignment);
+			return l;
+		}
 	}
 }
