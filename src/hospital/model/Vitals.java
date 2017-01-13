@@ -24,7 +24,7 @@ public class Vitals {
 		this.bloodpressure = bloodpressure;
 
 		String problem = null;
-		if (bloodpressure.getSys() > 160) {
+		if (bloodpressure.getSys() > 170) {
 			problem = "death by hypertension";
 			getPatient().die();
 		} else if (bloodpressure.getSys() > 160) {
@@ -87,7 +87,7 @@ public class Vitals {
 			getPatient().die();
 		} else if (ratebreathing > 20) {
 			problem = "too high";
-		} else if (ratebreathing <= 5) {
+		} else if (ratebreathing <= 6) {
 			problem = "death (stopped breathing)";
 			getPatient().die();
 		} else if (ratebreathing < 10) {
