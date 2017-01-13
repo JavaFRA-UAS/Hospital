@@ -7,6 +7,12 @@ public class RandomGenerator {
 	Random random = new Random();
 	double erraticFactor = 0.01;
 
+	static double problemFactor = 0;
+
+	public static void causeProblems() {
+		problemFactor += 5;
+	}
+
 	public double nextDouble() {
 
 		// 5 % chance that something weird happens
@@ -21,8 +27,10 @@ public class RandomGenerator {
 
 		double d = random.nextDouble() - 0.5;
 		d += erraticFactor;
-		//System.out.println(String.format("%.2f", erraticFactor));
+		// System.out.println(String.format("%.2f", erraticFactor));
 		erraticFactor /= 2;
+		d += problemFactor;
+		problemFactor /= 2;
 		return d;
 	}
 }

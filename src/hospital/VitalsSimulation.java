@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import hospital.database.Database;
 import hospital.helper.RandomGenerator;
@@ -79,8 +80,13 @@ public class VitalsSimulation {
 						// wait until next heartbeat
 						Thread.sleep(patient.getHeart().getMillisecondsUntilNextHeartbeat());
 					}
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex);
+				} catch (final Exception ex) {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(null, ex);
+						}
+					});
 				}
 			}
 		}).start();
@@ -119,8 +125,13 @@ public class VitalsSimulation {
 						// wait 1 second
 						Thread.sleep(500);
 					}
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex);
+				} catch (final Exception ex) {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(null, ex);
+						}
+					});
 				}
 			}
 		}).start();
@@ -152,8 +163,13 @@ public class VitalsSimulation {
 						// wait until next breath
 						Thread.sleep(patient.getLungs().getMillisecondsUntilNextBreath());
 					}
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex);
+				} catch (final Exception ex) {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(null, ex);
+						}
+					});
 				}
 			}
 		}).start();

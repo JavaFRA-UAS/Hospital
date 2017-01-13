@@ -38,6 +38,7 @@ public abstract class Patient {
 
 	public void setId(int id) {
 		this.id = id;
+		this.vitals.setPatientId(id);
 	}
 
 	public Doctor getDoctor() {

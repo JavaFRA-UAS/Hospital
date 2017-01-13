@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 import hospital.database.Database;
+import hospital.helper.RandomGenerator;
 import hospital.helper.RefreshableWindow;
 import hospital.model.Doctor;
 import hospital.model.Nurse;
@@ -90,8 +91,6 @@ public class VitalsPanel extends JPanel {
 		JButton btnNew = new JButton("A");
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// NewPatientWindow w = new NewPatientWindow(parentWindow);
-				// w.setVisible(true);
 			}
 		});
 		GridBagConstraints gbc_btnNew = new GridBagConstraints();
@@ -104,10 +103,7 @@ public class VitalsPanel extends JPanel {
 		JButton btnDelete = new JButton("B");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// Patient p = listPatients.getSelectedValue();
-				// Database db = Database.getInstance();
-				// db.removePatient(p);
-				parentWindow.refresh();
+				RandomGenerator.causeProblems();
 			}
 		});
 		GridBagConstraints gbc_btnDelete = new GridBagConstraints();
