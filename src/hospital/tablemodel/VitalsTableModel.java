@@ -8,7 +8,8 @@ import hospital.model.Vitals;
 
 public class VitalsTableModel extends AbstractTableModel {
 
-	private String[] columnNames = { "Name", "Body temp. °C", "Blood pressure", "Pulse rate", "Breathing rate", };
+	private String[] columnNames = { "Name", "Body temp. °C", "Blood pressure", "Pulse rate", "Breathing rate",
+			"State", };
 
 	public Patient[] getData() {
 		Database db = Database.getInstance();
@@ -19,7 +20,7 @@ public class VitalsTableModel extends AbstractTableModel {
 		Vitals v = p.getVitals();
 		return new Object[] { p.getName(), String.format("%.2f", v.getBodytemperature()),
 				v.getBloodpressure().toString(), String.format("%.0f", v.getPulserate()),
-				String.format("%.0f", v.getRatebreathing()), };
+				String.format("%.0f", v.getRatebreathing()), p.isAlive() ? "alive" : "dead" };
 	}
 
 	public int getColumnCount() {

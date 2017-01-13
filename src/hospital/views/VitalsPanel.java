@@ -96,8 +96,72 @@ public class VitalsPanel extends JPanel {
 					final Patient p = r < patients.length ? patients[r] : null;
 					if (p != null) {
 						JPopupMenu popup = new JPopupMenu();
+
 						if (p.isAlive()) {
-							JMenuItem item = new JMenuItem("Kill");
+
+							JMenuItem item;
+
+							item = new JMenuItem("Use Defibrillator");
+							item.addActionListener(new java.awt.event.ActionListener() {
+								@Override
+								public void actionPerformed(java.awt.event.ActionEvent evt) {
+									p.getHeart().beat();
+								}
+							});
+							popup.add(item);
+
+							item = new JMenuItem("Artificial respiration");
+							item.addActionListener(new java.awt.event.ActionListener() {
+								@Override
+								public void actionPerformed(java.awt.event.ActionEvent evt) {
+									p.getLungs().breathe();
+								}
+							});
+							popup.add(item);
+
+							item = new JMenuItem("Raise blood pressure");
+							item.addActionListener(new java.awt.event.ActionListener() {
+								@Override
+								public void actionPerformed(java.awt.event.ActionEvent evt) {
+									p.getVitals().getBloodpressure()
+											.setSys((int) (p.getVitals().getBloodpressure().getSys() * 1.10));
+									p.getVitals().getBloodpressure()
+											.setDias((int) (p.getVitals().getBloodpressure().getDias() * 1.10));
+								}
+							});
+							popup.add(item);
+
+							item = new JMenuItem("Lower blood pressure");
+							item.addActionListener(new java.awt.event.ActionListener() {
+								@Override
+								public void actionPerformed(java.awt.event.ActionEvent evt) {
+									p.getVitals().getBloodpressure()
+											.setSys((int) (p.getVitals().getBloodpressure().getSys() * 0.9));
+									p.getVitals().getBloodpressure()
+											.setDias((int) (p.getVitals().getBloodpressure().getDias() * 0.9));
+								}
+							});
+							popup.add(item);
+
+							item = new JMenuItem("Heat");
+							item.addActionListener(new java.awt.event.ActionListener() {
+								@Override
+								public void actionPerformed(java.awt.event.ActionEvent evt) {
+									p.getVitals().setBodytemperature(p.getVitals().getBodytemperature() + 1);
+								}
+							});
+							popup.add(item);
+
+							item = new JMenuItem("Cool");
+							item.addActionListener(new java.awt.event.ActionListener() {
+								@Override
+								public void actionPerformed(java.awt.event.ActionEvent evt) {
+									p.getVitals().setBodytemperature(p.getVitals().getBodytemperature() - 1);
+								}
+							});
+							popup.add(item);
+
+							item = new JMenuItem("Kill");
 							item.addActionListener(new java.awt.event.ActionListener() {
 								@Override
 								public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,6 +169,7 @@ public class VitalsPanel extends JPanel {
 								}
 							});
 							popup.add(item);
+
 						} else {
 							JMenuItem item = new JMenuItem("Reanimate");
 							item.addActionListener(new java.awt.event.ActionListener() {

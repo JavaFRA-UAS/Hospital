@@ -48,8 +48,13 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 	public MainWindow() {
 		final MainWindow dw = this;
 
+		final int displayWidth = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getMaximumWindowBounds().width;
+		final int displayHeight = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getMaximumWindowBounds().height;
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1300, 550);
+		setBounds(50, (displayHeight - 550) / 2, displayWidth - 100, 550);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -57,7 +62,6 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane);
-		
 
 		panelPatient = new PatientPanel(this);
 		tabbedPane.addTab("PatientsX", null, panelPatient, null);
@@ -73,9 +77,7 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 
 		panelAlert = new AlertPanel(this);
 		tabbedPane.addTab("Alerts", null, panelAlert, null);
-		
 
-		
 		fillList();
 	}
 
