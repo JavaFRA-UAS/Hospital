@@ -29,6 +29,7 @@ public abstract class Patient {
 		vitals = new Vitals(id);
 		heart = new Heart(vitals);
 		lungs = new Lungs(vitals);
+		isAlive = true;
 	}
 
 	public int getId() {
