@@ -60,7 +60,7 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 		
 
 		panelPatient = new PatientPanel(this);
-		tabbedPane.addTab("Patients", null, panelPatient, null);
+		tabbedPane.addTab("PatientsX", null, panelPatient, null);
 
 		panelDoctor = new DoctorPanel(this);
 		tabbedPane.addTab("Doctors", null, panelDoctor, null);
