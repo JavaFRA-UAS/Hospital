@@ -8,7 +8,7 @@ public abstract class Patient {
 
 	private static int LastId = 2000;
 
-	int id = ++LastId;
+	int id;
 	Doctor doctor;
 	String name;
 	String address;
@@ -19,9 +19,10 @@ public abstract class Patient {
 	Vitals vitals;
 	Heart heart;
 	Lungs lungs;
-	
+
 	protected Patient() {
-		vitals = new Vitals();
+		id = ++LastId;
+		vitals = new Vitals(id);
 		heart = new Heart(vitals);
 		lungs = new Lungs(vitals);
 	}

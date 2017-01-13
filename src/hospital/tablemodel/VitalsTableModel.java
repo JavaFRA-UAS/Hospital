@@ -1,4 +1,4 @@
-package hospital.model.table;
+package hospital.tablemodel;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -18,8 +18,8 @@ public class VitalsTableModel extends AbstractTableModel {
 	public Object[] getRow(Patient p) {
 		Vitals v = p.getVitals();
 		return new Object[] { p.getName(), String.format("%.2f", v.getBodytemperature()),
-				v.getBloodpressure().toString(), String.format("%.2f", v.getPulserate()),
-				String.format("%.2f", v.getRatebreathing()), };
+				v.getBloodpressure().toString(), String.format("%.0f", v.getPulserate()),
+				String.format("%.0f", v.getRatebreathing()), };
 	}
 
 	public int getColumnCount() {
@@ -58,7 +58,7 @@ public class VitalsTableModel extends AbstractTableModel {
 		if (col <= 1) {
 			return false;
 		} else {
-			return true;
+			return false;
 		}
 	}
 

@@ -10,8 +10,8 @@ public class RandomGenerator {
 	public double nextDouble() {
 
 		// 5 % chance that something weird happens
-		if (random.nextInt(100) < 5) {
-			double e = (random.nextDouble()) * 1.7;
+		if (random.nextInt(100) < 5 && erraticFactor <= 0.1) {
+			double e = (random.nextDouble()) * 2;
 			if (erraticFactor > 0) {
 				erraticFactor = -e;
 			} else {
@@ -21,6 +21,7 @@ public class RandomGenerator {
 
 		double d = random.nextDouble() - 0.5;
 		d += erraticFactor;
+		//System.out.println(String.format("%.2f", erraticFactor));
 		erraticFactor /= 2;
 		return d;
 	}

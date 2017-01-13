@@ -34,6 +34,6 @@ public class BloodPressure {
 
 	public void randomChange() {
 		sys += (int) (random.nextDouble() * 5);
-		dias += (int) (random.nextDouble() * 5);
+		dias += (int) (random.nextDouble() * 3);
 	}
 }

@@ -20,40 +20,31 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import hospital.alert.Alert;
+import hospital.alert.AlertHelper;
+import hospital.alert.AlertListener;
 import hospital.database.Database;
 import hospital.helper.RefreshableWindow;
 import hospital.model.Doctor;
 import hospital.model.Nurse;
 import hospital.model.Patient;
-import hospital.tablemodel.VitalsTableModel;
+import hospital.tablemodel.AlertTableModel;
 import hospital.window.EditPatientWindow;
 import hospital.window.MainWindow;
 import hospital.window.NewPatientWindow;
 
-public class VitalsPanel extends JPanel {
+public class AlertPanel extends JPanel implements AlertListener {
 
 	final MainWindow parentWindow;
-	final VitalsTableModel tableModel;
+	final AlertTableModel tableModel;
 	final JTable table;
 
-	public static VitalsPanel instance = null;
-
-	public static void onRefresh() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (instance != null) {
-					instance.refresh();
-				}
-			}
-		});
-	}
-
-	public VitalsPanel(final MainWindow parentWindow) {
+	public AlertPanel(final MainWindow parentWindow) {
 		this.parentWindow = parentWindow;
-		VitalsPanel.instance = this;
 
-		tableModel = new VitalsTableModel();
+		AlertHelper.getInstance().addAlertListener(this);
+
+		tableModel = new AlertTableModel();
 		table = new JTable(tableModel) {
 
 			private static final long serialVersionUID = 1L;
@@ -141,5 +132,10 @@ public class VitalsPanel extends JPanel {
 			l.setHorizontalAlignment(horizontalAlignment);
 			return l;
 		}
+	}
+
+	@Override
+	public void onAlertAdded(Alert a) {
+		fillList();
 	}
 }

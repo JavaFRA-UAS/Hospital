@@ -16,7 +16,7 @@ public class Lungs {
 		// when starting, fill the queue of breaths with default data
 		long currentTimestamp = System.currentTimeMillis();
 		for (long i = currentTimestamp - 60000; i < currentTimestamp; i += millisecondsUntilNextBreath) {
-			lastBreaths.offer(currentTimestamp);
+			lastBreaths.offer(i);
 		}
 	}
 

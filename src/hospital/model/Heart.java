@@ -16,7 +16,7 @@ public class Heart {
 		// when starting, fill the queue of heartbeats with default data
 		long currentTimestamp = System.currentTimeMillis();
 		for (long i = currentTimestamp - 60000; i < currentTimestamp; i += millisecondsUntilNextHeartbeat) {
-			lastHeartbeats.offer(currentTimestamp);
+			lastHeartbeats.offer(i);
 		}
 	}
 
@@ -31,7 +31,7 @@ public class Heart {
 		millisecondsUntilNextHeartbeat += diff;
 
 		// make sure that the time is realistic
-		millisecondsUntilNextHeartbeat = Math.max(millisecondsUntilNextHeartbeat, 150);
+		millisecondsUntilNextHeartbeat = Math.max(millisecondsUntilNextHeartbeat, 500);
 		millisecondsUntilNextHeartbeat = Math.min(millisecondsUntilNextHeartbeat, 5000);
 
 		// calculate the current pulse rate

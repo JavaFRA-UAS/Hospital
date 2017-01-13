@@ -16,6 +16,7 @@ import hospital.helper.RefreshableWindow;
 import hospital.model.Doctor;
 import hospital.model.Nurse;
 import hospital.model.Patient;
+import hospital.views.AlertPanel;
 import hospital.views.DoctorPanel;
 import hospital.views.NursePanel;
 import hospital.views.PatientPanel;
@@ -39,6 +40,7 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 	private DoctorPanel panelDoctor;
 	private NursePanel panelNurse;
 	private VitalsPanel panelVitals;
+	private AlertPanel panelAlert;
 
 	/**
 	 * Create the frame.
@@ -47,7 +49,7 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 		final MainWindow dw = this;
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 797, 404);
+		setBounds(100, 100, 1300, 550);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -68,6 +70,9 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 
 		panelVitals = new VitalsPanel(this);
 		tabbedPane.addTab("Vitals", null, panelVitals, null);
+
+		panelAlert = new AlertPanel(this);
+		tabbedPane.addTab("Alerts", null, panelAlert, null);
 		
 
 		
@@ -75,12 +80,11 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 	}
 
 	void fillList() {
-		Database db = Database.getInstance();
-
 		panelPatient.refresh();
 		panelDoctor.refresh();
 		panelNurse.refresh();
 		panelVitals.refresh();
+		panelAlert.refresh();
 	}
 
 	public void refresh() {
