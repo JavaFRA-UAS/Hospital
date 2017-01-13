@@ -68,6 +68,11 @@ public class VitalsSimulation {
 							continue;
 						}
 
+						if (!patient.isAlive()) {
+							Thread.sleep(1000);
+							continue;
+						}
+
 						// simulate heartbeat
 						patient.getHeart().beat();
 
@@ -94,6 +99,11 @@ public class VitalsSimulation {
 							// patient doesnt exist any more,
 							// but maybe he will be added again,
 							// so dont terminate the thread
+							Thread.sleep(1000);
+							continue;
+						}
+
+						if (!patient.isAlive()) {
 							Thread.sleep(1000);
 							continue;
 						}
@@ -127,6 +137,11 @@ public class VitalsSimulation {
 							// patient doesnt exist any more,
 							// but maybe he will be added again,
 							// so dont terminate the thread
+							Thread.sleep(1000);
+							continue;
+						}
+
+						if (!patient.isAlive()) {
 							Thread.sleep(1000);
 							continue;
 						}

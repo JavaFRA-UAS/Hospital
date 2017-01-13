@@ -2,6 +2,7 @@ package hospital.model;
 
 import hospital.alert.Alert;
 import hospital.alert.AlertHelper;
+import hospital.database.Database;
 
 public class Vitals {
 
@@ -24,11 +25,17 @@ public class Vitals {
 
 		String problem = null;
 		if (bloodpressure.getSys() > 160) {
+			problem = "death by hypertension";
+			getPatient().die();
+		} else if (bloodpressure.getSys() > 160) {
 			problem = "severe hypertension";
 		} else if (bloodpressure.getSys() > 140) {
 			problem = "hypertension";
 		} else if (bloodpressure.getSys() > 125) {
 			problem = "prehypertension";
+		} else if (bloodpressure.getSys() < 50) {
+			problem = "death by hypotension";
+			getPatient().die();
 		} else if (bloodpressure.getSys() < 70) {
 			problem = "severe hypotension";
 		} else if (bloodpressure.getSys() < 80) {
@@ -42,12 +49,18 @@ public class Vitals {
 		}
 
 		problem = null;
-		if (bloodpressure.getDias() > 100) {
+		if (bloodpressure.getDias() > 130) {
+			problem = "death by hypertension";
+			getPatient().die();
+		} else if (bloodpressure.getDias() > 100) {
 			problem = "severe hypertension";
 		} else if (bloodpressure.getDias() > 90) {
 			problem = "hypertension";
 		} else if (bloodpressure.getDias() > 85) {
 			problem = "prehypertension";
+		} else if (bloodpressure.getDias() < 35) {
+			problem = "death by hypotension";
+			getPatient().die();
 		} else if (bloodpressure.getDias() < 40) {
 			problem = "severe hypotension";
 		} else if (bloodpressure.getDias() < 50) {
@@ -69,8 +82,14 @@ public class Vitals {
 		this.ratebreathing = ratebreathing;
 
 		String problem = null;
-		if (ratebreathing > 20) {
+		if (ratebreathing >= 60) {
+			problem = "death (too high breathing rate)";
+			getPatient().die();
+		} else if (ratebreathing > 20) {
 			problem = "too high";
+		} else if (ratebreathing <= 5) {
+			problem = "death (stopped breathing)";
+			getPatient().die();
 		} else if (ratebreathing < 10) {
 			problem = "too low";
 		}
@@ -88,8 +107,14 @@ public class Vitals {
 		this.pulserate = pulserate;
 
 		String problem = null;
-		if (pulserate > 100) {
+		if (pulserate > 150) {
+			problem = "death (too high pulse)";
+			getPatient().die();
+		} else if (pulserate > 100) {
 			problem = "too high";
+		} else if (pulserate < 20) {
+			problem = "too low";
+			getPatient().die();
 		} else if (pulserate < 50) {
 			problem = "too low";
 		}
@@ -108,6 +133,7 @@ public class Vitals {
 		String problem = null;
 		if (bodytemperature > 43) {
 			problem = "death by fever";
+			getPatient().die();
 		} else if (bodytemperature > 41) {
 			problem = "very high fever";
 		} else if (bodytemperature > 40) {
@@ -116,6 +142,7 @@ public class Vitals {
 			problem = "fever";
 		} else if (bodytemperature < 30) {
 			problem = "death by hypothermia";
+			getPatient().die();
 		} else if (bodytemperature < 34) {
 			problem = "severe hypothermia";
 		} else if (bodytemperature < 35.5) {
@@ -127,4 +154,8 @@ public class Vitals {
 		}
 	}
 
+	public Patient getPatient() {
+		return Database.getInstance().getPatientMap().get(this.patientId);
+	}
+	
 }

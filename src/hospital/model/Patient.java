@@ -4,6 +4,9 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 public abstract class Patient {
 
 	private static int LastId = 2000;
@@ -19,6 +22,7 @@ public abstract class Patient {
 	Vitals vitals;
 	Heart heart;
 	Lungs lungs;
+	boolean isAlive;
 
 	protected Patient() {
 		id = ++LastId;
@@ -115,6 +119,28 @@ public abstract class Patient {
 
 	public Lungs getLungs() {
 		return lungs;
+	}
+
+	public boolean isAlive() {
+		return isAlive;
+	}
+
+	public void setAlive(boolean isAlive) {
+		this.isAlive = isAlive;
+	}
+
+	public void die() {
+
+		if (this.isAlive) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(null, name + " died.");
+				}
+			});
+		}
+
+		this.isAlive = false;
 	}
 
 	@Override
