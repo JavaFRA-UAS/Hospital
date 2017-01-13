@@ -131,13 +131,13 @@ public abstract class Patient {
 		this.isAlive = isAlive;
 	}
 
-	public void die() {
+	public void die(final String why) {
 
 		if (this.isAlive) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					JOptionPane.showMessageDialog(null, name + " died.");
+					JOptionPane.showMessageDialog(null, name + " " + why + ".");
 				}
 			});
 		}

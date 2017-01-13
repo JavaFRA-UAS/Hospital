@@ -35,12 +35,12 @@ public class Vitals {
 		String problem = null;
 		if (ratebreathing >= 60) {
 			problem = "death (too high breathing rate)";
-			getPatient().die();
+			getPatient().die("died of high breathing rate");
 		} else if (ratebreathing > 20) {
 			problem = "too high";
 		} else if (ratebreathing <= 6) {
 			problem = "death (stopped breathing)";
-			getPatient().die();
+			getPatient().die("stopped breathing");
 		} else if (ratebreathing < 10) {
 			problem = "too low";
 		}
@@ -60,12 +60,12 @@ public class Vitals {
 		String problem = null;
 		if (pulserate > 150) {
 			problem = "death (too high pulse)";
-			getPatient().die();
+			getPatient().die("died of high pulse");
 		} else if (pulserate > 100) {
 			problem = "too high";
 		} else if (pulserate < 20) {
 			problem = "too low";
-			getPatient().die();
+			getPatient().die("died of low pulse");
 		} else if (pulserate < 50) {
 			problem = "too low";
 		}
@@ -84,7 +84,7 @@ public class Vitals {
 		String problem = null;
 		if (bodytemperature > 43) {
 			problem = "death by fever";
-			getPatient().die();
+			getPatient().die("died of high fever");
 		} else if (bodytemperature > 41) {
 			problem = "very high fever";
 		} else if (bodytemperature > 40) {
@@ -93,7 +93,7 @@ public class Vitals {
 			problem = "fever";
 		} else if (bodytemperature < 30) {
 			problem = "death by hypothermia";
-			getPatient().die();
+			getPatient().die("died of severe hypothermia");
 		} else if (bodytemperature < 34) {
 			problem = "severe hypothermia";
 		} else if (bodytemperature < 35.5) {
