@@ -1,4 +1,6 @@
-package hospital;
+package hospital.model;
+
+import hospital.database.Database;
 
 public class Inpatient extends Patient {
 	int room_id;

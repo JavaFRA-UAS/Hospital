@@ -1,4 +1,4 @@
-package hospital;
+package hospital.window;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -16,6 +16,12 @@ import java.awt.CardLayout;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import hospital.database.Database;
+import hospital.helper.JPanelWithBackground;
+import hospital.model.Doctor;
+import hospital.model.Nurse;
+
 import com.jgoodies.forms.layout.FormSpecs;
 
 import javax.swing.ImageIcon;
@@ -78,7 +84,7 @@ public class LoginWindow extends JFrame {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (comboBox.getSelectedIndex() > 0) {
-					DoctorWindow w = new DoctorWindow();
+					MainWindow w = new MainWindow();
 					w.setVisible(true);
 					lw.setVisible(false);
 				}

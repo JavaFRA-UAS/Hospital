@@ -1,13 +1,12 @@
-package hospital;
+package hospital.model;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
-public class Doctor {
-
-	private static int LastId = 1000;
+public class Nurse {
+	private static int LastId = 3000;
 
 	int id = ++LastId;
 
@@ -24,6 +23,7 @@ public class Doctor {
 	long birthday;
 	String gender;
 	String phone;
+	ArrayList<Room> rooms;
 
 	public String getName() {
 		return name;
@@ -32,7 +32,7 @@ public class Doctor {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getGender() {
 		return gender;
 	}
@@ -79,6 +79,13 @@ public class Doctor {
 		return java.time.temporal.ChronoUnit.YEARS.between(getBirthdayAsLocalDate(), LocalDate.now());
 	}
 
+	public ArrayList<Room> getRooms() {
+		return rooms;
+	}
+
+	public void setRooms(ArrayList<Room> rooms) {
+		this.rooms = rooms;
+	}
 
 	@Override
 	public String toString() {

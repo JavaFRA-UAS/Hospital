@@ -1,4 +1,4 @@
-package hospital;
+package hospital.window;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -21,6 +21,11 @@ import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import hospital.database.Database;
+import hospital.helper.RefreshableWindow;
+import hospital.model.Doctor;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
@@ -31,7 +36,7 @@ import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
-public class EditNurseWindow extends JFrame {
+public class EditDoctorWindow extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textName;
@@ -39,12 +44,12 @@ public class EditNurseWindow extends JFrame {
 	private JTextField textAddress;
 	private JTextField textPhone;
 	final RefreshableWindow parentWindow;
-	private Nurse patient;
+	private Doctor patient;
 	DatePicker datePickerBirthday;
 
-	public EditNurseWindow(RefreshableWindow parentWindow) {
+	public EditDoctorWindow(RefreshableWindow parentWindow) {
 		this.parentWindow = parentWindow;
-		final EditNurseWindow window = this;
+		final EditDoctorWindow window = this;
 
 		setBounds(100, 100, 576, 543);
 		contentPane = new JPanel();
@@ -119,7 +124,7 @@ public class EditNurseWindow extends JFrame {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				Nurse p = patient;
+				Doctor p = patient;
 				p.setName(textName.getText());
 				p.setBirthdayAsLocalDate(datePickerBirthday.getDate());
 				p.setAddress(textAddress.getText());
@@ -127,7 +132,7 @@ public class EditNurseWindow extends JFrame {
 				p.setGender(textGender.getText());
 
 				Database db = Database.getInstance();
-				db.addNurse(p);
+				db.addDoctor(p);
 				db.save();
 
 				window.setVisible(false);
@@ -136,7 +141,7 @@ public class EditNurseWindow extends JFrame {
 		});
 	}
 
-	public void setNurse(Nurse p) {
+	public void setDoctor(Doctor p) {
 		this.patient = p;
 		textName.setText(p.getName());
 		datePickerBirthday.setDate(p.getBirthdayAsLocalDate());

@@ -1,4 +1,4 @@
-package hospital;
+package hospital.window;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -21,6 +21,13 @@ import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import hospital.database.Database;
+import hospital.helper.RefreshableWindow;
+import hospital.model.Inpatient;
+import hospital.model.Outpatient;
+import hospital.model.Patient;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;

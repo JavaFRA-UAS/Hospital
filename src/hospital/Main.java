@@ -4,6 +4,15 @@ import java.nio.file.*;
 
 import javax.swing.*;
 
+import hospital.database.Database;
+import hospital.database.DatabaseConnection;
+import hospital.model.Doctor;
+import hospital.model.Inpatient;
+import hospital.model.Nurse;
+import hospital.model.Outpatient;
+import hospital.model.Patient;
+import hospital.window.LoginWindow;
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -27,6 +36,8 @@ public class Main {
 
 		startSimulation();
 		Database.getInstance().waitUntilReady();
+		
+		VitalsSimulation.initialize();
 
 		SwingUtilities.invokeLater(new Runnable() {
 

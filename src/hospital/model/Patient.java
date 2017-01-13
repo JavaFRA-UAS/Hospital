@@ -1,14 +1,28 @@
-package hospital;
+package hospital.model;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 
-public class Nurse {
-	private static int LastId = 3000;
+public abstract class Patient {
+
+	private static int LastId = 2000;
 
 	int id = ++LastId;
+	Doctor doctor;
+	String name;
+	String address;
+	long birthday;
+	String gender;
+	String problem;
+	String phone;
+	Vitals vitals;
+	Heart heart;
+	
+	protected Patient() {
+		vitals = new Vitals();
+		heart = new Heart(vitals);
+	}
 
 	public int getId() {
 		return id;
@@ -18,12 +32,13 @@ public class Nurse {
 		this.id = id;
 	}
 
-	String name;
-	String address;
-	long birthday;
-	String gender;
-	String phone;
-	ArrayList<Room> rooms;
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
 
 	public String getName() {
 		return name;
@@ -39,6 +54,14 @@ public class Nurse {
 
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+
+	public String getProblem() {
+		return problem;
+	}
+
+	public void setProblem(String problem) {
+		this.problem = problem;
 	}
 
 	public String getAddress() {
@@ -79,16 +102,17 @@ public class Nurse {
 		return java.time.temporal.ChronoUnit.YEARS.between(getBirthdayAsLocalDate(), LocalDate.now());
 	}
 
-	public ArrayList<Room> getRooms() {
-		return rooms;
+	public Vitals getVitals() {
+		return vitals;
 	}
 
-	public void setRooms(ArrayList<Room> rooms) {
-		this.rooms = rooms;
+	public Heart getHeart() {
+		return heart;
 	}
 
 	@Override
 	public String toString() {
 		return name;
 	}
+
 }

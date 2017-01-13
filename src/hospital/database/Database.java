@@ -1,4 +1,4 @@
-package hospital;
+package hospital.database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +7,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import hospital.model.Doctor;
+import hospital.model.Inpatient;
+import hospital.model.Nurse;
+import hospital.model.Outpatient;
+import hospital.model.Patient;
+import hospital.model.Room;
 
 public class Database {
 	private boolean isLoaded = false;
@@ -43,6 +50,22 @@ public class Database {
 
 	public Room[] getRooms() {
 		return rooms.values().toArray(new Room[0]);
+	}
+
+	public HashMap<Integer, Doctor> getDoctorMap() {
+		return doctors;
+	}
+
+	public HashMap<Integer, Patient> getPatientMap() {
+		return patients;
+	}
+
+	public HashMap<Integer, Nurse> getNurseMap() {
+		return nurses;
+	}
+
+	public HashMap<Integer, Room> getRoomMap() {
+		return rooms;
 	}
 
 	public void addPatient(Patient p) {
@@ -138,7 +161,7 @@ public class Database {
 				d.setBirthday(resultset.getLong("birthday"));
 				d.setGender(resultset.getString("gender"));
 				d.setPhone(resultset.getString("phone"));
-				doctors.put(d.id, d);
+				doctors.put(d.getId(), d);
 			}
 
 			resultset = statement.executeQuery("select * from nurse");
@@ -150,7 +173,7 @@ public class Database {
 				n.setBirthday(resultset.getLong("birthday"));
 				n.setGender(resultset.getString("gender"));
 				n.setPhone(resultset.getString("phone"));
-				nurses.put(n.id, n);
+				nurses.put(n.getId(), n);
 			}
 
 			resultset = statement.executeQuery("select * from inpatient");
@@ -164,7 +187,7 @@ public class Database {
 				p.setProblem(resultset.getString("problem"));
 				p.setPhone(resultset.getString("phone"));
 				p.setRoomId(resultset.getInt("room_id"));
-				patients.put(p.id, p);
+				patients.put(p.getId(), p);
 			}
 
 			resultset = statement.executeQuery("select * from outpatient");
@@ -177,14 +200,14 @@ public class Database {
 				p.setGender(resultset.getString("gender"));
 				p.setProblem(resultset.getString("problem"));
 				p.setPhone(resultset.getString("phone"));
-				patients.put(p.id, p);
+				patients.put(p.getId(), p);
 			}
 
 			resultset = statement.executeQuery("select * from room");
 			while (resultset.next()) {
 				Room r = new Room();
 				r.setId(Integer.parseInt(resultset.getString("id")));
-				rooms.put(r.id, r);
+				rooms.put(r.getId(), r);
 			}
 
 		} catch (Exception e) {

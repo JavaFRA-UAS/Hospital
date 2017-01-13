@@ -1,4 +1,4 @@
-package hospital;
+package hospital.helper;
 
 import java.awt.*;
 import javax.swing.*;

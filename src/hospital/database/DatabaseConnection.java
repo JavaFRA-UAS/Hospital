@@ -1,4 +1,4 @@
-package hospital;
+package hospital.database;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

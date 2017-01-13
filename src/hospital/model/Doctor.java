@@ -1,12 +1,13 @@
-package hospital;
+package hospital.model;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 
-public abstract class Patient {
+public class Doctor {
 
-	private static int LastId = 2000;
+	private static int LastId = 1000;
 
 	int id = ++LastId;
 
@@ -18,25 +19,11 @@ public abstract class Patient {
 		this.id = id;
 	}
 
-	Doctor doctor;
 	String name;
 	String address;
 	long birthday;
 	String gender;
-	String problem;
 	String phone;
-	BloodPressure bloodpressure;
-	int ratebreathing;
-	int pulserate;
-	int bodytemperature;
-
-	public Doctor getDoctor() {
-		return doctor;
-	}
-
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
-	}
 
 	public String getName() {
 		return name;
@@ -45,53 +32,13 @@ public abstract class Patient {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public String getGender() {
 		return gender;
 	}
 
 	public void setGender(String gender) {
 		this.gender = gender;
-	}
-
-	public String getProblem() {
-		return problem;
-	}
-
-	public void setProblem(String problem) {
-		this.problem = problem;
-	}
-
-	public BloodPressure getBloodpressure() {
-		return bloodpressure;
-	}
-
-	public void setBloodpressure(BloodPressure bloodpressure) {
-		this.bloodpressure = bloodpressure;
-	}
-
-	public int getRatebreathing() {
-		return ratebreathing;
-	}
-
-	public void setRatebreathing(int ratebreathing) {
-		this.ratebreathing = ratebreathing;
-	}
-
-	public int getPulserate() {
-		return pulserate;
-	}
-
-	public void setPulserate(int pulserate) {
-		this.pulserate = pulserate;
-	}
-
-	public int getBodytemperature() {
-		return bodytemperature;
-	}
-
-	public void setBodytemperature(int bodytemperature) {
-		this.bodytemperature = bodytemperature;
 	}
 
 	public String getAddress() {
@@ -132,9 +79,9 @@ public abstract class Patient {
 		return java.time.temporal.ChronoUnit.YEARS.between(getBirthdayAsLocalDate(), LocalDate.now());
 	}
 
+
 	@Override
 	public String toString() {
 		return name;
 	}
-
 }

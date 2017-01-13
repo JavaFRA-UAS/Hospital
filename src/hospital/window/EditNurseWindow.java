@@ -1,4 +1,4 @@
-package hospital;
+package hospital.window;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -21,10 +21,14 @@ import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import hospital.database.Database;
+import hospital.helper.RefreshableWindow;
+import hospital.model.Nurse;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
@@ -32,7 +36,7 @@ import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
-public class NewPatientWindow extends JFrame {
+public class EditNurseWindow extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textName;
@@ -40,10 +44,12 @@ public class NewPatientWindow extends JFrame {
 	private JTextField textAddress;
 	private JTextField textPhone;
 	final RefreshableWindow parentWindow;
+	private Nurse patient;
+	DatePicker datePickerBirthday;
 
-	public NewPatientWindow(RefreshableWindow parentWindow) {
+	public EditNurseWindow(RefreshableWindow parentWindow) {
 		this.parentWindow = parentWindow;
-		final NewPatientWindow window = this;
+		final EditNurseWindow window = this;
 
 		setBounds(100, 100, 576, 543);
 		contentPane = new JPanel();
@@ -78,7 +84,7 @@ public class NewPatientWindow extends JFrame {
 
 		DatePickerSettings dateSettings = new DatePickerSettings();
 		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-		final DatePicker datePickerBirthday = new DatePicker(dateSettings);
+		datePickerBirthday = new DatePicker(dateSettings);
 		datePickerBirthday.addDateChangeListener(new DateChangeListener() {
 
 			@Override
@@ -110,65 +116,38 @@ public class NewPatientWindow extends JFrame {
 		contentPane.add(textPhone, "4, 12, fill, default");
 		textPhone.setColumns(10);
 
-		JLabel lblProblem = new JLabel("Problem:");
-		contentPane.add(lblProblem, "2, 14");
-
-		final JTextArea textProblem = new JTextArea();
-		textProblem.setLineWrap(true);
-		contentPane.add(textProblem, "4, 14, fill, fill");
-
 		JButton btnSave = new JButton("Save");
-
-		final JRadioButton rdbtnInpatient = new JRadioButton("Inpatient");
-		contentPane.add(rdbtnInpatient, "4, 16");
-
-		final JRadioButton rdbtnOutpatient = new JRadioButton("Outpatient");
-		contentPane.add(rdbtnOutpatient, "4, 18");
 		contentPane.add(btnSave, "4, 20, default, bottom");
 
 		ButtonGroup buttonGroup = new ButtonGroup();
-		buttonGroup.add(rdbtnInpatient);
-		buttonGroup.add(rdbtnOutpatient);
 
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (rdbtnInpatient.isSelected()) {
-					Inpatient p = new Inpatient();
-					p.setName(textName.getText());
-					p.setBirthdayAsLocalDate(datePickerBirthday.getDate());
-					p.setProblem(textProblem.getText());
-					p.setAddress(textAddress.getText());
-					p.setPhone(textPhone.getText());
-					p.setGender(textGender.getText());
 
-					Database db = Database.getInstance();
-					db.addPatient(p);
-					db.save();
+				Nurse p = patient;
+				p.setName(textName.getText());
+				p.setBirthdayAsLocalDate(datePickerBirthday.getDate());
+				p.setAddress(textAddress.getText());
+				p.setPhone(textPhone.getText());
+				p.setGender(textGender.getText());
 
-					window.setVisible(false);
-					window.parentWindow.refresh();
+				Database db = Database.getInstance();
+				db.addNurse(p);
+				db.save();
 
-				} else if (rdbtnOutpatient.isSelected()) {
-					Outpatient p = new Outpatient();
-					p.setName(textName.getText());
-					p.setBirthdayAsLocalDate(datePickerBirthday.getDate());
-					p.setProblem(textProblem.getText());
-					p.setAddress(textAddress.getText());
-					p.setPhone(textPhone.getText());
-					p.setGender(textGender.getText());
-
-					Database db = Database.getInstance();
-					db.addPatient(p);
-					db.save();
-
-					window.setVisible(false);
-					window.parentWindow.refresh();
-					
-				} else {
-					JOptionPane.showMessageDialog(window, "The patient must be an inpatient or an outpatient.");
-				}
+				window.setVisible(false);
+				window.parentWindow.refresh();
 			}
 		});
+	}
+
+	public void setNurse(Nurse p) {
+		this.patient = p;
+		textName.setText(p.getName());
+		datePickerBirthday.setDate(p.getBirthdayAsLocalDate());
+		textAddress.setText(p.getAddress());
+		textPhone.setText(p.getPhone());
+		textGender.setText(p.getGender());
 	}
 
 }
