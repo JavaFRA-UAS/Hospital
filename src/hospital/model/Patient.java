@@ -7,6 +7,9 @@ import java.time.ZoneId;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import hospital.alert.Alert;
+import hospital.alert.AlertHelper;
+
 public abstract class Patient {
 
 	private static int LastId = 2000;
@@ -137,12 +140,27 @@ public abstract class Patient {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
+					AlertHelper.getInstance().createAlert(new Alert(id, "life", 0, 1, 1, why));
 					JOptionPane.showMessageDialog(null, name + " " + why + ".");
 				}
 			});
 		}
 
 		this.isAlive = false;
+	}
+
+	public void revive(final String why) {
+
+		if (!this.isAlive) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					AlertHelper.getInstance().createAlert(new Alert(id, "life", 1, 1, 1, why));
+				}
+			});
+		}
+
+		this.isAlive = true;
 	}
 
 	@Override
