@@ -21,18 +21,17 @@ public class BloodPressure {
 	public void setDias(int dias) {
 		this.dias = dias;
 	}
-	
+
 	@Override
 	public String toString() {
 		return sys + " / " + dias;
 	}
-	
 
 	Random random = new Random();
 	long millisecondsUntilNextHeartbeat = 1000;
 
 	public void randomChange() {
-		sys += (int)(random.nextDouble()*5);
-		dias += (int)(random.nextDouble()*5);
+		sys += (int) ((random.nextDouble() - 0.5) * 5);
+		dias += (int) ((random.nextDouble() - 0.5) * 5);
 	}
 }

@@ -12,6 +12,7 @@ import hospital.model.Inpatient;
 import hospital.model.Nurse;
 import hospital.model.Outpatient;
 import hospital.model.Patient;
+import hospital.views.VitalsPanel;
 
 public class VitalsSimulation {
 
@@ -28,8 +29,7 @@ public class VitalsSimulation {
 					Database db = Database.getInstance();
 					while (true) {
 						for (Map.Entry<Integer, Patient> entry : db.getPatientMap().entrySet()) {
-							Integer patientId = entry.getKey();
-							Patient patient = entry.getValue();
+							final Integer patientId = entry.getKey();
 
 							if (!threadsOfPatients.containsKey(patientId)) {
 								Thread t = new Thread(new Runnable() {
@@ -43,6 +43,9 @@ public class VitalsSimulation {
 							}
 						}
 						Thread.sleep(1000);
+
+						VitalsPanel.onRefresh();
+
 					}
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, ex);
@@ -51,7 +54,7 @@ public class VitalsSimulation {
 		}).start();
 	}
 
-	public static void runSimulation(long patientId) {
+	public static void runSimulation(final Integer patientId) {
 		try {
 			Random random = new Random();
 
@@ -60,21 +63,22 @@ public class VitalsSimulation {
 				Patient patient = db.getPatientMap().get(patientId);
 
 				if (patient == null) {
-					// patient doesnt exist any more, but maybe he will be added
-					// again
+					// patient doesnt exist any more,
+					// but maybe he will be added again,
+					// so dont terminate the thread
 					Thread.sleep(1000);
 					continue;
 				}
 
 				// simulate heartbeat
 				patient.getHeart().beat();
-				
+
 				// modify blood pressure
 				patient.getVitals().getBloodpressure().randomChange();
-				
+
 				// modify body temperature
 				double temperature = patient.getVitals().getBodytemperature();
-				temperature += random.nextDouble() * 0.1;
+				temperature += (random.nextDouble() - 0.5) * 0.1;
 				patient.getVitals().setBodytemperature(temperature);
 
 				// wait until next heartbeat

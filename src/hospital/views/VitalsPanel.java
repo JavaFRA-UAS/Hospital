@@ -11,7 +11,12 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 
 import hospital.database.Database;
 import hospital.helper.RefreshableWindow;
@@ -29,14 +34,38 @@ public class VitalsPanel extends JPanel {
 	final VitalsTableModel tableModel;
 	final JTable table;
 
-	public VitalsPanel instance = null;
+	public static VitalsPanel instance = null;
+
+	public static void onRefresh() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				if (instance != null) {
+					instance.refresh();
+				}
+			}
+		});
+	}
 
 	public VitalsPanel(final MainWindow parentWindow) {
 		this.parentWindow = parentWindow;
-		this.instance = this;
+		VitalsPanel.instance = this;
 
 		tableModel = new VitalsTableModel();
-		table = new JTable(tableModel);
+		table = new JTable(tableModel) {
+			
+			private static final long serialVersionUID = 1L;
+			DefaultTableCellRenderer renderRight = new DefaultTableCellRenderer();
+			
+			{
+				renderRight.setHorizontalAlignment(SwingConstants.RIGHT);
+			}
+
+			@Override
+			public TableCellRenderer getCellRenderer(int arg0, int arg1) {
+				return renderRight;
+			}
+		};
 
 		GridBagLayout gbl_panelPatients = new GridBagLayout();
 		gbl_panelPatients.columnWidths = new int[] { 0, 0, 0 };
@@ -50,7 +79,7 @@ public class VitalsPanel extends JPanel {
 		gbc_listPatients.fill = GridBagConstraints.BOTH;
 		gbc_listPatients.gridx = 0;
 		gbc_listPatients.gridy = 0;
-		this.add(table, gbc_listPatients);
+		this.add(new JScrollPane(table), gbc_listPatients);
 
 		JButton btnNew = new JButton("A");
 		btnNew.addActionListener(new ActionListener() {

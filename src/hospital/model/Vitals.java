@@ -2,7 +2,7 @@ package hospital.model;
 
 public class Vitals {
 
-	BloodPressure bloodpressure;
+	BloodPressure bloodpressure = new BloodPressure();
 	int ratebreathing;
 	int pulserate;
 	double bodytemperature;
@@ -39,5 +39,4 @@ public class Vitals {
 		this.bodytemperature = bodytemperature;
 	}
 
-	
 }
