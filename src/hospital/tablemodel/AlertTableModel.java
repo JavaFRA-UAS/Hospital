@@ -23,9 +23,15 @@ public class AlertTableModel extends AbstractTableModel {
 	public Object[] getRow(Alert a) {
 		Patient p = Database.getInstance().getPatientMap().get(a.getPatientId());
 		Room room = (p instanceof Inpatient ? ((Inpatient) p).getRoom() : null);
-		return new Object[] { a.getFormattedTime(), (p != null ? p.getName() : ""), a.getEntityName(),
-				String.format("%.2f", a.getEntityValue()), String.format("%.2f", a.getExpectedMin()),
-				String.format("%.2f", a.getExpectedMax()), a.getProblem(), (room != null ? room.getId() : "") };
+
+		if (a.getEntityName().length() > 0) {
+			return new Object[] { a.getFormattedTime(), (p != null ? p.getName() : ""), a.getEntityName(),
+					String.format("%.2f", a.getEntityValue()), String.format("%.2f", a.getExpectedMin()),
+					String.format("%.2f", a.getExpectedMax()), a.getProblem(), (room != null ? room.getId() : "") };
+		} else {
+			return new Object[] { a.getFormattedTime(), (p != null ? p.getName() : ""), "", "", "", "", a.getProblem(),
+					(room != null ? room.getId() : "") };
+		}
 	}
 
 	public int getColumnCount() {

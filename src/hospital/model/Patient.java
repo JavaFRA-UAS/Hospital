@@ -140,7 +140,7 @@ public abstract class Patient {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					AlertHelper.getInstance().createAlert(new Alert(id, "life", 0, 1, 1, why));
+					AlertHelper.getInstance().createAlert(new Alert(id, "", 0, 1, 1, why));
 					JOptionPane.showMessageDialog(null, name + " " + why + ".");
 				}
 			});
@@ -155,11 +155,14 @@ public abstract class Patient {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					AlertHelper.getInstance().createAlert(new Alert(id, "life", 1, 1, 1, why));
+					AlertHelper.getInstance().createAlert(new Alert(id, "", 1, 1, 1, why));
 				}
 			});
 		}
 
+		this.vitals = new Vitals(id);
+		this.heart = new Heart(vitals);
+		this.lungs = new Lungs(vitals);
 		this.isAlive = true;
 	}
 
