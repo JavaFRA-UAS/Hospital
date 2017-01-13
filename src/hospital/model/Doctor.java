@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
-public class Doctor {
+public class Doctor implements Staff {
 
 	private static int LastId = 1000;
 

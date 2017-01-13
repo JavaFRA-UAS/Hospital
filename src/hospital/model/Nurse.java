@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
-public class Nurse {
+public class Nurse implements Staff {
 	private static int LastId = 3000;
 
 	int id = ++LastId;

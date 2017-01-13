@@ -17,10 +17,12 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
+import hospital.Main;
 import hospital.database.Database;
 import hospital.helper.JPanelWithBackground;
 import hospital.model.Doctor;
 import hospital.model.Nurse;
+import hospital.model.Staff;
 
 import com.jgoodies.forms.layout.FormSpecs;
 
@@ -84,6 +86,22 @@ public class LoginWindow extends JFrame {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (comboBox.getSelectedIndex() > 0) {
+					
+					final String name = (String)comboBox.getSelectedItem();
+					Database db = Database.getInstance();
+					Staff user = null;
+					for (Doctor doc : db.getDoctors()) {
+						if (name == doc.getName()) {
+							user = doc;
+						}
+					}
+					for (Nurse nurse : db.getNurses()) {
+						if (name == nurse.getName()) {
+							user = nurse;
+						}
+					}
+					Main.setCurrentUser(user);
+					
 					MainWindow w = new MainWindow();
 					w.setVisible(true);
 					lw.setVisible(false);

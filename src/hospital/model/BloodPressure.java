@@ -38,7 +38,7 @@ public class BloodPressure {
 		String problem = null;
 		if (sys > 170) {
 			problem = "death by hypertension";
-			getPatient().die();
+			getPatient().die("died of hypertension");
 		} else if (sys > 160) {
 			problem = "severe hypertension";
 		} else if (sys > 140) {
@@ -47,7 +47,7 @@ public class BloodPressure {
 			problem = "prehypertension";
 		} else if (sys < 50) {
 			problem = "death by hypotension";
-			getPatient().die();
+			getPatient().die("died of hypotension");
 		} else if (sys < 70) {
 			problem = "severe hypotension";
 		} else if (sys < 80) {
@@ -71,7 +71,7 @@ public class BloodPressure {
 		String problem = null;
 		if (dias > 130) {
 			problem = "death by hypertension";
-			getPatient().die();
+			getPatient().die("died of hypertension");
 		} else if (dias > 100) {
 			problem = "severe hypertension";
 		} else if (dias > 90) {
@@ -80,7 +80,7 @@ public class BloodPressure {
 			problem = "prehypertension";
 		} else if (dias < 35) {
 			problem = "death by hypotension";
-			getPatient().die();
+			getPatient().die("died of hypotension");
 		} else if (dias < 40) {
 			problem = "severe hypotension";
 		} else if (dias < 50) {

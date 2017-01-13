@@ -11,9 +11,20 @@ import hospital.model.Inpatient;
 import hospital.model.Nurse;
 import hospital.model.Outpatient;
 import hospital.model.Patient;
+import hospital.model.Staff;
 import hospital.window.LoginWindow;
 
 public class Main {
+
+	static Staff currentUser;
+
+	public static void setCurrentUser(Staff currentUser) {
+		Main.currentUser = currentUser;
+	}
+
+	public static Staff getCurrentUser() {
+		return Main.currentUser;
+	}
 
 	public static void main(String[] args) {
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
@@ -36,7 +47,7 @@ public class Main {
 
 		startSimulation();
 		Database.getInstance().waitUntilReady();
-		
+
 		VitalsSimulation.initialize();
 
 		SwingUtilities.invokeLater(new Runnable() {

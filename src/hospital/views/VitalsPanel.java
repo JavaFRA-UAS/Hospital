@@ -12,14 +12,19 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import hospital.Main;
 import hospital.database.Database;
 import hospital.helper.RandomGenerator;
 import hospital.helper.RefreshableWindow;
@@ -36,6 +41,8 @@ public class VitalsPanel extends JPanel {
 	final MainWindow parentWindow;
 	final VitalsTableModel tableModel;
 	final JTable table;
+	boolean isInsideMouseEvent;
+	boolean hasOpenPopupMenu;
 
 	public static VitalsPanel instance = null;
 
@@ -53,6 +60,7 @@ public class VitalsPanel extends JPanel {
 	public VitalsPanel(final MainWindow parentWindow) {
 		this.parentWindow = parentWindow;
 		VitalsPanel.instance = this;
+		final VitalsPanel that = this;
 
 		tableModel = new VitalsTableModel();
 		table = new JTable(tableModel) {
@@ -73,6 +81,61 @@ public class VitalsPanel extends JPanel {
 		for (int i = 0; i < tableModel.getColumnCount(); i++) {
 			table.getColumnModel().getColumn(i).setHeaderRenderer(new CustomHeaderRenderer(SwingConstants.CENTER));
 		}
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				that.isInsideMouseEvent = true;
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				int r = table.rowAtPoint(e.getPoint());
+
+				if (r >= 0) {
+					final Patient[] patients = tableModel.getData();
+					final Patient p = r < patients.length ? patients[r] : null;
+					if (p != null) {
+						JPopupMenu popup = new JPopupMenu();
+						if (p.isAlive()) {
+							JMenuItem item = new JMenuItem("Kill");
+							item.addActionListener(new java.awt.event.ActionListener() {
+								@Override
+								public void actionPerformed(java.awt.event.ActionEvent evt) {
+									p.die("was killed by " + Main.getCurrentUser().getName());
+								}
+							});
+							popup.add(item);
+						} else {
+							JMenuItem item = new JMenuItem("Reanimate");
+							item.addActionListener(new java.awt.event.ActionListener() {
+								@Override
+								public void actionPerformed(java.awt.event.ActionEvent evt) {
+									p.revive("was reanimated by " + Main.getCurrentUser().getName());
+								}
+							});
+							popup.add(item);
+						}
+
+						popup.addPopupMenuListener(new PopupMenuListener() {
+							public void popupMenuCanceled(PopupMenuEvent popupMenuEvent) {
+								that.hasOpenPopupMenu = false;
+							}
+
+							public void popupMenuWillBecomeInvisible(PopupMenuEvent popupMenuEvent) {
+								that.hasOpenPopupMenu = false;
+							}
+
+							public void popupMenuWillBecomeVisible(PopupMenuEvent popupMenuEvent) {
+								that.hasOpenPopupMenu = true;
+							}
+						});
+						popup.show(e.getComponent(), e.getX(), e.getY());
+					}
+				}
+
+				that.isInsideMouseEvent = false;
+			}
+		});
 
 		GridBagLayout gbl_panelPatients = new GridBagLayout();
 		gbl_panelPatients.columnWidths = new int[] { 0, 0, 0 };
@@ -90,6 +153,7 @@ public class VitalsPanel extends JPanel {
 
 		JButton btnNew = new JButton("A");
 		btnNew.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
@@ -115,7 +179,9 @@ public class VitalsPanel extends JPanel {
 	}
 
 	void fillList() {
-		tableModel.fireTableDataChanged();
+		if (!this.hasOpenPopupMenu && !this.isInsideMouseEvent) {
+			tableModel.fireTableDataChanged();
+		}
 	}
 
 	public void refresh() {
