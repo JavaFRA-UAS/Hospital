@@ -22,25 +22,28 @@ public class AlertHelper {
 			return;
 
 		// check for similar alert
-		for (int i = alerts.size() - 1; i > 0; i--) {
-			Alert b = alerts.get(i);
+		if (!alert.getProblem().contains("death")) {
+			for (int i = alerts.size() - 1; i > 0; i--) {
+				Alert b = alerts.get(i);
 
-			if (b.patientId == alert.patientId && b.time > alert.time - 10000 && b.entityName == alert.entityName) {
-				try {
-					double bV = b.getEntityValue();
-					double aV = alert.getEntityValue();
-					double avgV = (b.expectedMax + b.expectedMin) / 2;
-					double bDiff = Math.abs(bV - avgV);
-					double aDiff = Math.abs(aV - avgV);
-					if (aDiff > bDiff) {
-						b.entityValue = alert.entityValue;
-						b.problem = alert.problem;
+				if (b.patientId == alert.patientId && b.time > alert.time - 10000 && b.entityName == alert.entityName
+						&& b.problem == alert.problem) {
+					try {
+						double bV = b.getEntityValue();
+						double aV = alert.getEntityValue();
+						double avgV = (b.expectedMax + b.expectedMin) / 2;
+						double bDiff = Math.abs(bV - avgV);
+						double aDiff = Math.abs(aV - avgV);
+						if (aDiff > bDiff) {
+							b.entityValue = alert.entityValue;
+							b.problem = alert.problem;
+						}
+					} catch (Exception ex) {
 					}
-				} catch (Exception ex) {
+					b.time = alert.time;
+					alert = null;
+					break;
 				}
-				b.time = alert.time;
-				alert = null;
-				break;
 			}
 		}
 
