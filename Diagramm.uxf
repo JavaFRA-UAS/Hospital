@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>10</x>
+      <y>0</y>
+      <w>360</w>
+      <h>750</h>
+    </coordinates>
+    <panel_attributes>/hospital.model::Patient/
+--
+~id: int
+~doctor: Doctor
+~name: String
+~address: String
+~birthday: long
+~gender: String
+~problem: String
+~phone: String
+~vitals: Vitals
+~heart: Heart
+~lungs: Lungs
+~isAlive: boolean
+--
+#Patient(): ctor
++getId(): int
++setId(int id): void
++getDoctor(): Doctor
++setDoctor(Doctor doctor): void
++getName(): String
++setName(String name): void
++getGender(): String
++setGender(String gender): void
++getProblem(): String
++setProblem(String problem): void
++getAddress(): String
++setAddress(String address): void
++getPhone(): String
++setPhone(String phone): void
++getBirthday(): long
++setBirthday(long birthday): void
++getAge(): long
++getVitals(): Vitals
++getHeart(): Heart
++getLungs(): Lungs
++isAlive(): boolean
++setAlive(boolean isAlive): void
++die(final String why): void
++revive(final String why): void
++toString(): String
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>380</x>
+      <y>0</y>
+      <w>360</w>
+      <h>500</h>
+    </coordinates>
+    <panel_attributes>hospital.model::Nurse
+--
+~id: int
+~name: String
+~address: String
+~birthday: long
+~gender: String
+~phone: String
+~rooms: ArrayList&lt;Room&gt;
+--
++getId(): int
++setId(int id): void
++getName(): String
++setName(String name): void
++getGender(): String
++setGender(String gender): void
++getAddress(): String
++setAddress(String address): void
++getPhone(): String
++setPhone(String phone): void
++getBirthday(): long
++setBirthday(long birthday): void
++getAge(): long
++getRooms(): ArrayList&lt;Room&gt;
++setRooms(ArrayList&lt;Room&gt; rooms): void
++toString(): String
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>750</x>
+      <y>0</y>
+      <w>360</w>
+      <h>450</h>
+    </coordinates>
+    <panel_attributes>hospital.model::Doctor
+--
+~id: int
+~name: String
+~address: String
+~birthday: long
+~gender: String
+~phone: String
+--
++getId(): int
++setId(int id): void
++getName(): String
++setName(String name): void
++getGender(): String
++setGender(String gender): void
++getAddress(): String
++setAddress(String address): void
++getPhone(): String
++setPhone(String phone): void
++getBirthday(): long
++setBirthday(long birthday): void
++getAge(): long
++toString(): String
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>730</x>
+      <y>510</y>
+      <w>380</w>
+      <h>350</h>
+    </coordinates>
+    <panel_attributes>hospital.model::Vitals
+--
+~patientId: int
+~bloodpressure = new BloodPressure(): BloodPressure
+~ratebreathing: double
+~pulserate: double
+~bodytemperature = 37: double
+--
++Vitals(int patientId): ctor
++getBloodpressure(): BloodPressure
++setBloodpressure(BloodPressure bloodpressure): void
++getRatebreathing(): double
++setRatebreathing(double ratebreathing): void
++getPulserate(): double
++setPulserate(double pulserate): void
++getBodytemperature(): double
++setBodytemperature(double bodytemperature): void
++getPatientId(): int
++setPatientId(int patientId): void
++getPatient(): Patient
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>710</x>
+      <y>880</y>
+      <w>400</w>
+      <h>310</h>
+    </coordinates>
+    <panel_attributes>hospital.model::BloodPressure
+--
+~patientId: int
+~sys = 110: int
+~dias = 75: int
+~random = new RandomGenerator(): RandomGenerator
+~millisecondsUntilNextHeartbeat = 1000: long
+--
++BloodPressure(): ctor
++getPatientId(): int
++setPatientId(int i): void
++getPatient(): Patient
++getSys(): int
++setSys(int sys): void
++getDias(): int
++setDias(int dias): void
++toString(): String
++randomChange(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>460</x>
+      <y>660</y>
+      <w>160</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>hospital.model::Room
+--
+~id: int
+--
++getId(): int
++setId(int id): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>320</x>
+      <y>900</y>
+      <w>220</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>hospital.model::Inpatient
+--
+~room_id: int
+--
++getRoom(): Room
++setRoomId(int room_id): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>920</y>
+      <w>200</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>hospital.model::Outpatient
+--
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>260</x>
+      <y>740</y>
+      <w>180</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>150</x>
+      <y>740</y>
+      <w>50</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30.0;10.0;10.0;180.0</additional_attributes>
+  </element>
+</diagram>
