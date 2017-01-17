@@ -12,6 +12,7 @@ hs_err_pid*
 .settings/org.eclipse.jdt.core.prefs
 /bin/
 
+~*
 
 *.db
 /target/
@@ -19,3 +20,5 @@ hs_err_pid*
 
 tmp
 
+
+~$VA HAUSARBEIT.docx
