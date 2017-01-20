@@ -45,6 +45,8 @@ public class LoginWindow extends JFrame {
 	private JPanelWithBackground contentPane;
 	private JComboBox<String> comboBox;
 	private JPasswordField passwordField;
+	private JLabel lblBenutzer;
+	private JLabel lblPassword;
 
 	/**
 	 * Create the frame.
@@ -77,6 +79,9 @@ public class LoginWindow extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
+		
+		lblBenutzer = new JLabel("User:");
+		contentPane.add(lblBenutzer, "2, 2");
 		contentPane.add(comboBox, "6, 2, fill, default");
 
 		// add items to the combo box
@@ -108,6 +113,9 @@ public class LoginWindow extends JFrame {
 				}
 			}
 		});
+		
+		lblPassword = new JLabel("Password:");
+		contentPane.add(lblPassword, "2, 4");
 
 		passwordField = new JPasswordField();
 		passwordField.setForeground(Color.BLACK);
