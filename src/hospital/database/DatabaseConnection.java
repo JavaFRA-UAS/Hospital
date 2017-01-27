@@ -180,7 +180,7 @@ public class DatabaseConnection {
 	private static Random r = new Random();
 
 	private static long getRandomTimeOfBirth() {
-		return new Date(20 + Math.abs(r.nextInt() % 65), 0, 0).getTime() / 1000 + (r.nextLong() % 10000000);
+		return new Date(40 + Math.abs(r.nextInt() % 50), 0, 0).getTime() / 1000 + (r.nextLong() % 10000000);
 	}
 
 	private static String getRandomPhone() {
