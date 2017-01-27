@@ -74,7 +74,8 @@ public class DatabaseConnection {
 		if (Administrator.getFactory().size() == 0) {
 			// ... add some administrators
 			Administrator a1 = Administrator.getFactory().get(Administrator.getFactory().getNewId());
-			a1.setName("Head of Department 1");
+			a1.setName("Admin");
+			a1.setPassword("admin");
 			a1.setTimeOfBirth(getRandomTimeOfBirth());
 			Administrator.getFactory().save(a1);
 		}
