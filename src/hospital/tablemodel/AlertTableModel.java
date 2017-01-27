@@ -29,11 +29,11 @@ public class AlertTableModel extends AbstractTableModel {
 		if (Inpatient.getFactory().exists(patientId)) {
 			p = Inpatient.getFactory().get(patientId);
 			room = ((Inpatient) p).getRoom();
-			roomString = (p != null ? p.getName() : "(unassigned)");
+			roomString = (room != null ? room.getName() : "(unassigned)");
 		} else if (Outpatient.getFactory().exists(patientId)) {
 			p = Outpatient.getFactory().get(patientId);
 			room = null;
-			roomString = "(outpatient)";
+			roomString = "-";
 		} else {
 			p = null;
 			room = null;

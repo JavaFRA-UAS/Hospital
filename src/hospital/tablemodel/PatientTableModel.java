@@ -48,7 +48,7 @@ public class PatientTableModel extends AbstractTableModel {
 				room = "unassigned";
 			}
 		} else {
-			room = "(outpatient)";
+			room = "-";
 		}
 
 		String doctor = "";
