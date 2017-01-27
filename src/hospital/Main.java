@@ -47,6 +47,7 @@ public class Main {
 			@Override
 			public void run() {
 				LoginWindow mw = new LoginWindow();
+				mw.setTitle("Hospital Management System");
 				mw.setVisible(true);
 			}
 		});
