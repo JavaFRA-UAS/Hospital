@@ -68,6 +68,19 @@ public abstract class Factory<T extends DatabaseRow> {
 		}
 	}
 
+	public synchronized T get(String name) {
+		if (name == null)
+			return null;
+		synchronized (data) {
+			for (Entry<Integer, T> e : data.entrySet()) {
+				if (e.getValue().getName().equals(name)) {
+					return e.getValue();
+				}
+			}
+			return null;
+		}
+	}
+
 	public List<T> list() {
 		synchronized (data) {
 			List<T> values = new ArrayList<T>();

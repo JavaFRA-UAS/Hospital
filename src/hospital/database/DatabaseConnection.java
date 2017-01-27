@@ -133,6 +133,7 @@ public class DatabaseConnection {
 			pat1.setPhone(getRandomPhone());
 			pat1.setGender("female");
 			pat1.setRoomId(Room.getFactory().getFirstId());
+			pat1.setDoctor(Doctor.getFactory().get("Dr. Heisenberg"));
 			Inpatient.getFactory().save(pat1);
 
 			Outpatient pat2 = Outpatient.getFactory().get(Outpatient.getFactory().getNewId());
@@ -140,6 +141,7 @@ public class DatabaseConnection {
 			pat2.setTimeOfBirth(getRandomTimeOfBirth());
 			pat2.setPhone(getRandomPhone());
 			pat2.setGender("female");
+			pat2.setDoctor(Doctor.getFactory().get("Dr. Bergmann"));
 			Outpatient.getFactory().save(pat2);
 
 			Inpatient pat3 = Inpatient.getFactory().get(Inpatient.getFactory().getNewId());
@@ -148,6 +150,7 @@ public class DatabaseConnection {
 			pat3.setPhone(getRandomPhone());
 			pat3.setGender("male");
 			pat3.setRoomId(Room.getFactory().getLastId());
+			pat3.setDoctor(Doctor.getFactory().get("Dr. Schwarzkopf"));
 			Inpatient.getFactory().save(pat3);
 		}
 

@@ -56,6 +56,11 @@ public abstract class Patient extends Person {
 		this.doctorId = doctorId;
 	}
 
+	public void setDoctor(Doctor doctor) {
+		if (doctor == null) return;
+		this.doctorId = doctor.getId();
+	}
+
 	public Vitals getVitals() {
 		return vitals;
 	}

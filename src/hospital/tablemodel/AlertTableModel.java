@@ -15,7 +15,8 @@ import hospital.model.Vitals;
 
 public class AlertTableModel extends AbstractTableModel {
 
-	private String[] columnNames = { "Time", "Patient", "Vital sign", "Current", "Min", "Max", "Problem", "Room", "Doctor" };
+	private String[] columnNames = { "Time", "Patient", "Vital sign", "Current", "Min", "Max", "Problem", "Room",
+			"Doctor" };
 
 	public List<Alert> getData() {
 		return AlertHelper.getInstance().getAlerts();
@@ -23,21 +24,26 @@ public class AlertTableModel extends AbstractTableModel {
 
 	public Object[] getRow(Alert a) {
 		int patientId = a.getPatientId();
+
 		Patient p;
-		Room room;
-		String roomString;
 		if (Inpatient.getFactory().exists(patientId)) {
 			p = Inpatient.getFactory().get(patientId);
-			room = ((Inpatient) p).getRoom();
-			roomString = (room != null ? room.getName() : "unassigned");
 		} else if (Outpatient.getFactory().exists(patientId)) {
 			p = Outpatient.getFactory().get(patientId);
-			room = null;
-			roomString = "-";
 		} else {
 			p = null;
-			room = null;
-			roomString = null;
+		}
+
+		String room = "";
+		if (p instanceof Inpatient) {
+			Room r = ((Inpatient) p).getRoom();
+			if (r != null) {
+				room = r.getName();
+			} else {
+				room = "unassigned";
+			}
+		} else {
+			room = "-";
 		}
 
 		String doctor = "";
@@ -51,10 +57,10 @@ public class AlertTableModel extends AbstractTableModel {
 		if (a.getEntityName().length() > 0) {
 			return new Object[] { a.getFormattedTime(), p.getName(), a.getEntityName(),
 					String.format("%.2f", a.getEntityValue()), String.format("%.2f", a.getExpectedMin()),
-					String.format("%.2f", a.getExpectedMax()), a.getProblem(), roomString, doctor };
+					String.format("%.2f", a.getExpectedMax()), a.getProblem(), room, doctor };
 		} else {
 			return new Object[] { a.getFormattedTime(), (p != null ? p.getName() : ""), "", "", "", "", a.getProblem(),
-					roomString, doctor };
+					room, doctor };
 		}
 	}
 
