@@ -10,7 +10,6 @@ import java.awt.GridLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -25,9 +24,6 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import hospital.helper.RefreshableWindow;
 import hospital.model.Administrator;
-import hospital.model.Doctor;
-import hospital.model.Nurse;
-import hospital.model.Room;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextPane;
@@ -39,18 +35,19 @@ import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
-public class EditRoomWindow extends JFrame {
+public class NewAdministratorWindow extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textName;
-	private JTextField textCapacity;
-	private JComboBox<String> boxNurse;
+	private JTextField textGender;
+	private JTextField textAddress;
+	private JTextField textPhone;
+	private JTextField textPassword;
 	final RefreshableWindow parentWindow;
-	private Room row;
 
-	public EditRoomWindow(RefreshableWindow parentWindow) {
+	public NewAdministratorWindow(RefreshableWindow parentWindow) {
 		this.parentWindow = parentWindow;
-		final EditRoomWindow window = this;
+		final NewAdministratorWindow window = this;
 
 		setBounds(100, 100, 576, 543);
 		contentPane = new JPanel();
@@ -67,29 +64,62 @@ public class EditRoomWindow extends JFrame {
 						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
 						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("default:grow"), }));
 
-		JLabel lblName = new JLabel("Number:");
+		JLabel lblName = new JLabel("Name:");
 		contentPane.add(lblName, "2, 2, left, default");
 
 		textName = new JTextField();
 		contentPane.add(textName, "4, 2, fill, default");
 		textName.setColumns(10);
 
-		JLabel lblCapacity = new JLabel("Capacity:");
-		contentPane.add(lblCapacity, "2, 4, left, default");
+		JLabel lblNewLabel = new JLabel("Age:");
+		contentPane.add(lblNewLabel, "2, 6, left, default");
 
-		textCapacity = new JTextField();
-		contentPane.add(textCapacity, "4, 4, fill, default");
-		textCapacity.setColumns(10);
+		JLabel lblTimeOfBirth = new JLabel("TimeOfBirth:");
+		contentPane.add(lblTimeOfBirth, "2, 4, left, default");
 
-		JLabel lblNurse = new JLabel("Nurse:");
-		contentPane.add(lblNurse, "2, 6, left, default");
+		final JLabel labelAge = new JLabel("");
+		contentPane.add(labelAge, "4, 6");
 
-		boxNurse = new JComboBox<String>();
-		boxNurse.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		DatePickerSettings dateSettings = new DatePickerSettings();
+		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+		final DatePicker datePickerTimeOfBirth = new DatePicker(dateSettings);
+		datePickerTimeOfBirth.addDateChangeListener(new DateChangeListener() {
+
+			@Override
+			public void dateChanged(DateChangeEvent arg0) {
+				labelAge.setText(java.time.temporal.ChronoUnit.YEARS.between(arg0.getNewDate(), LocalDate.now()) + "");
 			}
+
 		});
-		contentPane.add(boxNurse, "4, 6, fill, default");
+		contentPane.add(datePickerTimeOfBirth, "4, 4");
+
+		JLabel lblGender = new JLabel("Gender:");
+		contentPane.add(lblGender, "2, 8, left, default");
+
+		textGender = new JTextField();
+		contentPane.add(textGender, "4, 8, fill, default");
+		textGender.setColumns(10);
+
+		JLabel lblAddress = new JLabel("Address:");
+		contentPane.add(lblAddress, "2, 10, left, default");
+
+		textAddress = new JTextField();
+		contentPane.add(textAddress, "4, 10, fill, default");
+		textAddress.setColumns(10);
+
+		JLabel lblPhone = new JLabel("Phone:");
+		contentPane.add(lblPhone, "2, 12, left, default");
+
+		textPhone = new JTextField();
+		contentPane.add(textPhone, "4, 12, fill, default");
+		textPhone.setColumns(10);
+
+		JLabel lblPassword = new JLabel("Password:");
+		contentPane.add(lblPassword, "2, 14, left, default");
+
+		textPassword = new JTextField();
+		contentPane.add(textPassword, "4, 14, fill, default");
+		textPassword.setColumns(10);
 
 		JButton btnSave = new JButton("Save");
 		contentPane.add(btnSave, "4, 20, default, bottom");
@@ -99,29 +129,20 @@ public class EditRoomWindow extends JFrame {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				row.setName(textName.getText());
-				row.setCapacity(Integer.parseInt(textCapacity.getText()));
-				row.setNurse(Nurse.getFactory().get((String) boxNurse.getSelectedItem()));
+				Administrator p = Administrator.getFactory().get(Administrator.getFactory().getNewId());
+				p.setName(textName.getText());
+				p.setTimeOfBirthAsLocalDate(datePickerTimeOfBirth.getDate());
+				p.setAddress(textAddress.getText());
+				p.setPhone(textPhone.getText());
+				p.setGender(textGender.getText());
+				p.setPassword(textPassword.getText());
 
-				Room.getFactory().save(row);
+				Administrator.getFactory().save(p);
 
 				window.setVisible(false);
 				window.parentWindow.refresh();
 			}
 		});
-
-		boxNurse.addItem("");
-		for (Nurse nurse : Nurse.getFactory().list()) {
-			boxNurse.addItem(nurse.getName());
-		}
-	}
-
-	public void setRoom(Room p) {
-		this.row = p;
-		textName.setText(p.getName());
-		textCapacity.setText(p.getCapacity() + "");
-		Nurse n = p.getNurse();
-		boxNurse.setSelectedItem(n != null ? n.getName() : "");
 	}
 
 }

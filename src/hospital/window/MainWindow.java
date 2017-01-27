@@ -19,6 +19,7 @@ import hospital.model.Doctor;
 import hospital.model.Employee;
 import hospital.model.Nurse;
 import hospital.model.Patient;
+import hospital.views.AdministratorPanel;
 import hospital.views.AlertPanel;
 import hospital.views.DoctorPanel;
 import hospital.views.NursePanel;
@@ -43,6 +44,7 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 	private PatientPanel panelPatient;
 	private DoctorPanel panelDoctor;
 	private NursePanel panelNurse;
+	private AdministratorPanel panelAdministrator;
 	private RoomPanel panelRoom;
 	private VitalsPanel panelVitals;
 	private AlertPanel panelAlert;
@@ -57,7 +59,7 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 		final int displayHeight = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
 				.getMaximumWindowBounds().height;
 
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(50, (displayHeight - 550) / 2, displayWidth - 100, 550);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -78,6 +80,9 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 			panelNurse = new NursePanel(this);
 			tabbedPane.addTab("Nurses", null, panelNurse, null);
 
+			panelAdministrator = new AdministratorPanel(this);
+			tabbedPane.addTab("Admins", null, panelAdministrator, null);
+
 			panelRoom = new RoomPanel(this);
 			tabbedPane.addTab("Rooms", null, panelRoom, null);
 
@@ -86,22 +91,28 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 
 			panelAlert = new AlertPanel(this);
 			tabbedPane.addTab("Alerts", null, panelAlert, null);
-			
+
 		} else if (user instanceof Doctor) {
 
 			panelPatient = new PatientPanel(this);
 			tabbedPane.addTab("Patients", null, panelPatient, null);
+
+			panelRoom = new RoomPanel(this);
+			tabbedPane.addTab("Rooms", null, panelRoom, null);
 
 			panelVitals = new VitalsPanel(this);
 			tabbedPane.addTab("Vitals", null, panelVitals, null);
 
 			panelAlert = new AlertPanel(this);
 			tabbedPane.addTab("Alerts", null, panelAlert, null);
-			
+
 		} else if (user instanceof Nurse) {
 
 			panelPatient = new PatientPanel(this);
 			tabbedPane.addTab("Patients", null, panelPatient, null);
+
+			panelRoom = new RoomPanel(this);
+			tabbedPane.addTab("Rooms", null, panelRoom, null);
 
 			panelVitals = new VitalsPanel(this);
 			tabbedPane.addTab("Vitals", null, panelVitals, null);
@@ -119,12 +130,18 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 	}
 
 	void fillList() {
-		if (panelPatient != null) panelPatient.refresh();
-		if (panelDoctor != null) panelDoctor.refresh();
-		if (panelNurse != null) panelNurse.refresh();
-		if (panelRoom != null) panelRoom.refresh();
-		if (panelVitals != null) panelVitals.refresh();
-		if (panelAlert != null) panelAlert.refresh();
+		if (panelPatient != null)
+			panelPatient.refresh();
+		if (panelDoctor != null)
+			panelDoctor.refresh();
+		if (panelNurse != null)
+			panelNurse.refresh();
+		if (panelRoom != null)
+			panelRoom.refresh();
+		if (panelVitals != null)
+			panelVitals.refresh();
+		if (panelAlert != null)
+			panelAlert.refresh();
 	}
 
 	public void refresh() {

@@ -12,7 +12,13 @@ import java.sql.Statement;
 import java.util.Date;
 import java.util.Random;
 
-import hospital.model.*;
+import hospital.model.Administrator;
+import hospital.model.Doctor;
+import hospital.model.Inpatient;
+import hospital.model.Nurse;
+import hospital.model.Outpatient;
+import hospital.model.Room;
+
 
 public class DatabaseConnection {
 
@@ -75,8 +81,10 @@ public class DatabaseConnection {
 			// ... add some administrators
 			Administrator a1 = Administrator.getFactory().get(Administrator.getFactory().getNewId());
 			a1.setName("Admin");
-			a1.setPassword("admin");
 			a1.setTimeOfBirth(getRandomTimeOfBirth());
+			a1.setPhone(getRandomPhone());
+			a1.setGender("male");
+			a1.setPassword("admin");
 			Administrator.getFactory().save(a1);
 		}
 
@@ -110,19 +118,33 @@ public class DatabaseConnection {
 			// ... add some rooms
 			Room r1 = Room.getFactory().get(Room.getFactory().getNewId());
 			r1.setName("101");
+			r1.setCapacity(4);
 			Room.getFactory().save(r1);
 
 			Room r2 = Room.getFactory().get(Room.getFactory().getNewId());
 			r2.setName("102");
+			r2.setCapacity(4);
 			Room.getFactory().save(r2);
 
 			Room r3 = Room.getFactory().get(Room.getFactory().getNewId());
 			r3.setName("103");
+			r3.setCapacity(4);
 			Room.getFactory().save(r3);
 
 			Room r4 = Room.getFactory().get(Room.getFactory().getNewId());
 			r4.setName("201");
+			r4.setCapacity(2);
 			Room.getFactory().save(r4);
+
+			Room r5 = Room.getFactory().get(Room.getFactory().getNewId());
+			r5.setName("202");
+			r5.setCapacity(2);
+			Room.getFactory().save(r5);
+
+			Room r6 = Room.getFactory().get(Room.getFactory().getNewId());
+			r6.setName("203");
+			r6.setCapacity(2);
+			Room.getFactory().save(r6);
 		}
 
 		// if there are no patients in the database
@@ -184,7 +206,7 @@ public class DatabaseConnection {
 	private static Random r = new Random();
 
 	private static long getRandomTimeOfBirth() {
-		return new Date(40 + (int)Math.abs(r.nextDouble() * 50), 0, 0).getTime() / 1000 + (r.nextLong() % 10000000);
+		return new Date(40 + (int) Math.abs(r.nextDouble() * 50), 0, 0).getTime() / 1000 + (r.nextLong() % 10000000);
 	}
 
 	private static String getRandomPhone() {
