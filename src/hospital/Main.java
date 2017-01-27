@@ -24,6 +24,12 @@ public class Main {
 			}
 		});
 
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (Exception ex) {
+			// ignore
+		}
+
 		System.out.println("initialize...");
 		try {
 			DatabaseConnection.initialize();
