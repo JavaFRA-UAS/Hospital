@@ -31,10 +31,12 @@ public class PatientTableModel extends AbstractTableModel implements SearchListe
 				l.add(p);
 				continue;
 			}
+			
+			String searchString = p.getSearchString().toLowerCase();
 
 			boolean isFiltered = true;
 			for (String word : words) {
-				isFiltered &= p.getSearchString().toLowerCase().contains(word.toLowerCase());
+				isFiltered &= searchString.contains(word.toLowerCase());
 			}
 			if (isFiltered) {
 				l.add(p);
@@ -45,10 +47,12 @@ public class PatientTableModel extends AbstractTableModel implements SearchListe
 				l.add(p);
 				continue;
 			}
+			
+			String searchString = p.getSearchString().toLowerCase();
 
 			boolean isFiltered = true;
 			for (String word : words) {
-				isFiltered &= p.getSearchString().toLowerCase().contains(word.toLowerCase());
+				isFiltered &= searchString.contains(word.toLowerCase());
 			}
 			if (isFiltered) {
 				l.add(p);

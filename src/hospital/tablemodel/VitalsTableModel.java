@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import hospital.helper.SearchListener;
 import hospital.model.Doctor;
 import hospital.model.Inpatient;
 import hospital.model.Outpatient;
@@ -13,15 +14,50 @@ import hospital.model.Patient;
 import hospital.model.Room;
 import hospital.model.Vitals;
 
-public class VitalsTableModel extends AbstractTableModel {
+public class VitalsTableModel extends AbstractTableModel implements SearchListener {
 
 	private String[] columnNames = { "Name", "Body temp. °C", "Blood pressure", "Pulse rate", "Breathing rate",
 			"State", "Room", "Doctor" };
+	private String filter;
 
 	public List<Patient> getData() {
+		String[] words = filter != null ? filter.split("\\s+") : new String[0];
+
 		List<Patient> l = new ArrayList<Patient>();
-		l.addAll(Inpatient.getFactory().list());
-		l.addAll(Outpatient.getFactory().list());
+		for (Patient p : Inpatient.getFactory().list()) {
+			if (filter == null) {
+				l.add(p);
+				continue;
+			}
+
+			Doctor doc = p.getDoctor();
+			String searchString = (p.getSearchString() + (doc != null ? doc.getName() : "")).toLowerCase();
+
+			boolean isFiltered = true;
+			for (String word : words) {
+				isFiltered &= searchString.contains(word.toLowerCase());
+			}
+			if (isFiltered) {
+				l.add(p);
+			}
+		}
+		for (Patient p : Outpatient.getFactory().list()) {
+			if (filter == null) {
+				l.add(p);
+				continue;
+			}
+			
+			Doctor doc = p.getDoctor();
+			String searchString = (p.getSearchString() + (doc != null ? doc.getName() : "")).toLowerCase();
+
+			boolean isFiltered = true;
+			for (String word : words) {
+				isFiltered &= searchString.contains(word.toLowerCase());
+			}
+			if (isFiltered) {
+				l.add(p);
+			}
+		}
 		return l;
 	}
 
@@ -107,4 +143,9 @@ public class VitalsTableModel extends AbstractTableModel {
 		fireTableCellUpdated(row, col);
 	}
 
+	@Override
+	public void onSearch(String text) {
+		filter = text;
+	}
+	
 }

@@ -17,6 +17,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
+import hospital.Log;
 import hospital.Main;
 
 import hospital.helper.JPanelWithBackground;
@@ -52,7 +53,7 @@ public class LoginWindow extends JFrame {
 
 	public LoginWindow() {
 		final LoginWindow lw = this;
-		
+
 		setTitle("Hospital");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 469, 330);
@@ -77,7 +78,7 @@ public class LoginWindow extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		
+
 		lblBenutzer = new JLabel("User:");
 		contentPane.add(lblBenutzer, "2, 2");
 		contentPane.add(comboBox, "6, 2, fill, default");
@@ -89,8 +90,8 @@ public class LoginWindow extends JFrame {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (comboBox.getSelectedIndex() > 0) {
-					
-					final String name = (String)comboBox.getSelectedItem();
+
+					final String name = (String) comboBox.getSelectedItem();
 					Employee user = null;
 					for (Administrator a : Administrator.getFactory().list()) {
 						if (name == a.getName()) {
@@ -107,14 +108,20 @@ public class LoginWindow extends JFrame {
 							user = nurse;
 						}
 					}
-					
-					MainWindow w = new MainWindow(user);
-					w.setVisible(true);
-					//lw.setVisible(false);
+
+					if (user != null && user.getPassword().equals(passwordField.getPassword())) {
+						MainWindow w = new MainWindow(user);
+						w.setVisible(true);
+						// lw.setVisible(false);
+
+					} else {
+						Log.showError("Wrong password");
+					}
+
 				}
 			}
 		});
-		
+
 		lblPassword = new JLabel("Password:");
 		contentPane.add(lblPassword, "2, 4");
 
@@ -123,7 +130,7 @@ public class LoginWindow extends JFrame {
 		passwordField.setBackground(Color.WHITE);
 		contentPane.add(passwordField, "6, 4");
 		contentPane.add(btnLogin, "6, 6");
-		
+
 	}
 
 	synchronized void fillCombobox() {
@@ -132,7 +139,7 @@ public class LoginWindow extends JFrame {
 		Administrator.getFactory().loadAll();
 		Doctor.getFactory().loadAll();
 		Nurse.getFactory().loadAll();
-		
+
 		comboBox.removeAllItems();
 		comboBox.addItem("");
 

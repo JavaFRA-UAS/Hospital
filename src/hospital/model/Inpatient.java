@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
 import hospital.database.DatabaseRow;
 import hospital.database.Factory;
 
@@ -22,7 +21,7 @@ public class Inpatient extends Patient implements DatabaseRow {
 		@Override
 		public void createTable(Statement statement) throws SQLException {
 			statement.executeUpdate(
-					"create table if not exists inpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, isDeleted integer, name string, address string, timeOfBirth integer, timeOfDeath integer, gender string, problem string, phone string, room_id integer)");
+					"create table if not exists inpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, isDeleted integer, name string, address string, timeOfBirth integer, timeOfDeath integer, gender string, problem string, phone string, roomId integer)");
 		}
 	};
 
@@ -34,18 +33,33 @@ public class Inpatient extends Patient implements DatabaseRow {
 		super(id);
 	}
 
-	int room_id;
-
-	public Room getRoom() {
-		return Room.getFactory().get(room_id);
-	}
+	int roomId;
 
 	public int getRoomId() {
-		return room_id;
+		return roomId;
 	}
 
 	public void setRoomId(int room_id) {
-		this.room_id = room_id;
+		this.roomId = room_id;
+	}
+
+	public Room getRoom() {
+		return Room.getFactory().get(roomId);
+	}
+
+	public void setRoom(Room r) {
+		if (r == null)
+			return;
+		roomId = r.getId();
+	}
+
+	public Nurse getNurse() {
+		Room r = getRoom();
+		if (r != null) {
+			return r.getNurse();
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -58,13 +72,13 @@ public class Inpatient extends Patient implements DatabaseRow {
 		setGender(resultset.getString("gender"));
 		setProblem(resultset.getString("problem"));
 		setPhone(resultset.getString("phone"));
-		setRoomId(resultset.getInt("room_id"));
+		setRoomId(resultset.getInt("roomId"));
 	}
 
 	@Override
 	public void save(Connection connection) throws SQLException {
 		PreparedStatement statement = connection.prepareStatement(
-				"REPLACE INTO inpatient (id, isDeleted, name, address, timeOfBirth, timeOfDeath, gender, problem, phone, room_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				"REPLACE INTO inpatient (id, isDeleted, name, address, timeOfBirth, timeOfDeath, gender, problem, phone, roomId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		statement.setInt(1, getId());
 		statement.setInt(2, isDeleted() ? 1 : 0);
 		statement.setString(3, getName());

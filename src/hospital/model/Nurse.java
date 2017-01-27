@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import hospital.database.DatabaseRow;
 import hospital.database.Factory;
@@ -22,7 +23,7 @@ public class Nurse extends Employee implements DatabaseRow {
 		@Override
 		public void createTable(Statement statement) throws SQLException {
 			statement.executeUpdate(
-					"create table if not exists nurse (id INTEGER PRIMARY KEY AUTOINCREMENT, isDeleted integer, name string, address string, timeOfBirth integer, gender string, phone string)");
+					"create table if not exists nurse (id INTEGER PRIMARY KEY AUTOINCREMENT, isDeleted integer, name string, address string, timeOfBirth integer, gender string, phone string, password string)");
 		}
 	};
 
@@ -34,14 +35,14 @@ public class Nurse extends Employee implements DatabaseRow {
 		super(id);
 	}
 
-	ArrayList<Room> rooms;
-
-	public ArrayList<Room> getRooms() {
+	public List<Room> getRooms() {
+		List<Room> rooms = new ArrayList<Room>();
+		for (Room r : Room.getFactory().list()) {
+			if (r.getNurseId() == id) {
+				rooms.add(r);
+			}
+		}
 		return rooms;
-	}
-
-	public void setRooms(ArrayList<Room> rooms) {
-		this.rooms = rooms;
 	}
 
 	@Override
@@ -52,12 +53,13 @@ public class Nurse extends Employee implements DatabaseRow {
 		setTimeOfBirth(resultset.getLong("timeOfBirth"));
 		setGender(resultset.getString("gender"));
 		setPhone(resultset.getString("phone"));
+		setPassword(resultset.getString("password"));
 	}
 
 	@Override
 	public void save(Connection connection) throws SQLException {
 		PreparedStatement statement = connection.prepareStatement(
-				"REPLACE INTO nurse (id, isDeleted, name, address, timeOfBirth, gender, phone) VALUES (?, ?, ?, ?, ?, ?, ?)");
+				"REPLACE INTO nurse (id, isDeleted, name, address, timeOfBirth, gender, phone, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		statement.setInt(1, getId());
 		statement.setInt(2, isDeleted() ? 1 : 0);
 		statement.setString(3, getName());
@@ -65,6 +67,7 @@ public class Nurse extends Employee implements DatabaseRow {
 		statement.setLong(5, getTimeOfBirth());
 		statement.setString(6, getGender());
 		statement.setString(7, getPhone());
+		statement.setString(8, getPassword());
 		statement.executeUpdate();
 	}
 }

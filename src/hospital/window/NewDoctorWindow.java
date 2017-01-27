@@ -43,6 +43,7 @@ public class NewDoctorWindow extends JFrame {
 	private JTextField textGender;
 	private JTextField textAddress;
 	private JTextField textPhone;
+	private JTextField textPassword;
 	final RefreshableWindow parentWindow;
 
 	public NewDoctorWindow(RefreshableWindow parentWindow) {
@@ -114,6 +115,13 @@ public class NewDoctorWindow extends JFrame {
 		contentPane.add(textPhone, "4, 12, fill, default");
 		textPhone.setColumns(10);
 
+		JLabel lblPassword = new JLabel("Password:");
+		contentPane.add(lblPassword, "2, 14, left, default");
+
+		textPassword = new JTextField();
+		contentPane.add(textPassword, "4, 14, fill, default");
+		textPassword.setColumns(10);
+
 		JButton btnSave = new JButton("Save");
 		contentPane.add(btnSave, "4, 20, default, bottom");
 
@@ -128,6 +136,7 @@ public class NewDoctorWindow extends JFrame {
 				p.setAddress(textAddress.getText());
 				p.setPhone(textPhone.getText());
 				p.setGender(textGender.getText());
+				p.setPassword(textPassword.getText());
 
 				Doctor.getFactory().save(p);
 

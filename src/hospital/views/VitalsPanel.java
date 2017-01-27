@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -30,6 +31,8 @@ import hospital.VitalsSimulation;
 import hospital.helper.CustomHeaderRenderer;
 import hospital.helper.RandomGenerator;
 import hospital.helper.RefreshableWindow;
+import hospital.helper.SearchListener;
+import hospital.helper.SearchPanel;
 import hospital.model.Doctor;
 import hospital.model.Nurse;
 import hospital.model.Patient;
@@ -38,7 +41,7 @@ import hospital.window.EditPatientWindow;
 import hospital.window.MainWindow;
 import hospital.window.NewPatientWindow;
 
-public class VitalsPanel extends JPanel implements RefreshListener {
+public class VitalsPanel extends JPanel implements RefreshListener, SearchListener {
 
 	final MainWindow parentWindow;
 	final VitalsTableModel tableModel;
@@ -81,8 +84,8 @@ public class VitalsPanel extends JPanel implements RefreshListener {
 				int r = table.rowAtPoint(e.getPoint());
 
 				if (r >= 0) {
-					final Patient[] patients = tableModel.getData().toArray(new Patient[0]);
-					final Patient p = r < patients.length ? patients[r] : null;
+					final List<Patient> patients = tableModel.getData();
+					final Patient p = r < patients.size() ? patients.get(r) : null;
 					if (p != null) {
 						JPopupMenu popup = new JPopupMenu();
 
@@ -209,6 +212,7 @@ public class VitalsPanel extends JPanel implements RefreshListener {
 		btnNew.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
+				RandomGenerator.causeProblems();
 			}
 		});
 		GridBagConstraints gbc_btnNew = new GridBagConstraints();
@@ -218,17 +222,13 @@ public class VitalsPanel extends JPanel implements RefreshListener {
 		gbc_btnNew.gridy = 1;
 		this.add(btnNew, gbc_btnNew);
 
-		JButton btnDelete = new JButton("B");
-		btnDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				RandomGenerator.causeProblems();
-			}
-		});
-		GridBagConstraints gbc_btnDelete = new GridBagConstraints();
-		gbc_btnDelete.anchor = GridBagConstraints.SOUTHWEST;
-		gbc_btnDelete.gridx = 0;
-		gbc_btnDelete.gridy = 1;
-		this.add(btnDelete, gbc_btnDelete);
+		SearchPanel searchPanel = new SearchPanel();
+		searchPanel.addSearchListener(this);
+		GridBagConstraints gbc_searchPanel = new GridBagConstraints();
+		gbc_searchPanel.anchor = GridBagConstraints.SOUTHWEST;
+		gbc_searchPanel.gridx = 0;
+		gbc_searchPanel.gridy = 1;
+		this.add(searchPanel, gbc_searchPanel);
 
 	}
 
@@ -240,5 +240,11 @@ public class VitalsPanel extends JPanel implements RefreshListener {
 
 	public synchronized void refresh() {
 		fillList();
+	}
+
+	@Override
+	public void onSearch(String text) {
+		tableModel.onSearch(text);
+		refresh();
 	}
 }

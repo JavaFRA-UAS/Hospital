@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import hospital.database.DatabaseRow;
 import hospital.database.Factory;
@@ -21,7 +23,7 @@ public class Room implements DatabaseRow {
 		@Override
 		public void createTable(Statement statement) throws SQLException {
 			statement.executeUpdate(
-					"create table if not exists room (id INTEGER PRIMARY KEY AUTOINCREMENT, isDeleted integer, name string, capacity integer)");
+					"create table if not exists room (id INTEGER PRIMARY KEY AUTOINCREMENT, isDeleted integer, name string, capacity integer, nurseId integer)");
 		}
 	};
 
@@ -33,6 +35,7 @@ public class Room implements DatabaseRow {
 	boolean isDeleted;
 	String name;
 	int capacity;
+	int nurseId;
 
 	private Room(int id) {
 		setId(id);
@@ -58,14 +61,6 @@ public class Room implements DatabaseRow {
 		isDeleted = true;
 	}
 
-	public int getCapacity() {
-		return capacity;
-	}
-
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -74,24 +69,62 @@ public class Room implements DatabaseRow {
 		this.name = name;
 	}
 
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+
+	public int getNurseId() {
+		return nurseId;
+	}
+
+	public void setNurseId(int nurseId) {
+		this.nurseId = nurseId;
+	}
+
+	public Nurse getNurse() {
+		return Nurse.getFactory().get(nurseId);
+	}
+
+	public void setNurse(Nurse nurse) {
+		if (nurse == null)
+			return;
+		nurseId = nurse.getId();
+	}
+
+	public List<Inpatient> getInpatients() {
+		List<Inpatient> inpatients = new ArrayList<Inpatient>();
+		for (Inpatient p : Inpatient.getFactory().list()) {
+			if (p.getRoomId() == id) {
+				inpatients.add(p);
+			}
+		}
+		return inpatients;
+	}
+
 	@Override
 	public void load(ResultSet resultset) throws SQLException {
 		setDeleted(resultset.getInt("isDeleted") == 0 ? false : true);
-		setCapacity(resultset.getInt("capacity"));
 		setName(resultset.getString("name"));
+		setCapacity(resultset.getInt("capacity"));
+		setNurseId(resultset.getInt("nurseId"));
 	}
 
 	@Override
 	public void save(Connection connection) throws SQLException {
 		PreparedStatement statement = connection
-				.prepareStatement("REPLACE INTO room (id, isDeleted, name, capacity) VALUES (?, ?, ?, ?)");
+				.prepareStatement("REPLACE INTO room (id, isDeleted, name, capacity, nurseId) VALUES (?, ?, ?, ?, ?)");
 		statement.setInt(1, getId());
 		statement.setInt(2, isDeleted() ? 1 : 0);
 		statement.setString(3, getName());
 		statement.setInt(4, getCapacity());
+		statement.setInt(5, getNurseId());
 		statement.executeUpdate();
 	}
-	
+
 	public String getSearchString() {
 		return name;
 	}

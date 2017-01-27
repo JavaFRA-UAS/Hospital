@@ -1,0 +1,126 @@
+package hospital.tablemodel;
+
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.swing.table.AbstractTableModel;
+
+import hospital.helper.SearchListener;
+import hospital.model.Doctor;
+import hospital.model.Inpatient;
+import hospital.model.Nurse;
+import hospital.model.Room;
+import hospital.model.Vitals;
+
+public class RoomTableModel extends AbstractTableModel implements SearchListener {
+
+	private String[] columnNames = { "Room No.", "Nurse", "Patients", "Capacity" };
+
+	private String filter;
+
+	public List<Room> getData() {
+		String[] words = filter != null ? filter.split("\\s+") : new String[0];
+
+		List<Room> l = new ArrayList<Room>();
+		for (Room r : Room.getFactory().list()) {
+			if (filter == null) {
+				l.add(r);
+				continue;
+			}
+
+			String searchString = r.getSearchString().toLowerCase();
+			Nurse n = r.getNurse();
+			if (n != null) {
+				searchString += n.getName();
+			}
+			for (Inpatient p : r.getInpatients()) {
+				searchString += p.getName();
+			}
+
+			boolean isFiltered = true;
+			for (String word : words) {
+				isFiltered &= searchString.contains(word.toLowerCase());
+			}
+			if (isFiltered) {
+				l.add(r);
+			}
+		}
+		return l;
+	}
+
+	public Object[] getRow(Room r) {
+
+		Nurse n = r.getNurse();
+		String nurseName = n != null ? n.getName() : "unassigned";
+
+		String patients = "";
+		for (Inpatient p : r.getInpatients()) {
+			if (patients.length() > 0) {
+				patients += ", ";
+			}
+			patients += p.getName();
+		}
+		if (patients.length() == 0) {
+			patients = "none";
+		}
+
+		return new Object[] { r.getName(), nurseName, patients, r.getCapacity() };
+	}
+
+	public int getColumnCount() {
+		return columnNames.length;
+	}
+
+	public int getRowCount() {
+		return getData().size();
+	}
+
+	public String getColumnName(int col) {
+		return columnNames[col];
+	}
+
+	public Object getValueAt(int row, int col) {
+		Room n = getData().get(row);
+		if (n != null) {
+			Object[] r = getRow(n);
+			if (col < r.length && r[col] != null) {
+				return r[col];
+			}
+		}
+		return "";
+	}
+
+	public Class<?> getColumnClass(int c) {
+		return getValueAt(0, c).getClass();
+	}
+
+	/*
+	 * Don't need to implement this method unless your table's editable.
+	 */
+	public boolean isCellEditable(int row, int col) {
+		// Note that the data/cell address is constant,
+		// no matter where the cell appears onscreen.
+		if (col <= 1) {
+			return false;
+		} else {
+			return false;
+		}
+	}
+
+	/*
+	 * Don't need to implement this method unless your table's data can change.
+	 */
+	public void setValueAt(Object value, int row, int col) {
+		// data[row][col] = value;
+		fireTableCellUpdated(row, col);
+	}
+
+	@Override
+	public void onSearch(String text) {
+		filter = text;
+	}
+
+}

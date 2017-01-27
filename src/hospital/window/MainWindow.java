@@ -57,7 +57,7 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 		final int displayHeight = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
 				.getMaximumWindowBounds().height;
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(50, (displayHeight - 550) / 2, displayWidth - 100, 550);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

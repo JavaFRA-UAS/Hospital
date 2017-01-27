@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -80,8 +81,8 @@ public class PatientPanel extends JPanel implements RefreshListener, SearchListe
 				int r = table.rowAtPoint(e.getPoint());
 
 				if (r >= 0) {
-					final Patient[] patients = tableModel.getData().toArray(new Patient[0]);
-					final Patient p = r < patients.length ? patients[r] : null;
+					final List<Patient> patients = tableModel.getData();
+					final Patient p = r < patients.size() ? patients.get(r) : null;
 					if (p != null) {
 						JPopupMenu popup = new JPopupMenu();
 

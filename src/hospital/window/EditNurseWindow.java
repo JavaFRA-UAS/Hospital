@@ -22,7 +22,6 @@ import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
-
 import hospital.helper.RefreshableWindow;
 import hospital.model.Nurse;
 
@@ -43,6 +42,7 @@ public class EditNurseWindow extends JFrame {
 	private JTextField textGender;
 	private JTextField textAddress;
 	private JTextField textPhone;
+	private JTextField textPassword;
 	final RefreshableWindow parentWindow;
 	private Nurse row;
 	DatePicker datePickerTimeOfBirth;
@@ -116,6 +116,13 @@ public class EditNurseWindow extends JFrame {
 		contentPane.add(textPhone, "4, 12, fill, default");
 		textPhone.setColumns(10);
 
+		JLabel lblPassword = new JLabel("Password:");
+		contentPane.add(lblPassword, "2, 14, left, default");
+
+		textPassword = new JTextField();
+		contentPane.add(textPassword, "4, 14, fill, default");
+		textPassword.setColumns(10);
+
 		JButton btnSave = new JButton("Save");
 		contentPane.add(btnSave, "4, 20, default, bottom");
 
@@ -129,6 +136,7 @@ public class EditNurseWindow extends JFrame {
 				row.setAddress(textAddress.getText());
 				row.setPhone(textPhone.getText());
 				row.setGender(textGender.getText());
+				row.setPassword(textPassword.getText());
 
 				Nurse.getFactory().save(row);
 
@@ -145,6 +153,7 @@ public class EditNurseWindow extends JFrame {
 		textAddress.setText(p.getAddress());
 		textPhone.setText(p.getPhone());
 		textGender.setText(p.getGender());
+		textPassword.setText(p.getPassword());
 	}
 
 }

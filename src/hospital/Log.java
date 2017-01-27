@@ -19,4 +19,13 @@ public class Log {
 			}
 		});
 	}
+
+	public static void showError(final String text) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				JOptionPane.showMessageDialog(null, text);
+			}
+		});
+	}
 }

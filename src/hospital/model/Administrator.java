@@ -21,7 +21,7 @@ public class Administrator extends Employee implements DatabaseRow {
 		@Override
 		public void createTable(Statement statement) throws SQLException {
 			statement.executeUpdate(
-					"create table if not exists administrator (id INTEGER PRIMARY KEY AUTOINCREMENT, isDeleted integer, name string, address string, timeOfBirth integer, gender string, phone string)");
+					"create table if not exists administrator (id INTEGER PRIMARY KEY AUTOINCREMENT, isDeleted integer, name string, address string, timeOfBirth integer, gender string, phone string, password string)");
 		}
 	};
 
@@ -41,12 +41,13 @@ public class Administrator extends Employee implements DatabaseRow {
 		setTimeOfBirth(resultset.getLong("timeOfBirth"));
 		setGender(resultset.getString("gender"));
 		setPhone(resultset.getString("phone"));
+		setPassword(resultset.getString("password"));
 	}
 
 	@Override
 	public void save(Connection connection) throws SQLException {
 		PreparedStatement statement = connection.prepareStatement(
-				"REPLACE INTO administrator (id, isDeleted, name, address, timeOfBirth, gender, phone) VALUES (?, ?, ?, ?, ?, ?, ?)");
+				"REPLACE INTO administrator (id, isDeleted, name, address, timeOfBirth, gender, phone, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		statement.setInt(1, getId());
 		statement.setInt(2, isDeleted() ? 1 : 0);
 		statement.setString(3, getName());
@@ -54,6 +55,7 @@ public class Administrator extends Employee implements DatabaseRow {
 		statement.setLong(5, getTimeOfBirth());
 		statement.setString(6, getGender());
 		statement.setString(7, getPhone());
+		statement.setString(8, getPassword());
 		statement.executeUpdate();
 	}
 }
