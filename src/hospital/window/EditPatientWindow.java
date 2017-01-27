@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -22,11 +23,12 @@ import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
-
 import hospital.helper.RefreshableWindow;
 import hospital.model.Inpatient;
+import hospital.model.Nurse;
 import hospital.model.Outpatient;
 import hospital.model.Patient;
+import hospital.model.Room;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextPane;
@@ -45,6 +47,7 @@ public class EditPatientWindow extends JFrame {
 	private JTextField textGender;
 	private JTextField textAddress;
 	private JTextField textPhone;
+	private JComboBox<String> boxRoom;
 	final RefreshableWindow parentWindow;
 	private Patient row;
 	DatePicker datePickerTimeOfBirth;
@@ -126,6 +129,18 @@ public class EditPatientWindow extends JFrame {
 		textProblem.setLineWrap(true);
 		contentPane.add(textProblem, "4, 14, fill, fill");
 
+		JLabel lblRoom = new JLabel("Room:");
+		contentPane.add(lblRoom, "2, 16, left, default");
+		lblRoom.setVisible(row instanceof Inpatient);
+
+		boxRoom = new JComboBox<String>();
+		boxRoom.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		contentPane.add(boxRoom, "4, 16, fill, default");
+		boxRoom.setVisible(row instanceof Inpatient);
+
 		JButton btnSave = new JButton("Save");
 		contentPane.add(btnSave, "4, 20, default, bottom");
 
@@ -142,6 +157,7 @@ public class EditPatientWindow extends JFrame {
 					p.setAddress(textAddress.getText());
 					p.setPhone(textPhone.getText());
 					p.setGender(textGender.getText());
+					p.setRoom(Room.getFactory().get((String) boxRoom.getSelectedItem()));
 
 					Inpatient.getFactory().save(p);
 
@@ -161,6 +177,11 @@ public class EditPatientWindow extends JFrame {
 				window.parentWindow.refresh();
 			}
 		});
+
+		boxRoom.addItem("");
+		for (Room room : Room.getFactory().list()) {
+			boxRoom.addItem(room.getName());
+		}
 	}
 
 	public void setPatient(Patient p) {
@@ -171,6 +192,8 @@ public class EditPatientWindow extends JFrame {
 		textAddress.setText(p.getAddress());
 		textPhone.setText(p.getPhone());
 		textGender.setText(p.getGender());
+		Room r = (p instanceof Inpatient) ? ((Inpatient) p).getRoom() : null;
+		boxRoom.setSelectedItem(r != null ? r.getName() : "");
 	}
 
 }
