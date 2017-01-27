@@ -109,7 +109,10 @@ public class LoginWindow extends JFrame {
 						}
 					}
 
-					if (user != null && user.getPassword().equals(passwordField.getPassword())) {
+					String password = new String(passwordField.getPassword());
+					if (password == null) password = "";
+					
+					if (user != null && user.getPassword().equals(password)) {
 						MainWindow w = new MainWindow(user);
 						w.setVisible(true);
 						// lw.setVisible(false);
