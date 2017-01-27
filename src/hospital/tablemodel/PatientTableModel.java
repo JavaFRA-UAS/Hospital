@@ -1,20 +1,23 @@
 package hospital.tablemodel;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-
+import hospital.model.Doctor;
 import hospital.model.Inpatient;
 import hospital.model.Outpatient;
 import hospital.model.Patient;
+import hospital.model.Room;
 import hospital.model.Vitals;
 
-public class VitalsTableModel extends AbstractTableModel {
+public class PatientTableModel extends AbstractTableModel {
 
-	private String[] columnNames = { "Name", "Body temp. °C", "Blood pressure", "Pulse rate", "Breathing rate",
-			"State", };
+	private String[] columnNames = { "Name", "Gender", "Date of birth", "Address", "State", "Room", "Doctor" };
 
 	public List<Patient> getData() {
 		List<Patient> l = new ArrayList<Patient>();
@@ -25,9 +28,38 @@ public class VitalsTableModel extends AbstractTableModel {
 
 	public Object[] getRow(Patient p) {
 		Vitals v = p.getVitals();
-		return new Object[] { p.getName(), String.format("%.2f", v.getBodytemperature()),
-				v.getBloodpressure().toString(), String.format("%.0f", v.getPulserate()),
-				String.format("%.0f", v.getRatebreathing()), p.isAlive() ? "alive" : "dead" };
+
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+		String timeOfBirth = dtf.format(p.getTimeOfBirthAsLocalDate());
+		String timeOfDeath = p.isAlive() ? "" : dtf.format(p.getTimeOfDeathAsLocalDateTime());
+
+		String address = p.getAddress();
+		if (address != null)
+			address = address.replaceAll("\n", "; ");
+
+		String state = p.isAlive() ? "alive" : ("dead since " + timeOfDeath);
+
+		String room = "";
+		if (p instanceof Inpatient) {
+			Room r = ((Inpatient) p).getRoom();
+			if (r != null) {
+				room = r.getName();
+			} else {
+				room = "unassigned";
+			}
+		} else {
+			room = "(outpatient)";
+		}
+
+		String doctor = "";
+		Doctor doc = p.getDoctor();
+		if (doc != null) {
+			room = doc.getName();
+		} else {
+			room = "unassigned";
+		}
+
+		return new Object[] { p.getName(), p.getGender(), timeOfBirth, address, state, room, doctor };
 	}
 
 	public int getColumnCount() {

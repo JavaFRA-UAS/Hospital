@@ -22,7 +22,7 @@ import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
-import hospital.database.Database;
+
 import hospital.helper.RefreshableWindow;
 import hospital.model.Inpatient;
 import hospital.model.Outpatient;
@@ -46,8 +46,8 @@ public class EditPatientWindow extends JFrame {
 	private JTextField textAddress;
 	private JTextField textPhone;
 	final RefreshableWindow parentWindow;
-	private Patient patient;
-	DatePicker datePickerBirthday;
+	private Patient row;
+	DatePicker datePickerTimeOfBirth;
 	JTextArea textProblem;
 
 	public EditPatientWindow(RefreshableWindow parentWindow) {
@@ -79,16 +79,16 @@ public class EditPatientWindow extends JFrame {
 		JLabel lblNewLabel = new JLabel("Age:");
 		contentPane.add(lblNewLabel, "2, 6, left, default");
 
-		JLabel lblBirthday = new JLabel("Birthday:");
-		contentPane.add(lblBirthday, "2, 4, left, default");
+		JLabel lblTimeOfBirth = new JLabel("TimeOfBirth:");
+		contentPane.add(lblTimeOfBirth, "2, 4, left, default");
 
 		final JLabel labelAge = new JLabel("");
 		contentPane.add(labelAge, "4, 6");
 
 		DatePickerSettings dateSettings = new DatePickerSettings();
 		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-		datePickerBirthday = new DatePicker(dateSettings);
-		datePickerBirthday.addDateChangeListener(new DateChangeListener() {
+		datePickerTimeOfBirth = new DatePicker(dateSettings);
+		datePickerTimeOfBirth.addDateChangeListener(new DateChangeListener() {
 
 			@Override
 			public void dateChanged(DateChangeEvent arg0) {
@@ -96,7 +96,7 @@ public class EditPatientWindow extends JFrame {
 			}
 
 		});
-		contentPane.add(datePickerBirthday, "4, 4");
+		contentPane.add(datePickerTimeOfBirth, "4, 4");
 
 		JLabel lblGender = new JLabel("Gender:");
 		contentPane.add(lblGender, "2, 8, left, default");
@@ -134,33 +134,27 @@ public class EditPatientWindow extends JFrame {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				Patient p;
-
-				if (patient instanceof Inpatient) {
-					p = patient;
+				if (row instanceof Inpatient) {
+					Inpatient p = (Inpatient) row;
 					p.setName(textName.getText());
-					p.setBirthdayAsLocalDate(datePickerBirthday.getDate());
+					p.setTimeOfBirthAsLocalDate(datePickerTimeOfBirth.getDate());
 					p.setProblem(textProblem.getText());
 					p.setAddress(textAddress.getText());
 					p.setPhone(textPhone.getText());
 					p.setGender(textGender.getText());
 
-					Database db = Database.getInstance();
-					db.addPatient(p);
-					db.save();
+					Inpatient.getFactory().save(p);
 
-				} else if (patient instanceof Outpatient) {
-					p = patient;
+				} else if (row instanceof Outpatient) {
+					Outpatient p = (Outpatient) row;
 					p.setName(textName.getText());
-					p.setBirthdayAsLocalDate(datePickerBirthday.getDate());
+					p.setTimeOfBirthAsLocalDate(datePickerTimeOfBirth.getDate());
 					p.setProblem(textProblem.getText());
 					p.setAddress(textAddress.getText());
 					p.setPhone(textPhone.getText());
 					p.setGender(textGender.getText());
 
-					Database db = Database.getInstance();
-					db.addPatient(p);
-					db.save();
+					Outpatient.getFactory().save(p);
 				}
 
 				window.setVisible(false);
@@ -170,9 +164,9 @@ public class EditPatientWindow extends JFrame {
 	}
 
 	public void setPatient(Patient p) {
-		this.patient = p;
+		this.row = p;
 		textName.setText(p.getName());
-		datePickerBirthday.setDate(p.getBirthdayAsLocalDate());
+		datePickerTimeOfBirth.setDate(p.getTimeOfBirthAsLocalDate());
 		textProblem.setText(p.getProblem());
 		textAddress.setText(p.getAddress());
 		textPhone.setText(p.getPhone());

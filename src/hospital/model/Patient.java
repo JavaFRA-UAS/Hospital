@@ -2,6 +2,7 @@ package hospital.model;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import javax.swing.JOptionPane;
@@ -9,63 +10,24 @@ import javax.swing.SwingUtilities;
 
 import hospital.alert.Alert;
 import hospital.alert.AlertHelper;
+import hospital.database.Factory;
 
-public abstract class Patient {
+public abstract class Patient extends Person {
 
-	private static int LastId = 2000;
-
-	int id;
-	Doctor doctor;
-	String name;
-	String address;
-	long birthday;
-	String gender;
+	int doctorId;
 	String problem;
-	String phone;
 	Vitals vitals;
 	Heart heart;
 	Lungs lungs;
 	boolean isAlive;
+	long timeOfDeath;
 
-	protected Patient() {
-		id = ++LastId;
+	public Patient(int id) {
+		super(id);
 		vitals = new Vitals(id);
 		heart = new Heart(vitals);
 		lungs = new Lungs(vitals);
 		isAlive = true;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-		this.vitals.setPatientId(id);
-	}
-
-	public Doctor getDoctor() {
-		return doctor;
-	}
-
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
 	}
 
 	public String getProblem() {
@@ -76,42 +38,22 @@ public abstract class Patient {
 		this.problem = problem;
 	}
 
-	public String getAddress() {
-		return address;
+	@Override
+	public void setId(int id) {
+		super.setId(id);
+		this.vitals.setPatientId(id);
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public Doctor getDoctor() {
+		return Doctor.getFactory().get(doctorId);
 	}
 
-	public String getPhone() {
-		return phone;
+	public int getDoctorId() {
+		return doctorId;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public long getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(long birthday) {
-		this.birthday = birthday;
-	}
-
-	public LocalDate getBirthdayAsLocalDate() {
-		return Instant.ofEpochMilli(this.birthday * 1000).atZone(ZoneId.systemDefault()).toLocalDate();
-	}
-
-	public void setBirthdayAsLocalDate(LocalDate birthday) {
-		ZoneId zoneId = ZoneId.systemDefault();
-		long epoch = birthday.atStartOfDay(zoneId).toEpochSecond();
-		this.birthday = epoch;
-	}
-
-	public long getAge() {
-		return java.time.temporal.ChronoUnit.YEARS.between(getBirthdayAsLocalDate(), LocalDate.now());
+	public void setDoctorId(int doctorId) {
+		this.doctorId = doctorId;
 	}
 
 	public Vitals getVitals() {
@@ -164,6 +106,29 @@ public abstract class Patient {
 		this.heart = new Heart(vitals);
 		this.lungs = new Lungs(vitals);
 		this.isAlive = true;
+	}
+
+	public long getTimeOfDeath() {
+		return timeOfDeath;
+	}
+
+	public void setTimeOfDeath(long timeOfDeath) {
+		this.timeOfDeath = timeOfDeath;
+		this.isAlive = timeOfDeath == 0;
+	}
+
+	public LocalDate getTimeOfDeathAsLocalDate() {
+		return Instant.ofEpochMilli(this.timeOfDeath * 1000).atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public LocalDateTime getTimeOfDeathAsLocalDateTime() {
+		return Instant.ofEpochMilli(this.timeOfDeath * 1000).atZone(ZoneId.systemDefault()).toLocalDateTime();
+	}
+
+	public void setTimeOfDeathAsLocalDate(LocalDate timeOfDeath) {
+		ZoneId zoneId = ZoneId.systemDefault();
+		long epoch = timeOfDeath.atStartOfDay(zoneId).toEpochSecond();
+		this.timeOfDeath = epoch;
 	}
 
 	@Override

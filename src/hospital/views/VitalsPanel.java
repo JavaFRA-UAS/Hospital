@@ -25,7 +25,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 import hospital.Main;
-import hospital.database.Database;
+import hospital.helper.CustomHeaderRenderer;
 import hospital.helper.RandomGenerator;
 import hospital.helper.RefreshableWindow;
 import hospital.model.Doctor;
@@ -92,7 +92,7 @@ public class VitalsPanel extends JPanel {
 				int r = table.rowAtPoint(e.getPoint());
 
 				if (r >= 0) {
-					final Patient[] patients = tableModel.getData();
+					final Patient[] patients = tableModel.getData().toArray(new Patient[0]);
 					final Patient p = r < patients.length ? patients[r] : null;
 					if (p != null) {
 						JPopupMenu popup = new JPopupMenu();
@@ -165,7 +165,7 @@ public class VitalsPanel extends JPanel {
 							item.addActionListener(new java.awt.event.ActionListener() {
 								@Override
 								public void actionPerformed(java.awt.event.ActionEvent evt) {
-									p.die("was killed by " + Main.getCurrentUser().getName());
+									p.die("was killed by " + parentWindow.getCurrentUser().getName());
 								}
 							});
 							popup.add(item);
@@ -175,7 +175,7 @@ public class VitalsPanel extends JPanel {
 							item.addActionListener(new java.awt.event.ActionListener() {
 								@Override
 								public void actionPerformed(java.awt.event.ActionEvent evt) {
-									p.revive("was reanimated by " + Main.getCurrentUser().getName());
+									p.revive("was reanimated by " + parentWindow.getCurrentUser().getName());
 								}
 							});
 							popup.add(item);
@@ -251,22 +251,5 @@ public class VitalsPanel extends JPanel {
 
 	public void refresh() {
 		fillList();
-	}
-
-	class CustomHeaderRenderer implements TableCellRenderer {
-		private int horizontalAlignment = SwingConstants.LEFT;
-
-		public CustomHeaderRenderer(int horizontalAlignment) {
-			this.horizontalAlignment = horizontalAlignment;
-		}
-
-		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-				int row, int column) {
-			TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-			JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-			l.setHorizontalAlignment(horizontalAlignment);
-			return l;
-		}
 	}
 }

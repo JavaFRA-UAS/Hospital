@@ -11,15 +11,19 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import hospital.database.Database;
+import hospital.Main;
+
 import hospital.helper.RefreshableWindow;
+import hospital.model.Administrator;
 import hospital.model.Doctor;
+import hospital.model.Employee;
 import hospital.model.Nurse;
 import hospital.model.Patient;
 import hospital.views.AlertPanel;
 import hospital.views.DoctorPanel;
 import hospital.views.NursePanel;
 import hospital.views.PatientPanel;
+import hospital.views.RoomPanel;
 import hospital.views.VitalsPanel;
 
 import javax.swing.JTabbedPane;
@@ -39,14 +43,14 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 	private PatientPanel panelPatient;
 	private DoctorPanel panelDoctor;
 	private NursePanel panelNurse;
+	private RoomPanel panelRoom;
 	private VitalsPanel panelVitals;
 	private AlertPanel panelAlert;
+	private Employee currentUser;
 
-	/**
-	 * Create the frame.
-	 */
-	public MainWindow() {
+	public MainWindow(Employee user) {
 		final MainWindow dw = this;
+		this.currentUser = user;
 
 		final int displayWidth = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
 				.getMaximumWindowBounds().width;
@@ -63,30 +67,64 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane);
 
-		panelPatient = new PatientPanel(this);
-		tabbedPane.addTab("PatientsX", null, panelPatient, null);
+		if (user instanceof Administrator) {
 
-		panelDoctor = new DoctorPanel(this);
-		tabbedPane.addTab("Doctors", null, panelDoctor, null);
+			panelPatient = new PatientPanel(this);
+			tabbedPane.addTab("Patients", null, panelPatient, null);
 
-		panelNurse = new NursePanel(this);
-		tabbedPane.addTab("Nurses", null, panelNurse, null);
+			panelDoctor = new DoctorPanel(this);
+			tabbedPane.addTab("Doctors", null, panelDoctor, null);
 
-		panelVitals = new VitalsPanel(this);
-		tabbedPane.addTab("Vitals", null, panelVitals, null);
+			panelNurse = new NursePanel(this);
+			tabbedPane.addTab("Nurses", null, panelNurse, null);
 
-		panelAlert = new AlertPanel(this);
-		tabbedPane.addTab("Alerts", null, panelAlert, null);
+			panelRoom = new RoomPanel(this);
+			tabbedPane.addTab("Rooms", null, panelRoom, null);
+
+			panelVitals = new VitalsPanel(this);
+			tabbedPane.addTab("Vitals", null, panelVitals, null);
+
+			panelAlert = new AlertPanel(this);
+			tabbedPane.addTab("Alerts", null, panelAlert, null);
+			
+		} else if (user instanceof Doctor) {
+
+			panelPatient = new PatientPanel(this);
+			tabbedPane.addTab("Patients", null, panelPatient, null);
+
+			panelVitals = new VitalsPanel(this);
+			tabbedPane.addTab("Vitals", null, panelVitals, null);
+
+			panelAlert = new AlertPanel(this);
+			tabbedPane.addTab("Alerts", null, panelAlert, null);
+			
+		} else if (user instanceof Nurse) {
+
+			panelPatient = new PatientPanel(this);
+			tabbedPane.addTab("Patients", null, panelPatient, null);
+
+			panelVitals = new VitalsPanel(this);
+			tabbedPane.addTab("Vitals", null, panelVitals, null);
+
+			panelAlert = new AlertPanel(this);
+			tabbedPane.addTab("Alerts", null, panelAlert, null);
+
+		}
 
 		fillList();
 	}
 
+	public Employee getCurrentUser() {
+		return this.currentUser;
+	}
+
 	void fillList() {
-		panelPatient.refresh();
-		panelDoctor.refresh();
-		panelNurse.refresh();
-		panelVitals.refresh();
-		panelAlert.refresh();
+		if (panelPatient != null) panelPatient.refresh();
+		if (panelDoctor != null) panelDoctor.refresh();
+		if (panelNurse != null) panelNurse.refresh();
+		if (panelRoom != null) panelRoom.refresh();
+		if (panelVitals != null) panelVitals.refresh();
+		if (panelAlert != null) panelAlert.refresh();
 	}
 
 	public void refresh() {

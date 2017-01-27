@@ -4,7 +4,7 @@ import java.util.Random;
 
 import hospital.alert.Alert;
 import hospital.alert.AlertHelper;
-import hospital.database.Database;
+
 import hospital.helper.RandomGenerator;
 
 public class BloodPressure {
@@ -25,7 +25,13 @@ public class BloodPressure {
 	}
 
 	public Patient getPatient() {
-		return Database.getInstance().getPatientMap().get(this.patientId);
+		if (Inpatient.getFactory().exists(patientId)) {
+			return Inpatient.getFactory().get(patientId);
+		} else if (Outpatient.getFactory().exists(patientId)) {
+			return Outpatient.getFactory().get(patientId);
+		} else {
+			return null;
+		}
 	}
 
 	public int getSys() {

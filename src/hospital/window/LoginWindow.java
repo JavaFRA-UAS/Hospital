@@ -18,17 +18,22 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import hospital.Main;
-import hospital.database.Database;
+
 import hospital.helper.JPanelWithBackground;
+import hospital.model.Administrator;
 import hospital.model.Doctor;
+import hospital.model.Employee;
 import hospital.model.Nurse;
-import hospital.model.Staff;
 
 import com.jgoodies.forms.layout.FormSpecs;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 import javax.imageio.*;
 import javax.swing.JPasswordField;
@@ -38,9 +43,6 @@ import java.awt.SystemColor;
 
 public class LoginWindow extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanelWithBackground contentPane;
 	private JComboBox<String> comboBox;
@@ -48,13 +50,9 @@ public class LoginWindow extends JFrame {
 	private JLabel lblBenutzer;
 	private JLabel lblPassword;
 
-	/**
-	 * Create the frame.
-	 */
-
 	public LoginWindow() {
 		final LoginWindow lw = this;
-
+		
 		setTitle("Hospital");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 469, 330);
@@ -93,21 +91,24 @@ public class LoginWindow extends JFrame {
 				if (comboBox.getSelectedIndex() > 0) {
 					
 					final String name = (String)comboBox.getSelectedItem();
-					Database db = Database.getInstance();
-					Staff user = null;
-					for (Doctor doc : db.getDoctors()) {
+					Employee user = null;
+					for (Administrator a : Administrator.getFactory().list()) {
+						if (name == a.getName()) {
+							user = a;
+						}
+					}
+					for (Doctor doc : Doctor.getFactory().list()) {
 						if (name == doc.getName()) {
 							user = doc;
 						}
 					}
-					for (Nurse nurse : db.getNurses()) {
+					for (Nurse nurse : Nurse.getFactory().list()) {
 						if (name == nurse.getName()) {
 							user = nurse;
 						}
 					}
-					Main.setCurrentUser(user);
 					
-					MainWindow w = new MainWindow();
+					MainWindow w = new MainWindow(user);
 					w.setVisible(true);
 					lw.setVisible(false);
 				}
@@ -122,16 +123,26 @@ public class LoginWindow extends JFrame {
 		passwordField.setBackground(Color.WHITE);
 		contentPane.add(passwordField, "6, 4");
 		contentPane.add(btnLogin, "6, 6");
+		
 	}
 
-	void fillCombobox() {
+	synchronized void fillCombobox() {
+		System.out.println("fill combobox...");
+
+		Administrator.getFactory().loadAll();
+		Doctor.getFactory().loadAll();
+		Nurse.getFactory().loadAll();
+		
+		comboBox.removeAll();
 		comboBox.addItem("");
 
-		Database db = Database.getInstance();
-		for (Doctor doc : db.getDoctors()) {
+		for (Administrator doc : Administrator.getFactory().list()) {
 			comboBox.addItem(doc.getName());
 		}
-		for (Nurse nurse : db.getNurses()) {
+		for (Doctor doc : Doctor.getFactory().list()) {
+			comboBox.addItem(doc.getName());
+		}
+		for (Nurse nurse : Nurse.getFactory().list()) {
 			comboBox.addItem(nurse.getName());
 		}
 	}

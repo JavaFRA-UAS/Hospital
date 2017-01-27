@@ -15,7 +15,7 @@
 ~doctor: Doctor
 ~name: String
 ~address: String
-~birthday: long
+~timeOfBirth: long
 ~gender: String
 ~problem: String
 ~phone: String
@@ -39,8 +39,8 @@
 +setAddress(String address): void
 +getPhone(): String
 +setPhone(String phone): void
-+getBirthday(): long
-+setBirthday(long birthday): void
++getTimeOfBirth(): long
++setTimeOfBirth(long timeOfBirth): void
 +getAge(): long
 +getVitals(): Vitals
 +getHeart(): Heart
@@ -67,7 +67,7 @@
 ~id: int
 ~name: String
 ~address: String
-~birthday: long
+~timeOfBirth: long
 ~gender: String
 ~phone: String
 ~rooms: ArrayList&lt;Room&gt;
@@ -82,8 +82,8 @@
 +setAddress(String address): void
 +getPhone(): String
 +setPhone(String phone): void
-+getBirthday(): long
-+setBirthday(long birthday): void
++getTimeOfBirth(): long
++setTimeOfBirth(long timeOfBirth): void
 +getAge(): long
 +getRooms(): ArrayList&lt;Room&gt;
 +setRooms(ArrayList&lt;Room&gt; rooms): void
@@ -105,7 +105,7 @@
 ~id: int
 ~name: String
 ~address: String
-~birthday: long
+~timeOfBirth: long
 ~gender: String
 ~phone: String
 --
@@ -119,8 +119,8 @@
 +setAddress(String address): void
 +getPhone(): String
 +setPhone(String phone): void
-+getBirthday(): long
-+setBirthday(long birthday): void
++getTimeOfBirth(): long
++setTimeOfBirth(long timeOfBirth): void
 +getAge(): long
 +toString(): String
 --

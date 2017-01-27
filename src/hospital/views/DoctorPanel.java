@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
-import hospital.database.Database;
+
 import hospital.helper.RefreshableWindow;
 import hospital.model.Doctor;
 import hospital.model.Nurse;
@@ -66,8 +66,8 @@ public class DoctorPanel extends JPanel {
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Doctor p = listDoctors.getSelectedValue();
-				Database db = Database.getInstance();
-				db.removeDoctor(p);
+				p.delete();
+				Doctor.getFactory().save(p);
 				parentWindow.refresh();
 			}
 		});
@@ -90,10 +90,10 @@ public class DoctorPanel extends JPanel {
 	}
 
 	void fillList() {
-		Database db = Database.getInstance();
-		
+		Doctor.getFactory().loadAll();
+
 		listModelDoctors.clear();
-		for (Doctor d : db.getDoctors()) {
+		for (Doctor d : Doctor.getFactory().list()) {
 			System.out.println("load doctor: " + d.toString());
 			listModelDoctors.addElement(d);
 		}

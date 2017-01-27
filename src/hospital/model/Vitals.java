@@ -2,7 +2,7 @@ package hospital.model;
 
 import hospital.alert.Alert;
 import hospital.alert.AlertHelper;
-import hospital.database.Database;
+
 
 public class Vitals {
 
@@ -115,7 +115,13 @@ public class Vitals {
 	}
 
 	public Patient getPatient() {
-		return Database.getInstance().getPatientMap().get(this.patientId);
+		if (Inpatient.getFactory().exists(patientId)) {
+			return Inpatient.getFactory().get(patientId);
+		} else if (Outpatient.getFactory().exists(patientId)) {
+			return Outpatient.getFactory().get(patientId);
+		} else {
+			return null;
+		}
 	}
 
 }

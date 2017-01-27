@@ -24,7 +24,7 @@ import com.jgoodies.forms.layout.RowSpec;
 
 
 import hospital.helper.RefreshableWindow;
-import hospital.model.Nurse;
+import hospital.model.Room;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextPane;
@@ -36,18 +36,16 @@ import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
-public class NewNurseWindow extends JFrame {
+public class NewRoomWindow extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textName;
-	private JTextField textGender;
-	private JTextField textAddress;
-	private JTextField textPhone;
+	private JTextField textCapacity;
 	final RefreshableWindow parentWindow;
 
-	public NewNurseWindow(RefreshableWindow parentWindow) {
+	public NewRoomWindow(RefreshableWindow parentWindow) {
 		this.parentWindow = parentWindow;
-		final NewNurseWindow window = this;
+		final NewRoomWindow window = this;
 
 		setBounds(100, 100, 576, 543);
 		contentPane = new JPanel();
@@ -64,55 +62,19 @@ public class NewNurseWindow extends JFrame {
 						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
 						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("default:grow"), }));
 
-		JLabel lblName = new JLabel("Name:");
+		JLabel lblName = new JLabel("Number:");
 		contentPane.add(lblName, "2, 2, left, default");
 
 		textName = new JTextField();
 		contentPane.add(textName, "4, 2, fill, default");
 		textName.setColumns(10);
 
-		JLabel lblNewLabel = new JLabel("Age:");
-		contentPane.add(lblNewLabel, "2, 6, left, default");
+		JLabel lblCapacity = new JLabel("Capacity:");
+		contentPane.add(lblCapacity, "2, 4, left, default");
 
-		JLabel lblTimeOfBirth = new JLabel("TimeOfBirth:");
-		contentPane.add(lblTimeOfBirth, "2, 4, left, default");
-
-		final JLabel labelAge = new JLabel("");
-		contentPane.add(labelAge, "4, 6");
-
-		DatePickerSettings dateSettings = new DatePickerSettings();
-		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-		final DatePicker datePickerTimeOfBirth = new DatePicker(dateSettings);
-		datePickerTimeOfBirth.addDateChangeListener(new DateChangeListener() {
-
-			@Override
-			public void dateChanged(DateChangeEvent arg0) {
-				labelAge.setText(java.time.temporal.ChronoUnit.YEARS.between(arg0.getNewDate(), LocalDate.now()) + "");
-			}
-
-		});
-		contentPane.add(datePickerTimeOfBirth, "4, 4");
-
-		JLabel lblGender = new JLabel("Gender:");
-		contentPane.add(lblGender, "2, 8, left, default");
-
-		textGender = new JTextField();
-		contentPane.add(textGender, "4, 8, fill, default");
-		textGender.setColumns(10);
-
-		JLabel lblAddress = new JLabel("Address:");
-		contentPane.add(lblAddress, "2, 10, left, default");
-
-		textAddress = new JTextField();
-		contentPane.add(textAddress, "4, 10, fill, default");
-		textAddress.setColumns(10);
-
-		JLabel lblPhone = new JLabel("Phone:");
-		contentPane.add(lblPhone, "2, 12, left, default");
-
-		textPhone = new JTextField();
-		contentPane.add(textPhone, "4, 12, fill, default");
-		textPhone.setColumns(10);
+		textCapacity = new JTextField();
+		contentPane.add(textCapacity, "4, 4, fill, default");
+		textCapacity.setColumns(10);
 
 		JButton btnSave = new JButton("Save");
 		contentPane.add(btnSave, "4, 20, default, bottom");
@@ -122,14 +84,11 @@ public class NewNurseWindow extends JFrame {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				Nurse p = Nurse.getFactory().get(Nurse.getFactory().getNewId());
-				p.setName(textName.getText());
-				p.setTimeOfBirthAsLocalDate(datePickerTimeOfBirth.getDate());
-				p.setAddress(textAddress.getText());
-				p.setPhone(textPhone.getText());
-				p.setGender(textGender.getText());
+				Room row = Room.getFactory().get(Room.getFactory().getNewId());
+				row.setName(textName.getText());
+				row.setCapacity(Integer.parseInt(textCapacity.getText()));
 
-				Nurse.getFactory().save(p);
+				Room.getFactory().save(row);
 
 				window.setVisible(false);
 				window.parentWindow.refresh();

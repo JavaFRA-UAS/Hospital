@@ -6,8 +6,9 @@ import javax.swing.table.AbstractTableModel;
 
 import hospital.alert.Alert;
 import hospital.alert.AlertHelper;
-import hospital.database.Database;
+
 import hospital.model.Inpatient;
+import hospital.model.Outpatient;
 import hospital.model.Patient;
 import hospital.model.Room;
 import hospital.model.Vitals;
@@ -21,8 +22,19 @@ public class AlertTableModel extends AbstractTableModel {
 	}
 
 	public Object[] getRow(Alert a) {
-		Patient p = Database.getInstance().getPatientMap().get(a.getPatientId());
-		Room room = (p instanceof Inpatient ? ((Inpatient) p).getRoom() : null);
+		int patientId = a.getPatientId();
+		Patient p;
+		Room room;
+		if (Inpatient.getFactory().exists(patientId)) {
+			p = Inpatient.getFactory().get(patientId);
+			room = ((Inpatient) p).getRoom();
+		} else if (Outpatient.getFactory().exists(patientId)) {
+			p = Outpatient.getFactory().get(patientId);
+			room = null;
+		} else {
+			p = null;
+			room = null;
+		}
 
 		if (a.getEntityName().length() > 0) {
 			return new Object[] { a.getFormattedTime(), (p != null ? p.getName() : ""), a.getEntityName(),

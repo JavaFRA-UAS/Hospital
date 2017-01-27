@@ -8,7 +8,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import hospital.database.Database;
+import hospital.database.Factory;
 import hospital.helper.RandomGenerator;
 import hospital.model.Doctor;
 import hospital.model.Inpatient;
@@ -29,13 +29,17 @@ public class VitalsSimulation {
 			public void run() {
 				try {
 
-					Database db = Database.getInstance();
 					while (true) {
-						for (Map.Entry<Integer, Patient> entry : db.getPatientMap().entrySet()) {
-							final Integer patientId = entry.getKey();
 
+						for (int patientId : Inpatient.getFactory().getAllIds()) {
 							if (!runningSimulations.contains(patientId)) {
-								VitalsSimulation.runSimulation(patientId);
+								VitalsSimulation.runSimulation(patientId, Inpatient.getFactory());
+								runningSimulations.add(patientId);
+							}
+						}
+						for (int patientId : Outpatient.getFactory().getAllIds()) {
+							if (!runningSimulations.contains(patientId)) {
+								VitalsSimulation.runSimulation(patientId, Outpatient.getFactory());
 								runningSimulations.add(patientId);
 							}
 						}
@@ -45,21 +49,20 @@ public class VitalsSimulation {
 
 					}
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex);
+					Log.showException(ex);
 				}
 			}
 		}).start();
 	}
 
-	public static void runSimulation(final Integer patientId) {
+	public static void runSimulation(final Integer patientId, final Factory<? extends Patient> factory) {
 
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					Database db = Database.getInstance();
 					while (true) {
-						Patient patient = db.getPatientMap().get(patientId);
+						Patient patient = factory.get(patientId);
 
 						if (patient == null) {
 							// patient doesnt exist any more,
@@ -69,7 +72,7 @@ public class VitalsSimulation {
 							continue;
 						}
 
-						if (!patient.isAlive()) {
+						if (patient.isDeleted() || !patient.isAlive()) {
 							Thread.sleep(1000);
 							continue;
 						}
@@ -81,12 +84,7 @@ public class VitalsSimulation {
 						Thread.sleep(patient.getHeart().getMillisecondsUntilNextHeartbeat());
 					}
 				} catch (final Exception ex) {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							JOptionPane.showMessageDialog(null, ex);
-						}
-					});
+					Log.showException(ex);
 				}
 			}
 		}).start();
@@ -96,10 +94,10 @@ public class VitalsSimulation {
 			public void run() {
 				try {
 					RandomGenerator random = new RandomGenerator();
+					Random random2 = new Random();
 
-					Database db = Database.getInstance();
 					while (true) {
-						Patient patient = db.getPatientMap().get(patientId);
+						Patient patient = factory.get(patientId);
 
 						if (patient == null) {
 							// patient doesnt exist any more,
@@ -109,7 +107,7 @@ public class VitalsSimulation {
 							continue;
 						}
 
-						if (!patient.isAlive()) {
+						if (patient.isDeleted() || !patient.isAlive()) {
 							Thread.sleep(1000);
 							continue;
 						}
@@ -122,16 +120,19 @@ public class VitalsSimulation {
 						temperature += random.nextDouble() * 0.2;
 						patient.getVitals().setBodytemperature(temperature);
 
+						// death of old age
+						double probability = patient.getAge() < 60 ? 0.0 : (patient.getAge() - 60.0) / 30.0;
+						for (int tries = 3; tries >= 0 && random2.nextDouble() < probability; tries--) {
+							if (tries == 0) {
+								patient.die("died of old age");
+							}
+						}
+
 						// wait 1 second
 						Thread.sleep(500);
 					}
 				} catch (final Exception ex) {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							JOptionPane.showMessageDialog(null, ex);
-						}
-					});
+					Log.showException(ex);
 				}
 			}
 		}).start();
@@ -140,9 +141,8 @@ public class VitalsSimulation {
 			@Override
 			public void run() {
 				try {
-					Database db = Database.getInstance();
 					while (true) {
-						Patient patient = db.getPatientMap().get(patientId);
+						Patient patient = factory.get(patientId);
 
 						if (patient == null) {
 							// patient doesnt exist any more,
@@ -152,7 +152,7 @@ public class VitalsSimulation {
 							continue;
 						}
 
-						if (!patient.isAlive()) {
+						if (patient.isDeleted() || !patient.isAlive()) {
 							Thread.sleep(1000);
 							continue;
 						}
@@ -164,12 +164,7 @@ public class VitalsSimulation {
 						Thread.sleep(patient.getLungs().getMillisecondsUntilNextBreath());
 					}
 				} catch (final Exception ex) {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							JOptionPane.showMessageDialog(null, ex);
-						}
-					});
+					Log.showException(ex);
 				}
 			}
 		}).start();

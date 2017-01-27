@@ -23,7 +23,7 @@ import javax.swing.table.TableCellRenderer;
 import hospital.alert.Alert;
 import hospital.alert.AlertHelper;
 import hospital.alert.AlertListener;
-import hospital.database.Database;
+import hospital.helper.CustomHeaderRenderer;
 import hospital.helper.RefreshableWindow;
 import hospital.model.Doctor;
 import hospital.model.Nurse;
@@ -115,23 +115,6 @@ public class AlertPanel extends JPanel implements AlertListener {
 
 	public void refresh() {
 		fillList();
-	}
-
-	class CustomHeaderRenderer implements TableCellRenderer {
-		private int horizontalAlignment = SwingConstants.LEFT;
-
-		public CustomHeaderRenderer(int horizontalAlignment) {
-			this.horizontalAlignment = horizontalAlignment;
-		}
-
-		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-				int row, int column) {
-			TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-			JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-			l.setHorizontalAlignment(horizontalAlignment);
-			return l;
-		}
 	}
 
 	@Override

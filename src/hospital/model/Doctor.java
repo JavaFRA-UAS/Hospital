@@ -1,87 +1,59 @@
 package hospital.model;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-public class Doctor implements Staff {
+import hospital.database.DatabaseRow;
+import hospital.database.Factory;
 
-	private static int LastId = 1000;
+public class Doctor extends Employee implements DatabaseRow {
 
-	int id = ++LastId;
+	private static Factory<Doctor> factory = new Factory<Doctor>("doctor", 1000) {
+		@Override
+		protected Doctor create(int id) {
+			Doctor o = new Doctor(id);
+			return o;
+		}
 
-	public int getId() {
-		return id;
+		@Override
+		public void createTable(Statement statement) throws SQLException {
+			statement.executeUpdate(
+					"create table if not exists doctor (id INTEGER PRIMARY KEY AUTOINCREMENT, isDeleted integer, name string, address string, timeOfBirth integer, gender string, phone string)");
+		}
+	};
+
+	public static Factory<Doctor> getFactory() {
+		return factory;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	private Doctor(int id) {
+		super(id);
 	}
-
-	String name;
-	String address;
-	long birthday;
-	String gender;
-	String phone;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public long getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(long birthday) {
-		this.birthday = birthday;
-	}
-
-	public LocalDate getBirthdayAsLocalDate() {
-		return Instant.ofEpochMilli(this.birthday * 1000).atZone(ZoneId.systemDefault()).toLocalDate();
-	}
-
-	public void setBirthdayAsLocalDate(LocalDate birthday) {
-		ZoneId zoneId = ZoneId.systemDefault();
-		long epoch = birthday.atStartOfDay(zoneId).toEpochSecond();
-		this.birthday = epoch;
-	}
-
-	public long getAge() {
-		return java.time.temporal.ChronoUnit.YEARS.between(getBirthdayAsLocalDate(), LocalDate.now());
-	}
-
 
 	@Override
-	public String toString() {
-		return name;
+	public void load(ResultSet resultset) throws SQLException {
+		setDeleted(resultset.getInt("isDeleted") == 0 ? false : true);
+		setName(resultset.getString("name"));
+		setAddress(resultset.getString("address"));
+		setTimeOfBirth(resultset.getLong("timeOfBirth"));
+		setGender(resultset.getString("gender"));
+		setPhone(resultset.getString("phone"));
+	}
+
+	@Override
+	public void save(Connection connection) throws SQLException {
+		PreparedStatement statement = connection.prepareStatement(
+				"REPLACE INTO doctor (id, isDeleted, name, address, timeOfBirth, gender, phone) VALUES (?, ?, ?, ?, ?, ?, ?)");
+		statement.setInt(1, getId());
+		statement.setInt(2, isDeleted() ? 1 : 0);
+		statement.setString(3, getName());
+		statement.setString(4, getAddress());
+		statement.setLong(5, getTimeOfBirth());
+		statement.setString(6, getGender());
+		statement.setString(7, getPhone());
+		statement.executeUpdate();
 	}
 }

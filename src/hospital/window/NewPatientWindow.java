@@ -22,7 +22,7 @@ import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
-import hospital.database.Database;
+
 import hospital.helper.RefreshableWindow;
 import hospital.model.Inpatient;
 import hospital.model.Outpatient;
@@ -76,16 +76,16 @@ public class NewPatientWindow extends JFrame {
 		JLabel lblNewLabel = new JLabel("Age:");
 		contentPane.add(lblNewLabel, "2, 6, left, default");
 
-		JLabel lblBirthday = new JLabel("Birthday:");
-		contentPane.add(lblBirthday, "2, 4, left, default");
+		JLabel lblTimeOfBirth = new JLabel("TimeOfBirth:");
+		contentPane.add(lblTimeOfBirth, "2, 4, left, default");
 
 		final JLabel labelAge = new JLabel("");
 		contentPane.add(labelAge, "4, 6");
 
 		DatePickerSettings dateSettings = new DatePickerSettings();
 		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-		final DatePicker datePickerBirthday = new DatePicker(dateSettings);
-		datePickerBirthday.addDateChangeListener(new DateChangeListener() {
+		final DatePicker datePickerTimeOfBirth = new DatePicker(dateSettings);
+		datePickerTimeOfBirth.addDateChangeListener(new DateChangeListener() {
 
 			@Override
 			public void dateChanged(DateChangeEvent arg0) {
@@ -93,7 +93,7 @@ public class NewPatientWindow extends JFrame {
 			}
 
 		});
-		contentPane.add(datePickerBirthday, "4, 4");
+		contentPane.add(datePickerTimeOfBirth, "4, 4");
 
 		JLabel lblGender = new JLabel("Gender:");
 		contentPane.add(lblGender, "2, 8, left, default");
@@ -139,33 +139,29 @@ public class NewPatientWindow extends JFrame {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnInpatient.isSelected()) {
-					Inpatient p = new Inpatient();
+					Inpatient p = Inpatient.getFactory().get(Inpatient.getFactory().getNewId());
 					p.setName(textName.getText());
-					p.setBirthdayAsLocalDate(datePickerBirthday.getDate());
+					p.setTimeOfBirthAsLocalDate(datePickerTimeOfBirth.getDate());
 					p.setProblem(textProblem.getText());
 					p.setAddress(textAddress.getText());
 					p.setPhone(textPhone.getText());
 					p.setGender(textGender.getText());
 
-					Database db = Database.getInstance();
-					db.addPatient(p);
-					db.save();
+					Inpatient.getFactory().save(p);
 
 					window.setVisible(false);
 					window.parentWindow.refresh();
 
 				} else if (rdbtnOutpatient.isSelected()) {
-					Outpatient p = new Outpatient();
+					Outpatient p = Outpatient.getFactory().get(Outpatient.getFactory().getNewId());
 					p.setName(textName.getText());
-					p.setBirthdayAsLocalDate(datePickerBirthday.getDate());
+					p.setTimeOfBirthAsLocalDate(datePickerTimeOfBirth.getDate());
 					p.setProblem(textProblem.getText());
 					p.setAddress(textAddress.getText());
 					p.setPhone(textPhone.getText());
 					p.setGender(textGender.getText());
 
-					Database db = Database.getInstance();
-					db.addPatient(p);
-					db.save();
+					Outpatient.getFactory().save(p);
 
 					window.setVisible(false);
 					window.parentWindow.refresh();
