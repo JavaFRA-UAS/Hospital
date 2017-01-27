@@ -17,11 +17,11 @@ public class Alert {
 			String problem) {
 		this.time = System.currentTimeMillis();
 		this.patientId = patientId;
-		this.entityName = entityName;
+		this.entityName = entityName != null ? entityName : null;
 		this.entityValue = entityValue;
 		this.expectedMin = expectedMin;
 		this.expectedMax = expectedMax;
-		this.problem = problem;
+		this.problem = problem != null ? problem : null;
 	}
 
 	public long getTime() {
