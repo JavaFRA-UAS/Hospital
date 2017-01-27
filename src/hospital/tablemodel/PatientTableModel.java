@@ -54,9 +54,9 @@ public class PatientTableModel extends AbstractTableModel {
 		String doctor = "";
 		Doctor doc = p.getDoctor();
 		if (doc != null) {
-			room = doc.getName();
+			doctor = doc.getName();
 		} else {
-			room = "unassigned";
+			doctor = "unassigned";
 		}
 
 		return new Object[] { p.getName(), p.getGender(), timeOfBirth, address, state, room, doctor };

@@ -20,6 +20,7 @@ import hospital.views.VitalsPanel;
 public class VitalsSimulation {
 
 	static HashSet<Integer> runningSimulations = new HashSet<Integer>();
+	static HashSet<RefreshListener> refreshListeners = new HashSet<RefreshListener>();
 
 	public static void initialize() {
 
@@ -45,7 +46,9 @@ public class VitalsSimulation {
 						}
 						Thread.sleep(300);
 
-						VitalsPanel.onRefresh();
+						for (RefreshListener rl : refreshListeners) {
+							rl.refresh();
+						}
 
 					}
 				} catch (Exception ex) {
@@ -168,5 +171,9 @@ public class VitalsSimulation {
 				}
 			}
 		}).start();
+	}
+
+	public static void addRefreshListener(RefreshListener rl) {
+		refreshListeners.add(rl);
 	}
 }

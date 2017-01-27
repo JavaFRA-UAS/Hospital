@@ -21,6 +21,8 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import hospital.RefreshListener;
+import hospital.VitalsSimulation;
 import hospital.helper.CustomHeaderRenderer;
 import hospital.helper.RefreshableWindow;
 import hospital.model.Doctor;
@@ -33,7 +35,7 @@ import hospital.window.EditPatientWindow;
 import hospital.window.MainWindow;
 import hospital.window.NewPatientWindow;
 
-public class PatientPanel extends JPanel {
+public class PatientPanel extends JPanel implements RefreshListener {
 
 	final MainWindow parentWindow;
 	final PatientTableModel tableModel;
@@ -43,6 +45,7 @@ public class PatientPanel extends JPanel {
 
 	public PatientPanel(final MainWindow parentWindow) {
 		this.parentWindow = parentWindow;
+		VitalsSimulation.addRefreshListener(this);
 		final PatientPanel that = this;
 
 		tableModel = new PatientTableModel();

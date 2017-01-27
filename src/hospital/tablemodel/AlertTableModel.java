@@ -6,7 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import hospital.alert.Alert;
 import hospital.alert.AlertHelper;
-
+import hospital.model.Doctor;
 import hospital.model.Inpatient;
 import hospital.model.Outpatient;
 import hospital.model.Patient;
@@ -15,7 +15,7 @@ import hospital.model.Vitals;
 
 public class AlertTableModel extends AbstractTableModel {
 
-	private String[] columnNames = { "Time", "Patient", "Vital sign", "Current", "Min", "Max", "Problem", "Room" };
+	private String[] columnNames = { "Time", "Patient", "Vital sign", "Current", "Min", "Max", "Problem", "Room", "Doctor" };
 
 	public List<Alert> getData() {
 		return AlertHelper.getInstance().getAlerts();
@@ -29,7 +29,7 @@ public class AlertTableModel extends AbstractTableModel {
 		if (Inpatient.getFactory().exists(patientId)) {
 			p = Inpatient.getFactory().get(patientId);
 			room = ((Inpatient) p).getRoom();
-			roomString = (room != null ? room.getName() : "(unassigned)");
+			roomString = (room != null ? room.getName() : "unassigned");
 		} else if (Outpatient.getFactory().exists(patientId)) {
 			p = Outpatient.getFactory().get(patientId);
 			room = null;
@@ -40,13 +40,21 @@ public class AlertTableModel extends AbstractTableModel {
 			roomString = null;
 		}
 
+		String doctor = "";
+		Doctor doc = p != null ? p.getDoctor() : null;
+		if (doc != null) {
+			doctor = doc.getName();
+		} else {
+			doctor = "unassigned";
+		}
+
 		if (a.getEntityName().length() > 0) {
-			return new Object[] { a.getFormattedTime(), roomString, a.getEntityName(),
+			return new Object[] { a.getFormattedTime(), p.getName(), a.getEntityName(),
 					String.format("%.2f", a.getEntityValue()), String.format("%.2f", a.getExpectedMin()),
-					String.format("%.2f", a.getExpectedMax()), a.getProblem(), roomString };
+					String.format("%.2f", a.getExpectedMax()), a.getProblem(), roomString, doctor };
 		} else {
 			return new Object[] { a.getFormattedTime(), (p != null ? p.getName() : ""), "", "", "", "", a.getProblem(),
-					roomString };
+					roomString, doctor };
 		}
 	}
 

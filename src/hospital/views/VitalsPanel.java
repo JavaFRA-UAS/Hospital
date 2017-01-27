@@ -25,6 +25,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 import hospital.Main;
+import hospital.RefreshListener;
+import hospital.VitalsSimulation;
 import hospital.helper.CustomHeaderRenderer;
 import hospital.helper.RandomGenerator;
 import hospital.helper.RefreshableWindow;
@@ -36,7 +38,7 @@ import hospital.window.EditPatientWindow;
 import hospital.window.MainWindow;
 import hospital.window.NewPatientWindow;
 
-public class VitalsPanel extends JPanel {
+public class VitalsPanel extends JPanel implements RefreshListener {
 
 	final MainWindow parentWindow;
 	final VitalsTableModel tableModel;
@@ -44,22 +46,9 @@ public class VitalsPanel extends JPanel {
 	boolean isInsideMouseEvent;
 	boolean hasOpenPopupMenu;
 
-	public static VitalsPanel instance = null;
-
-	public static void onRefresh() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (instance != null) {
-					instance.refresh();
-				}
-			}
-		});
-	}
-
 	public VitalsPanel(final MainWindow parentWindow) {
 		this.parentWindow = parentWindow;
-		VitalsPanel.instance = this;
+		VitalsSimulation.addRefreshListener(this);
 		final VitalsPanel that = this;
 
 		tableModel = new VitalsTableModel();
