@@ -21,7 +21,7 @@ public class Outpatient extends Patient implements DatabaseRow {
 		@Override
 		public void createTable(Statement statement) throws SQLException {
 			statement.executeUpdate(
-					"create table if not exists outpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, isDeleted integer, name string, address string, timeOfBirth integer, timeOfDeath integer, gender string, problem string, phone string)");
+					"create table if not exists outpatient (id INTEGER PRIMARY KEY AUTOINCREMENT, isDeleted integer, name string, address string, timeOfBirth integer, timeOfDeath integer, gender string, problem string, phone string, doctorId integer)");
 		}
 	};
 
@@ -43,12 +43,13 @@ public class Outpatient extends Patient implements DatabaseRow {
 		setGender(resultset.getString("gender"));
 		setProblem(resultset.getString("problem"));
 		setPhone(resultset.getString("phone"));
+		setDoctorId(resultset.getInt("doctorId"));
 	}
 
 	@Override
 	public void save(Connection connection) throws SQLException {
 		PreparedStatement statement = connection.prepareStatement(
-				"REPLACE INTO outpatient (id, isDeleted, name, address, timeOfBirth, timeOfDeath, gender, problem, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				"REPLACE INTO outpatient (id, isDeleted, name, address, timeOfBirth, timeOfDeath, gender, problem, phone, doctorId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		statement.setInt(1, getId());
 		statement.setInt(2, isDeleted() ? 1 : 0);
 		statement.setString(3, getName());
@@ -58,6 +59,7 @@ public class Outpatient extends Patient implements DatabaseRow {
 		statement.setString(7, getGender());
 		statement.setString(8, getProblem());
 		statement.setString(9, getPhone());
+		statement.setInt(10, getDoctorId());
 		statement.executeUpdate();
 	}
 }

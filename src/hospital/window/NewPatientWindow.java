@@ -27,6 +27,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import hospital.helper.RefreshableWindow;
+import hospital.model.Doctor;
 import hospital.model.Inpatient;
 import hospital.model.Outpatient;
 import hospital.model.Room;
@@ -53,6 +54,8 @@ public class NewPatientWindow extends JFrame {
 	private JRadioButton rdbtnOutpatient;
 	private JLabel lblRoom;
 	private JComboBox<String> boxRoom;
+	private JLabel lblDoctor;
+	private JComboBox<String> boxDoctor;
 	final RefreshableWindow parentWindow;
 
 	public NewPatientWindow(RefreshableWindow parentWindow) {
@@ -144,11 +147,13 @@ public class NewPatientWindow extends JFrame {
 		contentPane.add(lblRoom, "2, 20, left, default");
 
 		boxRoom = new JComboBox<String>();
-		boxRoom.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
 		contentPane.add(boxRoom, "4, 20, fill, default");
+
+		lblDoctor = new JLabel("Doctor");
+		contentPane.add(lblDoctor, "2, 22, left, default");
+
+		boxDoctor = new JComboBox<String>();
+		contentPane.add(boxDoctor, "4, 22, fill, default");
 
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(rdbtnInpatient);
@@ -175,6 +180,7 @@ public class NewPatientWindow extends JFrame {
 					p.setAddress(textAddress.getText());
 					p.setPhone(textPhone.getText());
 					p.setGender(textGender.getText());
+					p.setDoctor(Doctor.getFactory().get((String) boxDoctor.getSelectedItem()));
 					p.setRoom(Room.getFactory().get((String) boxRoom.getSelectedItem()));
 
 					Inpatient.getFactory().save(p);
@@ -190,6 +196,7 @@ public class NewPatientWindow extends JFrame {
 					p.setAddress(textAddress.getText());
 					p.setPhone(textPhone.getText());
 					p.setGender(textGender.getText());
+					p.setDoctor(Doctor.getFactory().get((String) boxDoctor.getSelectedItem()));
 
 					Outpatient.getFactory().save(p);
 
@@ -205,6 +212,11 @@ public class NewPatientWindow extends JFrame {
 		boxRoom.addItem("");
 		for (Room room : Room.getFactory().list()) {
 			boxRoom.addItem(room.getName());
+		}
+
+		boxDoctor.addItem("");
+		for (Doctor doc : Doctor.getFactory().list()) {
+			boxDoctor.addItem(doc.getName());
 		}
 	}
 

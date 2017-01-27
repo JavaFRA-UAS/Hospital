@@ -11,6 +11,7 @@ import javax.swing.table.AbstractTableModel;
 import hospital.helper.SearchListener;
 import hospital.model.Doctor;
 import hospital.model.Inpatient;
+import hospital.model.Nurse;
 import hospital.model.Outpatient;
 import hospital.model.Patient;
 import hospital.model.Room;
@@ -18,7 +19,7 @@ import hospital.model.Vitals;
 
 public class PatientTableModel extends AbstractTableModel implements SearchListener {
 
-	private String[] columnNames = { "Name", "Gender", "Date of birth", "Address", "State", "Room", "Doctor" };
+	private String[] columnNames = { "Name", "Gender", "Date of birth", "Address", "State", "Room", "Nurse", "Doctor" };
 
 	private String filter;
 
@@ -31,7 +32,7 @@ public class PatientTableModel extends AbstractTableModel implements SearchListe
 				l.add(p);
 				continue;
 			}
-			
+
 			String searchString = p.getSearchString().toLowerCase();
 
 			boolean isFiltered = true;
@@ -47,7 +48,7 @@ public class PatientTableModel extends AbstractTableModel implements SearchListe
 				l.add(p);
 				continue;
 			}
-			
+
 			String searchString = p.getSearchString().toLowerCase();
 
 			boolean isFiltered = true;
@@ -74,16 +75,19 @@ public class PatientTableModel extends AbstractTableModel implements SearchListe
 
 		String state = p.isAlive() ? "alive" : ("dead since " + timeOfDeath);
 
-		String room = "";
+		String room = "-";
+		String nurse = "-";
 		if (p instanceof Inpatient) {
 			Room r = ((Inpatient) p).getRoom();
 			if (r != null) {
 				room = r.getName();
+				Nurse n = r.getNurse();
+				if (n != null) {
+					nurse = n.getName();
+				}
 			} else {
 				room = "unassigned";
 			}
-		} else {
-			room = "-";
 		}
 
 		String doctor = "";
@@ -94,7 +98,7 @@ public class PatientTableModel extends AbstractTableModel implements SearchListe
 			doctor = "unassigned";
 		}
 
-		return new Object[] { p.getName(), p.getGender(), timeOfBirth, address, state, room, doctor };
+		return new Object[] { p.getName(), p.getGender(), timeOfBirth, address, state, room, nurse, doctor };
 	}
 
 	public int getColumnCount() {

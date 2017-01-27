@@ -9,6 +9,7 @@ import javax.swing.table.AbstractTableModel;
 import hospital.helper.SearchListener;
 import hospital.model.Doctor;
 import hospital.model.Inpatient;
+import hospital.model.Nurse;
 import hospital.model.Outpatient;
 import hospital.model.Patient;
 import hospital.model.Room;
@@ -16,8 +17,8 @@ import hospital.model.Vitals;
 
 public class VitalsTableModel extends AbstractTableModel implements SearchListener {
 
-	private String[] columnNames = { "Name", "Body temp. °C", "Blood pressure", "Pulse rate", "Breathing rate",
-			"State", "Room", "Doctor" };
+	private String[] columnNames = { "Name", "Body temp. °C", "Blood pressure", "Pulse rate", "Breathing rate", "State",
+			"Room", "Nurse", "Doctor" };
 	private String filter;
 
 	public List<Patient> getData() {
@@ -46,7 +47,7 @@ public class VitalsTableModel extends AbstractTableModel implements SearchListen
 				l.add(p);
 				continue;
 			}
-			
+
 			Doctor doc = p.getDoctor();
 			String searchString = (p.getSearchString() + (doc != null ? doc.getName() : "")).toLowerCase();
 
@@ -69,16 +70,19 @@ public class VitalsTableModel extends AbstractTableModel implements SearchListen
 
 		String state = p.isAlive() ? "alive" : ("dead since " + timeOfDeath);
 
-		String room = "";
+		String room = "-";
+		String nurse = "-";
 		if (p instanceof Inpatient) {
 			Room r = ((Inpatient) p).getRoom();
 			if (r != null) {
 				room = r.getName();
+				Nurse n = r.getNurse();
+				if (n != null) {
+					nurse = n.getName();
+				}
 			} else {
 				room = "unassigned";
 			}
-		} else {
-			room = "-";
 		}
 
 		String doctor = "";
@@ -92,7 +96,7 @@ public class VitalsTableModel extends AbstractTableModel implements SearchListen
 		Vitals v = p.getVitals();
 		return new Object[] { p.getName(), String.format("%.2f", v.getBodytemperature()),
 				v.getBloodpressure().toString(), String.format("%.0f", v.getPulserate()),
-				String.format("%.0f", v.getRatebreathing()), state, room, doctor };
+				String.format("%.0f", v.getRatebreathing()), state, room, nurse, doctor };
 	}
 
 	public int getColumnCount() {
@@ -147,5 +151,5 @@ public class VitalsTableModel extends AbstractTableModel implements SearchListen
 	public void onSearch(String text) {
 		filter = text;
 	}
-	
+
 }

@@ -145,6 +145,11 @@ public abstract class Patient extends Person {
 		this.timeOfDeath = epoch;
 	}
 
+	public String getSearchString() {
+		Doctor doc = this.getDoctor();
+		return super.getSearchString() + (doc != null ? doc.getName() : "");
+	}
+
 	@Override
 	public String toString() {
 		return name != null ? name : "";

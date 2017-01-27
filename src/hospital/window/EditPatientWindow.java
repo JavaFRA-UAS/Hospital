@@ -24,6 +24,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import hospital.helper.RefreshableWindow;
+import hospital.model.Doctor;
 import hospital.model.Inpatient;
 import hospital.model.Nurse;
 import hospital.model.Outpatient;
@@ -49,6 +50,8 @@ public class EditPatientWindow extends JFrame {
 	private JTextField textPhone;
 	private JLabel lblRoom;
 	private JComboBox<String> boxRoom;
+	private JLabel lblDoctor;
+	private JComboBox<String> boxDoctor;
 	final RefreshableWindow parentWindow;
 	private Patient row;
 	DatePicker datePickerTimeOfBirth;
@@ -134,11 +137,13 @@ public class EditPatientWindow extends JFrame {
 		contentPane.add(lblRoom, "2, 16, left, default");
 
 		boxRoom = new JComboBox<String>();
-		boxRoom.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
 		contentPane.add(boxRoom, "4, 16, fill, default");
+
+		lblDoctor = new JLabel("Doctor");
+		contentPane.add(lblDoctor, "2, 18, left, default");
+
+		boxDoctor = new JComboBox<String>();
+		contentPane.add(boxDoctor, "4, 18, fill, default");
 
 		JButton btnSave = new JButton("Save");
 		contentPane.add(btnSave, "4, 20, default, bottom");
@@ -156,6 +161,7 @@ public class EditPatientWindow extends JFrame {
 					p.setAddress(textAddress.getText());
 					p.setPhone(textPhone.getText());
 					p.setGender(textGender.getText());
+					p.setDoctor(Doctor.getFactory().get((String) boxDoctor.getSelectedItem()));
 					p.setRoom(Room.getFactory().get((String) boxRoom.getSelectedItem()));
 
 					Inpatient.getFactory().save(p);
@@ -168,6 +174,7 @@ public class EditPatientWindow extends JFrame {
 					p.setAddress(textAddress.getText());
 					p.setPhone(textPhone.getText());
 					p.setGender(textGender.getText());
+					p.setDoctor(Doctor.getFactory().get((String) boxDoctor.getSelectedItem()));
 
 					Outpatient.getFactory().save(p);
 				}
@@ -180,6 +187,11 @@ public class EditPatientWindow extends JFrame {
 		boxRoom.addItem("");
 		for (Room room : Room.getFactory().list()) {
 			boxRoom.addItem(room.getName());
+		}
+
+		boxDoctor.addItem("");
+		for (Doctor doc : Doctor.getFactory().list()) {
+			boxDoctor.addItem(doc.getName());
 		}
 	}
 
@@ -194,6 +206,9 @@ public class EditPatientWindow extends JFrame {
 
 		Room r = (p instanceof Inpatient) ? ((Inpatient) p).getRoom() : null;
 		boxRoom.setSelectedItem(r != null ? r.getName() : "");
+		
+		Doctor doc = p.getDoctor();
+		boxDoctor.setSelectedItem(doc != null ? doc.getName() : "");
 
 		updateVisibility();
 	}
