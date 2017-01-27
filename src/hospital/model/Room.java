@@ -62,7 +62,7 @@ public class Room implements DatabaseRow {
 	}
 
 	public String getName() {
-		return name;
+		return name != null ? name : "";
 	}
 
 	public void setName(String name) {
@@ -126,12 +126,12 @@ public class Room implements DatabaseRow {
 	}
 
 	public String getSearchString() {
-		return name;
+		return name != null ? name : "";
 	}
 
 	@Override
 	public String toString() {
-		return name;
+		return name != null ? name : "";
 	}
 
 }

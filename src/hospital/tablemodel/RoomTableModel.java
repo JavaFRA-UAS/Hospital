@@ -34,10 +34,10 @@ public class RoomTableModel extends AbstractTableModel implements SearchListener
 			String searchString = r.getSearchString().toLowerCase();
 			Nurse n = r.getNurse();
 			if (n != null) {
-				searchString += n.getName();
+				searchString += n.getName().toLowerCase();
 			}
 			for (Inpatient p : r.getInpatients()) {
-				searchString += p.getName();
+				searchString += p.getName().toLowerCase();
 			}
 
 			boolean isFiltered = true;

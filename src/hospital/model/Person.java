@@ -40,7 +40,7 @@ public abstract class Person {
 	}
 
 	public String getName() {
-		return name;
+		return name != null ? name : "";
 	}
 
 	public void setName(String name) {
@@ -103,6 +103,6 @@ public abstract class Person {
 
 	@Override
 	public String toString() {
-		return name;
+		return name != null ? name : "";
 	}
 }
