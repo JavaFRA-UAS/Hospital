@@ -91,6 +91,10 @@ public class Room implements DatabaseRow {
 		statement.setInt(4, getCapacity());
 		statement.executeUpdate();
 	}
+	
+	public String getSearchString() {
+		return name;
+	}
 
 	@Override
 	public String toString() {

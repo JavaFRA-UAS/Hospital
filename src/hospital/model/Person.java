@@ -96,6 +96,10 @@ public abstract class Person {
 	public long getAge() {
 		return java.time.temporal.ChronoUnit.YEARS.between(getTimeOfBirthAsLocalDate(), LocalDate.now());
 	}
+	
+	public String getSearchString() {
+		return name + gender + address;
+	}
 
 	@Override
 	public String toString() {

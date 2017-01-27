@@ -25,6 +25,8 @@ import hospital.RefreshListener;
 import hospital.VitalsSimulation;
 import hospital.helper.CustomHeaderRenderer;
 import hospital.helper.RefreshableWindow;
+import hospital.helper.SearchListener;
+import hospital.helper.SearchPanel;
 import hospital.model.Doctor;
 import hospital.model.Inpatient;
 import hospital.model.Nurse;
@@ -35,7 +37,7 @@ import hospital.window.EditPatientWindow;
 import hospital.window.MainWindow;
 import hospital.window.NewPatientWindow;
 
-public class PatientPanel extends JPanel implements RefreshListener {
+public class PatientPanel extends JPanel implements RefreshListener, SearchListener {
 
 	final MainWindow parentWindow;
 	final PatientTableModel tableModel;
@@ -158,18 +160,13 @@ public class PatientPanel extends JPanel implements RefreshListener {
 		gbc_btnNew.gridy = 1;
 		this.add(btnNew, gbc_btnNew);
 
-		JButton btnDelete = new JButton("X");
-		btnDelete.setVisible(false);
-		btnDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				// delete button is now in context menu
-			}
-		});
-		GridBagConstraints gbc_btnDelete = new GridBagConstraints();
-		gbc_btnDelete.anchor = GridBagConstraints.SOUTHWEST;
-		gbc_btnDelete.gridx = 0;
-		gbc_btnDelete.gridy = 1;
-		this.add(btnDelete, gbc_btnDelete);
+		SearchPanel searchPanel = new SearchPanel();
+		searchPanel.addSearchListener(this);
+		GridBagConstraints gbc_searchPanel = new GridBagConstraints();
+		gbc_searchPanel.anchor = GridBagConstraints.SOUTHWEST;
+		gbc_searchPanel.gridx = 0;
+		gbc_searchPanel.gridy = 1;
+		this.add(searchPanel, gbc_searchPanel);
 
 	}
 
@@ -179,7 +176,13 @@ public class PatientPanel extends JPanel implements RefreshListener {
 		}
 	}
 
-	public void refresh() {
+	public synchronized void refresh() {
 		fillList();
+	}
+
+	@Override
+	public void onSearch(String text) {
+		tableModel.onSearch(text);
+		refresh();
 	}
 }

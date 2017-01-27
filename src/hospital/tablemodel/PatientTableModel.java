@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import hospital.helper.SearchListener;
 import hospital.model.Doctor;
 import hospital.model.Inpatient;
 import hospital.model.Outpatient;
@@ -15,14 +16,44 @@ import hospital.model.Patient;
 import hospital.model.Room;
 import hospital.model.Vitals;
 
-public class PatientTableModel extends AbstractTableModel {
+public class PatientTableModel extends AbstractTableModel implements SearchListener {
 
 	private String[] columnNames = { "Name", "Gender", "Date of birth", "Address", "State", "Room", "Doctor" };
 
+	private String filter;
+
 	public List<Patient> getData() {
+		String[] words = filter != null ? filter.split("\\s+") : new String[0];
+
 		List<Patient> l = new ArrayList<Patient>();
-		l.addAll(Inpatient.getFactory().list());
-		l.addAll(Outpatient.getFactory().list());
+		for (Patient p : Inpatient.getFactory().list()) {
+			if (filter == null) {
+				l.add(p);
+				continue;
+			}
+
+			boolean isFiltered = true;
+			for (String word : words) {
+				isFiltered &= p.getSearchString().toLowerCase().contains(word.toLowerCase());
+			}
+			if (isFiltered) {
+				l.add(p);
+			}
+		}
+		for (Patient p : Outpatient.getFactory().list()) {
+			if (filter == null) {
+				l.add(p);
+				continue;
+			}
+
+			boolean isFiltered = true;
+			for (String word : words) {
+				isFiltered &= p.getSearchString().toLowerCase().contains(word.toLowerCase());
+			}
+			if (isFiltered) {
+				l.add(p);
+			}
+		}
 		return l;
 	}
 
@@ -108,6 +139,11 @@ public class PatientTableModel extends AbstractTableModel {
 	public void setValueAt(Object value, int row, int col) {
 		// data[row][col] = value;
 		fireTableCellUpdated(row, col);
+	}
+
+	@Override
+	public void onSearch(String text) {
+		filter = text;
 	}
 
 }

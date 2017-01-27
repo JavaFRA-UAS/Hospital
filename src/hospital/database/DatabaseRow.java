@@ -10,6 +10,8 @@ public interface DatabaseRow {
 	public int getId();
 
 	public String getName();
+	
+	public String getSearchString();
 
 	public boolean isDeleted();
 

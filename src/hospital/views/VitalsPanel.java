@@ -238,7 +238,7 @@ public class VitalsPanel extends JPanel implements RefreshListener {
 		}
 	}
 
-	public void refresh() {
+	public synchronized void refresh() {
 		fillList();
 	}
 }
