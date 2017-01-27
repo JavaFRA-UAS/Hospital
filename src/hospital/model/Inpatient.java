@@ -49,8 +49,9 @@ public class Inpatient extends Patient implements DatabaseRow {
 
 	public void setRoom(Room r) {
 		if (r == null)
-			return;
-		roomId = r.getId();
+			roomId = 0;
+		else
+			roomId = r.getId();
 	}
 
 	public Nurse getNurse() {

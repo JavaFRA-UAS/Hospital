@@ -91,8 +91,9 @@ public class Room implements DatabaseRow {
 
 	public void setNurse(Nurse nurse) {
 		if (nurse == null)
-			return;
-		nurseId = nurse.getId();
+			nurseId = 0;
+		else
+			nurseId = nurse.getId();
 	}
 
 	public List<Inpatient> getInpatients() {

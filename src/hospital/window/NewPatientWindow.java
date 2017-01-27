@@ -6,10 +6,14 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.awt.GridLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -22,10 +26,10 @@ import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
-
 import hospital.helper.RefreshableWindow;
 import hospital.model.Inpatient;
 import hospital.model.Outpatient;
+import hospital.model.Room;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextPane;
@@ -45,6 +49,10 @@ public class NewPatientWindow extends JFrame {
 	private JTextField textGender;
 	private JTextField textAddress;
 	private JTextField textPhone;
+	private JRadioButton rdbtnInpatient;
+	private JRadioButton rdbtnOutpatient;
+	private JLabel lblRoom;
+	private JComboBox<String> boxRoom;
 	final RefreshableWindow parentWindow;
 
 	public NewPatientWindow(RefreshableWindow parentWindow) {
@@ -125,16 +133,37 @@ public class NewPatientWindow extends JFrame {
 
 		JButton btnSave = new JButton("Save");
 
-		final JRadioButton rdbtnInpatient = new JRadioButton("Inpatient");
+		rdbtnInpatient = new JRadioButton("Inpatient");
 		contentPane.add(rdbtnInpatient, "4, 16");
 
-		final JRadioButton rdbtnOutpatient = new JRadioButton("Outpatient");
+		rdbtnOutpatient = new JRadioButton("Outpatient");
 		contentPane.add(rdbtnOutpatient, "4, 18");
 		contentPane.add(btnSave, "4, 20, default, bottom");
+
+		lblRoom = new JLabel("Room:");
+		contentPane.add(lblRoom, "2, 20, left, default");
+
+		boxRoom = new JComboBox<String>();
+		boxRoom.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		contentPane.add(boxRoom, "4, 20, fill, default");
 
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(rdbtnInpatient);
 		buttonGroup.add(rdbtnOutpatient);
+
+		rdbtnInpatient.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent changEvent) {
+				updateVisibility();
+			}
+		});
+		rdbtnOutpatient.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent changEvent) {
+				updateVisibility();
+			}
+		});
 
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -146,6 +175,7 @@ public class NewPatientWindow extends JFrame {
 					p.setAddress(textAddress.getText());
 					p.setPhone(textPhone.getText());
 					p.setGender(textGender.getText());
+					p.setRoom(Room.getFactory().get((String) boxRoom.getSelectedItem()));
 
 					Inpatient.getFactory().save(p);
 
@@ -165,12 +195,22 @@ public class NewPatientWindow extends JFrame {
 
 					window.setVisible(false);
 					window.parentWindow.refresh();
-					
+
 				} else {
 					JOptionPane.showMessageDialog(window, "The patient must be an inpatient or an outpatient.");
 				}
 			}
 		});
+
+		boxRoom.addItem("");
+		for (Room room : Room.getFactory().list()) {
+			boxRoom.addItem(room.getName());
+		}
+	}
+
+	private void updateVisibility() {
+		lblRoom.setVisible(rdbtnInpatient.isSelected());
+		boxRoom.setVisible(rdbtnInpatient.isSelected());
 	}
 
 }

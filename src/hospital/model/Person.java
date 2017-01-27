@@ -88,6 +88,8 @@ public abstract class Person {
 	}
 
 	public void setTimeOfBirthAsLocalDate(LocalDate timeOfBirth) {
+		if (timeOfBirth == null)
+			return;
 		ZoneId zoneId = ZoneId.systemDefault();
 		long epoch = timeOfBirth.atStartOfDay(zoneId).toEpochSecond();
 		this.timeOfBirth = epoch;
@@ -96,7 +98,7 @@ public abstract class Person {
 	public long getAge() {
 		return java.time.temporal.ChronoUnit.YEARS.between(getTimeOfBirthAsLocalDate(), LocalDate.now());
 	}
-	
+
 	public String getSearchString() {
 		return name + gender + address;
 	}

@@ -47,6 +47,7 @@ public class EditPatientWindow extends JFrame {
 	private JTextField textGender;
 	private JTextField textAddress;
 	private JTextField textPhone;
+	private JLabel lblRoom;
 	private JComboBox<String> boxRoom;
 	final RefreshableWindow parentWindow;
 	private Patient row;
@@ -129,9 +130,8 @@ public class EditPatientWindow extends JFrame {
 		textProblem.setLineWrap(true);
 		contentPane.add(textProblem, "4, 14, fill, fill");
 
-		JLabel lblRoom = new JLabel("Room:");
+		lblRoom = new JLabel("Room:");
 		contentPane.add(lblRoom, "2, 16, left, default");
-		lblRoom.setVisible(row instanceof Inpatient);
 
 		boxRoom = new JComboBox<String>();
 		boxRoom.addActionListener(new ActionListener() {
@@ -139,7 +139,6 @@ public class EditPatientWindow extends JFrame {
 			}
 		});
 		contentPane.add(boxRoom, "4, 16, fill, default");
-		boxRoom.setVisible(row instanceof Inpatient);
 
 		JButton btnSave = new JButton("Save");
 		contentPane.add(btnSave, "4, 20, default, bottom");
@@ -192,8 +191,15 @@ public class EditPatientWindow extends JFrame {
 		textAddress.setText(p.getAddress());
 		textPhone.setText(p.getPhone());
 		textGender.setText(p.getGender());
+
 		Room r = (p instanceof Inpatient) ? ((Inpatient) p).getRoom() : null;
 		boxRoom.setSelectedItem(r != null ? r.getName() : "");
+
+		updateVisibility();
 	}
 
+	private void updateVisibility() {
+		lblRoom.setVisible(row instanceof Inpatient);
+		boxRoom.setVisible(row instanceof Inpatient);
+	}
 }

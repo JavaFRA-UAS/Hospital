@@ -58,8 +58,9 @@ public abstract class Patient extends Person {
 
 	public void setDoctor(Doctor doctor) {
 		if (doctor == null)
-			return;
-		this.doctorId = doctor.getId();
+			this.doctorId = 0;
+		else
+			this.doctorId = doctor.getId();
 	}
 
 	public Vitals getVitals() {
@@ -137,6 +138,8 @@ public abstract class Patient extends Person {
 	}
 
 	public void setTimeOfDeathAsLocalDate(LocalDate timeOfDeath) {
+		if (timeOfDeath == null)
+			return;
 		ZoneId zoneId = ZoneId.systemDefault();
 		long epoch = timeOfDeath.atStartOfDay(zoneId).toEpochSecond();
 		this.timeOfDeath = epoch;
