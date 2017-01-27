@@ -9,7 +9,7 @@ public abstract class Employee extends Person {
 	String password;
 
 	public String getPassword() {
-		return password;
+		return password != null ? password : "";
 	}
 
 	public void setPassword(String password) {
