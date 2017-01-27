@@ -25,24 +25,28 @@ public class AlertTableModel extends AbstractTableModel {
 		int patientId = a.getPatientId();
 		Patient p;
 		Room room;
+		String roomString;
 		if (Inpatient.getFactory().exists(patientId)) {
 			p = Inpatient.getFactory().get(patientId);
 			room = ((Inpatient) p).getRoom();
+			roomString = (p != null ? p.getName() : "(unassigned)");
 		} else if (Outpatient.getFactory().exists(patientId)) {
 			p = Outpatient.getFactory().get(patientId);
 			room = null;
+			roomString = "(outpatient)";
 		} else {
 			p = null;
 			room = null;
+			roomString = null;
 		}
 
 		if (a.getEntityName().length() > 0) {
-			return new Object[] { a.getFormattedTime(), (p != null ? p.getName() : ""), a.getEntityName(),
+			return new Object[] { a.getFormattedTime(), roomString, a.getEntityName(),
 					String.format("%.2f", a.getEntityValue()), String.format("%.2f", a.getExpectedMin()),
-					String.format("%.2f", a.getExpectedMax()), a.getProblem(), (room != null ? room.getId() : "") };
+					String.format("%.2f", a.getExpectedMax()), a.getProblem(), roomString };
 		} else {
 			return new Object[] { a.getFormattedTime(), (p != null ? p.getName() : ""), "", "", "", "", a.getProblem(),
-					(room != null ? room.getId() : "") };
+					roomString };
 		}
 	}
 

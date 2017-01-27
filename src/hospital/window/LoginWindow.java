@@ -110,7 +110,7 @@ public class LoginWindow extends JFrame {
 					
 					MainWindow w = new MainWindow(user);
 					w.setVisible(true);
-					lw.setVisible(false);
+					//lw.setVisible(false);
 				}
 			}
 		});
@@ -133,7 +133,7 @@ public class LoginWindow extends JFrame {
 		Doctor.getFactory().loadAll();
 		Nurse.getFactory().loadAll();
 		
-		comboBox.removeAll();
+		comboBox.removeAllItems();
 		comboBox.addItem("");
 
 		for (Administrator doc : Administrator.getFactory().list()) {
