@@ -12,7 +12,7 @@ import hospital.database.Factory;
 
 public class Nurse extends Employee implements DatabaseRow {
 
-	private static Factory<Nurse> factory = new Factory<Nurse>("nurse", 3000) {
+	private static Factory<Nurse> factory = new Factory<Nurse>("nurse", 4000) {
 		@Override
 		protected Nurse create(int id) {
 			Nurse o = new Nurse(id);

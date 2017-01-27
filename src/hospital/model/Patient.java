@@ -74,6 +74,11 @@ public abstract class Patient extends Person {
 
 	public void setAlive(boolean isAlive) {
 		this.isAlive = isAlive;
+		if (isAlive) {
+			this.timeOfDeath = 0;
+		} else {
+			this.timeOfDeath = System.currentTimeMillis() / 1000;
+		}
 	}
 
 	public void die(final String why) {
@@ -86,9 +91,9 @@ public abstract class Patient extends Person {
 					JOptionPane.showMessageDialog(null, name + " " + why + ".");
 				}
 			});
-		}
 
-		this.isAlive = false;
+			setAlive(false);
+		}
 	}
 
 	public void revive(final String why) {
@@ -105,7 +110,7 @@ public abstract class Patient extends Person {
 		this.vitals = new Vitals(id);
 		this.heart = new Heart(vitals);
 		this.lungs = new Lungs(vitals);
-		this.isAlive = true;
+		setAlive(true);
 	}
 
 	public long getTimeOfDeath() {

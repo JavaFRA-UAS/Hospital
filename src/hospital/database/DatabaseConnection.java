@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.Random;
 
 import hospital.model.*;
@@ -179,7 +180,7 @@ public class DatabaseConnection {
 	private static Random r = new Random();
 
 	private static long getRandomTimeOfBirth() {
-		return -(31536000L * 70) + r.nextLong() % (31536000L * 90);
+		return new Date(Math.abs(r.nextInt() % 85), 0, 0).getTime() / 1000 + (r.nextLong() % 10000000);
 	}
 
 	private static String getRandomPhone() {

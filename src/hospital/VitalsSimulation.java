@@ -121,10 +121,10 @@ public class VitalsSimulation {
 						patient.getVitals().setBodytemperature(temperature);
 
 						// death of old age
-						double probability = patient.getAge() < 60 ? 0.0 : (patient.getAge() - 60.0) / 30.0;
-						for (int tries = 3; tries >= 0 && random2.nextDouble() < probability; tries--) {
+						double probability = Math.pow((patient.getAge() / 100.0), 3);
+						for (int tries = 10; tries >= 0 && random2.nextDouble() < probability; tries--) {
 							if (tries == 0) {
-								patient.die("died of old age");
+								patient.die("died of old age (" + patient.getAge() + ")");
 							}
 						}
 

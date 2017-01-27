@@ -30,7 +30,7 @@ public class PatientTableModel extends AbstractTableModel {
 		Vitals v = p.getVitals();
 
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-		String timeOfBirth = dtf.format(p.getTimeOfBirthAsLocalDate());
+		String timeOfBirth = dtf.format(p.getTimeOfBirthAsLocalDate()) + " (age " + p.getAge() + ")";
 		String timeOfDeath = p.isAlive() ? "" : dtf.format(p.getTimeOfDeathAsLocalDateTime());
 
 		String address = p.getAddress();
