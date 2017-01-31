@@ -208,7 +208,7 @@ public class VitalsPanel extends JPanel implements RefreshListener, SearchListen
 		gbc_listPatients.gridy = 0;
 		this.add(new JScrollPane(table), gbc_listPatients);
 
-		JButton btnNew = new JButton("A");
+		JButton btnNew = new JButton("VItalBooster");
 		btnNew.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {

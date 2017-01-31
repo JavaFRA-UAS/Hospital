@@ -51,6 +51,7 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 	private Employee currentUser;
 
 	public MainWindow(Employee user) {
+		setTitle("Hospital Management System");
 		final MainWindow dw = this;
 		this.currentUser = user;
 
