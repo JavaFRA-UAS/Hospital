@@ -71,7 +71,9 @@ public class NewPatientWindow extends JFrame {
 						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"), },
 				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
 						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, 
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
 						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
 						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("default:grow"), FormSpecs.RELATED_GAP_ROWSPEC,
 						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
@@ -134,14 +136,12 @@ public class NewPatientWindow extends JFrame {
 		textProblem.setLineWrap(true);
 		contentPane.add(textProblem, "4, 14, fill, fill");
 
-		JButton btnSave = new JButton("Save");
 
 		rdbtnInpatient = new JRadioButton("Inpatient");
 		contentPane.add(rdbtnInpatient, "4, 16");
 
 		rdbtnOutpatient = new JRadioButton("Outpatient");
 		contentPane.add(rdbtnOutpatient, "4, 18");
-		contentPane.add(btnSave, "4, 20, default, bottom");
 
 		lblRoom = new JLabel("Room:");
 		contentPane.add(lblRoom, "2, 20, left, default");
@@ -154,6 +154,9 @@ public class NewPatientWindow extends JFrame {
 
 		boxDoctor = new JComboBox<String>();
 		contentPane.add(boxDoctor, "4, 22, fill, default");
+
+		JButton btnSave = new JButton("Save");
+		contentPane.add(btnSave, "4, 24, default, bottom");
 
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(rdbtnInpatient);

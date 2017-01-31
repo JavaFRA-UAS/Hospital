@@ -42,7 +42,7 @@ import java.awt.Color;
 import javax.swing.DropMode;
 import java.awt.SystemColor;
 
-public class LoginWindow extends JFrame {
+public class LoginWindow extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanelWithBackground contentPane;
@@ -87,53 +87,53 @@ public class LoginWindow extends JFrame {
 		fillCombobox();
 
 		JButton btnLogin = new JButton("Login");
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (comboBox.getSelectedIndex() > 0) {
-
-					final String name = (String) comboBox.getSelectedItem();
-					Employee user = null;
-					for (Administrator a : Administrator.getFactory().list()) {
-						if (name == a.getName()) {
-							user = a;
-						}
-					}
-					for (Doctor doc : Doctor.getFactory().list()) {
-						if (name == doc.getName()) {
-							user = doc;
-						}
-					}
-					for (Nurse nurse : Nurse.getFactory().list()) {
-						if (name == nurse.getName()) {
-							user = nurse;
-						}
-					}
-
-					String password = new String(passwordField.getPassword());
-					if (password == null) password = "";
-					
-					if (user != null && user.getPassword().equals(password)) {
-						MainWindow w = new MainWindow(user);
-						w.setVisible(true);
-						// lw.setVisible(false);
-
-					} else {
-						Log.showError("Wrong password");
-					}
-
-				}
-			}
-		});
+		btnLogin.addActionListener(this);
 
 		lblPassword = new JLabel("Password:");
 		contentPane.add(lblPassword, "2, 4");
 
 		passwordField = new JPasswordField();
+		passwordField.addActionListener(this);
 		passwordField.setForeground(Color.BLACK);
 		passwordField.setBackground(Color.WHITE);
 		contentPane.add(passwordField, "6, 4");
 		contentPane.add(btnLogin, "6, 6");
 
+	}
+	public void actionPerformed(ActionEvent e) {
+		if (comboBox.getSelectedIndex() > 0) {
+
+			final String name = (String) comboBox.getSelectedItem();
+			Employee user = null;
+			for (Administrator a : Administrator.getFactory().list()) {
+				if (name == a.getName()) {
+					user = a;
+				}
+			}
+			for (Doctor doc : Doctor.getFactory().list()) {
+				if (name == doc.getName()) {
+					user = doc;
+				}
+			}
+			for (Nurse nurse : Nurse.getFactory().list()) {
+				if (name == nurse.getName()) {
+					user = nurse;
+				}
+			}
+
+			String password = new String(passwordField.getPassword());
+			if (password == null) password = "";
+			
+			if (user != null && user.getPassword().equals(password)) {
+				MainWindow w = new MainWindow(user);
+				w.setVisible(true);
+				// lw.setVisible(false);
+
+			} else {
+				Log.showError("Wrong password");
+			}
+
+		}
 	}
 
 	synchronized void fillCombobox() {
