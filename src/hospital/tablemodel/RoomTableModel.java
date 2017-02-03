@@ -67,7 +67,7 @@ public class RoomTableModel extends AbstractTableModel implements SearchListener
 			patients = "none";
 		}
 
-		String capacity = r.getCapacity() + " (" + (100 * r.getInpatients().size() / r.getCapacity()) + ")";
+		String capacity = r.getCapacity() + " (" + (100 * r.getInpatients().size() / r.getCapacity()) + " %)";
 
 		return new Object[] { r.getName(), nurseName, patients, capacity };
 	}
