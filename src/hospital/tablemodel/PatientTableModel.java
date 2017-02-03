@@ -33,8 +33,6 @@ public class PatientTableModel extends AbstractTableModel implements SearchListe
 	public List<Patient> getData() {
 		String[] words = filter != null ? filter.split("\\s+") : new String[0];
 
-		System.out.println("currentUser" + currentUser.getClass().getSimpleName() + ": " + currentUser.getName());
-
 		List<Patient> l = new ArrayList<Patient>();
 		for (Inpatient p : Inpatient.getFactory().list().toArray(new Inpatient[0])) {
 			if (currentUser instanceof Doctor) {
