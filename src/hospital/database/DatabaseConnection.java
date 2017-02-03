@@ -137,15 +137,16 @@ public class DatabaseConnection {
 			final int countFloor = r.nextInt(4);
 			final int countRoomNo = r.nextInt(15);
 
-			for (int floor = 1; floor <= countFloor; floor++) {
-				for (int roomNo = 1; roomNo <= countRoomNo; roomNo++) {
+			for (String building : buildings) {
+				for (int floor = 1; floor <= countFloor; floor++) {
+					for (int roomNo = 1; roomNo <= countRoomNo; roomNo++) {
 
-					String building = buildings[r.nextInt(buildings.length)];
-					Room r1 = Room.getFactory().get(Room.getFactory().getNewId());
-					r1.setName(building + ", " + (roomNo >= 10 ? (floor + "" + roomNo) : (floor + "0" + roomNo)));
-					r1.setCapacity(r.nextInt(10) >= 5 ? 4 : 2);
-					Room.getFactory().save(r1);
-					recentlyAddedRooms.add(r1);
+						Room r1 = Room.getFactory().get(Room.getFactory().getNewId());
+						r1.setName(building + ", " + (roomNo >= 10 ? (floor + "" + roomNo) : (floor + "0" + roomNo)));
+						r1.setCapacity(r.nextInt(10) >= 5 ? 4 : 2);
+						Room.getFactory().save(r1);
+						recentlyAddedRooms.add(r1);
+					}
 				}
 			}
 		}
