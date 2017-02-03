@@ -45,7 +45,7 @@ public class AlertPanel extends JPanel implements AlertListener {
 
 		AlertHelper.getInstance().addAlertListener(this);
 
-		tableModel = new AlertTableModel();
+		tableModel = new AlertTableModel(parentWindow.getCurrentUser());
 		table = new JTable(tableModel) {
 
 			private static final long serialVersionUID = 1L;

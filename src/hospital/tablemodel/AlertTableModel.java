@@ -1,5 +1,6 @@
 package hospital.tablemodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -7,6 +8,7 @@ import javax.swing.table.AbstractTableModel;
 import hospital.alert.Alert;
 import hospital.alert.AlertHelper;
 import hospital.model.Doctor;
+import hospital.model.Employee;
 import hospital.model.Inpatient;
 import hospital.model.Nurse;
 import hospital.model.Outpatient;
@@ -16,47 +18,46 @@ import hospital.model.Vitals;
 
 public class AlertTableModel extends AbstractTableModel {
 
+	private Employee currentUser;
+
+	public AlertTableModel(Employee currentUser) {
+		this.currentUser = currentUser;
+	}
+
 	private String[] columnNames = { "Time", "Patient", "Vital sign", "Current", "Min", "Max", "Problem", "Room",
 			"Nurse", "Doctor" };
 
 	public List<Alert> getData() {
-		return AlertHelper.getInstance().getAlerts();
+		Alert[] raw = AlertHelper.getInstance().getAlerts().toArray(new Alert[0]);
+		List<Alert> result = new ArrayList<Alert>();
+		for (Alert a : raw) {
+
+			if (currentUser instanceof Doctor) {
+				Doctor d = (Doctor) currentUser;
+				if (a.getDoctor() != null && a.getDoctor().getId() != d.getId()) {
+					continue;
+				}
+			}
+
+			if (currentUser instanceof Nurse) {
+				Nurse n = (Nurse) currentUser;
+				if (a.getNurse() != null && a.getNurse().getId() != n.getId()) {
+					continue;
+				}
+			}
+
+			result.add(a);
+		}
+		return result;
 	}
 
 	public Object[] getRow(Alert a) {
 		int patientId = a.getPatientId();
 
-		Patient p;
-		if (Inpatient.getFactory().exists(patientId)) {
-			p = Inpatient.getFactory().get(patientId);
-		} else if (Outpatient.getFactory().exists(patientId)) {
-			p = Outpatient.getFactory().get(patientId);
-		} else {
-			p = null;
-		}
-
-		String room = "-";
-		String nurse = "-";
-		if (p instanceof Inpatient) {
-			Room r = ((Inpatient) p).getRoom();
-			if (r != null) {
-				room = r.getName();
-				Nurse n = r.getNurse();
-				if (n != null) {
-					nurse = n.getName();
-				}
-			} else {
-				room = "unassigned";
-			}
-		}
-
-		String doctor = "";
-		Doctor doc = p != null ? p.getDoctor() : null;
-		if (doc != null) {
-			doctor = doc.getName();
-		} else {
-			doctor = "unassigned";
-		}
+		Patient p = a.getPatient();
+		String room = a.getRoomName();
+		String nurse = a.getNurseName();
+		String doctor = a.getDoctorName();
 
 		if (a.getEntityName().length() > 0) {
 			return new Object[] { a.getFormattedTime(), p.getName(), a.getEntityName(),

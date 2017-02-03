@@ -53,7 +53,7 @@ public class NursePanel extends JPanel implements RefreshListener, SearchListene
 		VitalsSimulation.addRefreshListener(this);
 		final NursePanel that = this;
 
-		tableModel = new NurseTableModel();
+		tableModel = new NurseTableModel(parentWindow.getCurrentUser());
 		table = new JTable(tableModel) {
 
 			private static final long serialVersionUID = 1L;

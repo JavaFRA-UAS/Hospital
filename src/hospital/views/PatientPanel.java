@@ -51,7 +51,7 @@ public class PatientPanel extends JPanel implements RefreshListener, SearchListe
 		VitalsSimulation.addRefreshListener(this);
 		final PatientPanel that = this;
 
-		tableModel = new PatientTableModel();
+		tableModel = new PatientTableModel(parentWindow.getCurrentUser());
 		table = new JTable(tableModel) {
 
 			private static final long serialVersionUID = 1L;

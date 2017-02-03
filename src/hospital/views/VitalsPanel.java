@@ -60,7 +60,7 @@ public class VitalsPanel extends JPanel implements RefreshListener, SearchListen
 		VitalsSimulation.addRefreshListener(this);
 		final VitalsPanel that = this;
 
-		tableModel = new VitalsTableModel();
+		tableModel = new VitalsTableModel(parentWindow.getCurrentUser());
 		table = new JTable(tableModel) {
 
 			private static final long serialVersionUID = 1L;

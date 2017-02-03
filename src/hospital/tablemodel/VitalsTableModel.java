@@ -8,6 +8,7 @@ import javax.swing.table.AbstractTableModel;
 
 import hospital.helper.SearchListener;
 import hospital.model.Doctor;
+import hospital.model.Employee;
 import hospital.model.Inpatient;
 import hospital.model.Nurse;
 import hospital.model.Outpatient;
@@ -16,6 +17,12 @@ import hospital.model.Room;
 import hospital.model.Vitals;
 
 public class VitalsTableModel extends AbstractTableModel implements SearchListener {
+
+	private Employee currentUser;
+
+	public VitalsTableModel(Employee currentUser) {
+		this.currentUser = currentUser;
+	}
 
 	private String[] columnNames = { "Name", "Body temp. °C", "Blood pressure", "Pulse rate", "Breathing rate", "State",
 			"Room", "Nurse", "Doctor" };

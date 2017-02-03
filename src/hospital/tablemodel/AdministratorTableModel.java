@@ -10,11 +10,18 @@ import javax.swing.table.AbstractTableModel;
 
 import hospital.helper.SearchListener;
 import hospital.model.Doctor;
+import hospital.model.Employee;
 import hospital.model.Administrator;
 import hospital.model.Room;
 import hospital.model.Vitals;
 
 public class AdministratorTableModel extends AbstractTableModel implements SearchListener {
+
+	private Employee currentUser;
+
+	public AdministratorTableModel(Employee currentUser) {
+		this.currentUser = currentUser;
+	}
 
 	private String[] columnNames = { "Name", "Gender", "Date of birth", "Address" };
 
@@ -42,14 +49,14 @@ public class AdministratorTableModel extends AbstractTableModel implements Searc
 	}
 
 	public Object[] getRow(Administrator n) {
-		
+
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 		String timeOfBirth = dtf.format(n.getTimeOfBirthAsLocalDate()) + " (age " + n.getAge() + ")";
 
 		String address = n.getAddress();
 		if (address != null)
 			address = address.replaceAll("\n", "; ");
-		
+
 		return new Object[] { n.getName(), n.getGender(), timeOfBirth, address };
 	}
 

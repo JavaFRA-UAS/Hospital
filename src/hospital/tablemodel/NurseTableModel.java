@@ -10,11 +10,18 @@ import javax.swing.table.AbstractTableModel;
 
 import hospital.helper.SearchListener;
 import hospital.model.Doctor;
+import hospital.model.Employee;
 import hospital.model.Nurse;
 import hospital.model.Room;
 import hospital.model.Vitals;
 
 public class NurseTableModel extends AbstractTableModel implements SearchListener {
+
+	private Employee currentUser;
+
+	public NurseTableModel(Employee currentUser) {
+		this.currentUser = currentUser;
+	}
 
 	private String[] columnNames = { "Name", "Gender", "Date of birth", "Address", "Rooms" };
 

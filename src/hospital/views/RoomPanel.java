@@ -50,7 +50,7 @@ public class RoomPanel extends JPanel implements RefreshListener, SearchListener
 		VitalsSimulation.addRefreshListener(this);
 		final RoomPanel that = this;
 
-		tableModel = new RoomTableModel();
+		tableModel = new RoomTableModel(parentWindow.getCurrentUser());
 		table = new JTable(tableModel) {
 
 			private static final long serialVersionUID = 1L;

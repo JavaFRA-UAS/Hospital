@@ -53,7 +53,7 @@ public class AdministratorPanel extends JPanel implements RefreshListener, Searc
 		VitalsSimulation.addRefreshListener(this);
 		final AdministratorPanel that = this;
 
-		tableModel = new AdministratorTableModel();
+		tableModel = new AdministratorTableModel(parentWindow.getCurrentUser());
 		table = new JTable(tableModel) {
 
 			private static final long serialVersionUID = 1L;
