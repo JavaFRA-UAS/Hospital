@@ -100,30 +100,34 @@ public class LoginWindow extends JFrame implements ActionListener {
 		contentPane.add(btnLogin, "6, 6");
 
 	}
+
 	public void actionPerformed(ActionEvent e) {
 		if (comboBox.getSelectedIndex() > 0) {
 
-			final String name = (String) comboBox.getSelectedItem();
+			String name = (String) comboBox.getSelectedItem();
+			name = name != null ? name : "";
+
 			Employee user = null;
 			for (Administrator a : Administrator.getFactory().list()) {
-				if (name == a.getName()) {
+				if (name.equals(a.getName())) {
 					user = a;
 				}
 			}
 			for (Doctor doc : Doctor.getFactory().list()) {
-				if (name == doc.getName()) {
+				if (name.equals(doc.getName())) {
 					user = doc;
 				}
 			}
 			for (Nurse nurse : Nurse.getFactory().list()) {
-				if (name == nurse.getName()) {
+				if (name.equals("Nurse " + nurse.getName())) {
 					user = nurse;
 				}
 			}
 
 			String password = new String(passwordField.getPassword());
-			if (password == null) password = "";
-			
+			if (password == null)
+				password = "";
+
 			if (user != null && user.getPassword().equals(password)) {
 				MainWindow w = new MainWindow(user);
 				w.setVisible(true);
@@ -153,7 +157,7 @@ public class LoginWindow extends JFrame implements ActionListener {
 			comboBox.addItem(doc.getName());
 		}
 		for (Nurse nurse : Nurse.getFactory().list()) {
-			comboBox.addItem(nurse.getName());
+			comboBox.addItem("Nurse " + nurse.getName());
 		}
 	}
 }

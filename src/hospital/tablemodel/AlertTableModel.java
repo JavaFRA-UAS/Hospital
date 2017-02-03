@@ -8,6 +8,7 @@ import hospital.alert.Alert;
 import hospital.alert.AlertHelper;
 import hospital.model.Doctor;
 import hospital.model.Inpatient;
+import hospital.model.Nurse;
 import hospital.model.Outpatient;
 import hospital.model.Patient;
 import hospital.model.Room;
@@ -16,7 +17,7 @@ import hospital.model.Vitals;
 public class AlertTableModel extends AbstractTableModel {
 
 	private String[] columnNames = { "Time", "Patient", "Vital sign", "Current", "Min", "Max", "Problem", "Room",
-			"Doctor" };
+			"Nurse", "Doctor" };
 
 	public List<Alert> getData() {
 		return AlertHelper.getInstance().getAlerts();
@@ -34,16 +35,19 @@ public class AlertTableModel extends AbstractTableModel {
 			p = null;
 		}
 
-		String room = "";
+		String room = "-";
+		String nurse = "-";
 		if (p instanceof Inpatient) {
 			Room r = ((Inpatient) p).getRoom();
 			if (r != null) {
 				room = r.getName();
+				Nurse n = r.getNurse();
+				if (n != null) {
+					nurse = n.getName();
+				}
 			} else {
 				room = "unassigned";
 			}
-		} else {
-			room = "-";
 		}
 
 		String doctor = "";
@@ -60,7 +64,7 @@ public class AlertTableModel extends AbstractTableModel {
 					String.format("%.2f", a.getExpectedMax()), a.getProblem(), room, doctor };
 		} else {
 			return new Object[] { a.getFormattedTime(), (p != null ? p.getName() : ""), "", "", "", "", a.getProblem(),
-					room, doctor };
+					room, nurse, doctor };
 		}
 	}
 
