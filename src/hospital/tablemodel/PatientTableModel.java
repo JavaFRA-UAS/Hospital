@@ -33,16 +33,13 @@ public class PatientTableModel extends AbstractTableModel implements SearchListe
 	public List<Patient> getData() {
 		String[] words = filter != null ? filter.split("\\s+") : new String[0];
 
+		System.out.println("currentUser" + currentUser.getClass().getSimpleName() + ": " + currentUser.getName());
+
 		List<Patient> l = new ArrayList<Patient>();
 		for (Inpatient p : Inpatient.getFactory().list().toArray(new Inpatient[0])) {
-			if (filter == null) {
-				l.add(p);
-				continue;
-			}
-
 			if (currentUser instanceof Doctor) {
 				Doctor d = (Doctor) currentUser;
-				if (p.getDoctor() != null && p.getDoctorId() != d.getId()) {
+				if (p.getDoctorId() != d.getId()) {
 					continue;
 				}
 			}
@@ -52,6 +49,11 @@ public class PatientTableModel extends AbstractTableModel implements SearchListe
 				if (p.getNurse() != null && p.getNurse().getId() != n.getId()) {
 					continue;
 				}
+			}
+
+			if (filter == null) {
+				l.add(p);
+				continue;
 			}
 
 			String searchString = p.getSearchString().toLowerCase();
@@ -65,19 +67,19 @@ public class PatientTableModel extends AbstractTableModel implements SearchListe
 			}
 		}
 		for (Patient p : Outpatient.getFactory().list()) {
-			if (filter == null) {
-				l.add(p);
-				continue;
-			}
-
 			if (currentUser instanceof Doctor) {
 				Doctor d = (Doctor) currentUser;
-				if (p.getDoctor() != null && p.getDoctorId() != d.getId()) {
+				if (p.getDoctorId() != d.getId()) {
 					continue;
 				}
 			}
 
 			if (currentUser instanceof Nurse) {
+				continue;
+			}
+
+			if (filter == null) {
+				l.add(p);
 				continue;
 			}
 

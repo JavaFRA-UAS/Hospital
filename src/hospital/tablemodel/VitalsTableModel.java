@@ -32,7 +32,21 @@ public class VitalsTableModel extends AbstractTableModel implements SearchListen
 		String[] words = filter != null ? filter.split("\\s+") : new String[0];
 
 		List<Patient> l = new ArrayList<Patient>();
-		for (Patient p : Inpatient.getFactory().list()) {
+		for (Inpatient p : Inpatient.getFactory().list()) {
+			if (currentUser instanceof Doctor) {
+				Doctor d = (Doctor) currentUser;
+				if (p.getDoctorId() != d.getId()) {
+					continue;
+				}
+			}
+
+			if (currentUser instanceof Nurse) {
+				Nurse n = (Nurse) currentUser;
+				if (p.getNurse() != null && p.getNurse().getId() != n.getId()) {
+					continue;
+				}
+			}
+
 			if (filter == null) {
 				l.add(p);
 				continue;
@@ -50,6 +64,17 @@ public class VitalsTableModel extends AbstractTableModel implements SearchListen
 			}
 		}
 		for (Patient p : Outpatient.getFactory().list()) {
+			if (currentUser instanceof Doctor) {
+				Doctor d = (Doctor) currentUser;
+				if (p.getDoctorId() != d.getId()) {
+					continue;
+				}
+			}
+
+			if (currentUser instanceof Nurse) {
+				continue;
+			}
+
 			if (filter == null) {
 				l.add(p);
 				continue;
