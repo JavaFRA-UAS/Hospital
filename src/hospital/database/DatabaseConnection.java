@@ -80,13 +80,20 @@ public class DatabaseConnection {
 		// if there are no administrators in the database
 		if (Administrator.getFactory().size() == 0) {
 			// ... add some administrators
-			Administrator a1 = Administrator.getFactory().get(Administrator.getFactory().getNewId());
-			a1.setName("Admin");
-			a1.setTimeOfBirth(getRandomTimeOfBirth());
-			a1.setPhone(getRandomPhone());
-			a1.setGender("male");
-			a1.setPassword("admin");
-			Administrator.getFactory().save(a1);
+			for (int i = 0; i < 3; i++) {
+				String lastname = lastnames[r.nextInt(lastnames.length)];
+				boolean isMale = r.nextInt(100) > 50;
+				String firstname = isMale ? firstnamesMale[r.nextInt(firstnamesMale.length)]
+						: firstnamesFemale[r.nextInt(firstnamesFemale.length)];
+
+				Administrator a1 = Administrator.getFactory().get(Administrator.getFactory().getNewId());
+				a1.setName("Administrator " + lastname);
+				a1.setTimeOfBirth(getRandomTimeOfBirth());
+				a1.setPhone(getRandomPhone());
+				a1.setGender(isMale ? "male" : "female");
+				a1.setPassword("admin");
+				Administrator.getFactory().save(a1);
+			}
 		}
 
 		// if there are no doctors in the database
