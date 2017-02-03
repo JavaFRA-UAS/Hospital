@@ -28,12 +28,15 @@ import javax.swing.table.TableCellRenderer;
 import hospital.Main;
 import hospital.RefreshListener;
 import hospital.VitalsSimulation;
+import hospital.alert.Alert;
+import hospital.alert.AlertHelper;
 import hospital.helper.CustomHeaderRenderer;
 import hospital.helper.RandomGenerator;
 import hospital.helper.RefreshableWindow;
 import hospital.helper.SearchListener;
 import hospital.helper.SearchPanel;
 import hospital.model.Doctor;
+import hospital.model.Inpatient;
 import hospital.model.Nurse;
 import hospital.model.Patient;
 import hospital.tablemodel.VitalsTableModel;
@@ -92,6 +95,22 @@ public class VitalsPanel extends JPanel implements RefreshListener, SearchListen
 						if (p.isAlive()) {
 
 							JMenuItem item;
+
+							Nurse nurse = (p instanceof Inpatient) ? ((Inpatient) p).getNurse() : null;
+							String nurseName = nurse != null ? nurse.getName() : "";
+
+							item = new JMenuItem("Alert Nurse " + nurseName);
+							item.addActionListener(new java.awt.event.ActionListener() {
+								@Override
+								public void actionPerformed(java.awt.event.ActionEvent evt) {
+									String alertStr = "alert by "
+											+ parentWindow.getCurrentUser().getClass().getSimpleName() + " "
+											+ parentWindow.getCurrentUser().getName();
+									AlertHelper.getInstance()
+											.createAlert(new Alert(p.getId(), alertStr, 0, 0, 0, alertStr));
+								}
+							});
+							popup.add(item);
 
 							item = new JMenuItem("Use Defibrillator");
 							item.addActionListener(new java.awt.event.ActionListener() {
