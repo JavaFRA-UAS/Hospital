@@ -250,9 +250,20 @@ public class DatabaseConnection {
 		}
 
 		for (Room room : recentlyAddedRooms) {
-			Nurse n = Nurse.getFactory().list().get(r.nextInt(Nurse.getFactory().list().size()));
-			room.setNurse(n);
-			Room.getFactory().save(room);
+			Nurse n = null;
+			for (int _try = 0; _try < 10; _try++) {
+				n = Nurse.getFactory().list().get(r.nextInt(Nurse.getFactory().list().size()));
+				if (n.getRooms().size() < 10) {
+					break;
+				} else {
+					n = null;
+				}
+			}
+
+			if (n != null) {
+				room.setNurse(n);
+				Room.getFactory().save(room);
+			}
 		}
 	}
 
