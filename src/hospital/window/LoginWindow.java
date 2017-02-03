@@ -109,7 +109,7 @@ public class LoginWindow extends JFrame implements ActionListener {
 
 			Employee user = null;
 			for (Administrator a : Administrator.getFactory().list()) {
-				if (name.equals(a.getName())) {
+				if (name.equals("Admin " + a.getName())) {
 					user = a;
 				}
 			}
@@ -151,7 +151,7 @@ public class LoginWindow extends JFrame implements ActionListener {
 		comboBox.addItem("");
 
 		for (Administrator doc : Administrator.getFactory().list()) {
-			comboBox.addItem(doc.getName());
+			comboBox.addItem("Admin " + doc.getName());
 		}
 		for (Doctor doc : Doctor.getFactory().list()) {
 			comboBox.addItem(doc.getName());

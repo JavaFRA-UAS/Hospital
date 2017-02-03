@@ -87,7 +87,7 @@ public class DatabaseConnection {
 						: firstnamesFemale[r.nextInt(firstnamesFemale.length)];
 
 				Administrator a1 = Administrator.getFactory().get(Administrator.getFactory().getNewId());
-				a1.setName("Administrator " + lastname);
+				a1.setName(firstname + " " + lastname);
 				a1.setTimeOfBirth(getRandomTimeOfBirth());
 				a1.setPhone(getRandomPhone());
 				a1.setGender(isMale ? "male" : "female");

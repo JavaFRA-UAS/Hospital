@@ -1,5 +1,6 @@
 package hospital.views;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -48,10 +49,33 @@ public class AlertPanel extends JPanel implements AlertListener {
 		table = new JTable(tableModel) {
 
 			private static final long serialVersionUID = 1L;
-			DefaultTableCellRenderer renderCenter = new DefaultTableCellRenderer();
+			DefaultTableCellRenderer renderCenter = new DefaultTableCellRenderer() {
 
+				@Override
+				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+						boolean hasFocus, int row, int col) {
+
+					// Cells are by default rendered as a JLabel.
+					JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+							col);
+
+					l.setForeground(Color.black);
+
+					// Get the status for the current row.
+					AlertTableModel tableModel = (AlertTableModel) table.getModel();
+					Alert a = row <= tableModel.getRowCount() ? tableModel.getData().get(row) : null;
+					if (a != null) {
+						if (a.getProblem().contains("alert by")) {
+							l.setForeground(Color.red);
+						}
+					}
+
+					return l;
+				}
+			};
 			{
 				renderCenter.setHorizontalAlignment(SwingConstants.CENTER);
+
 			}
 
 			@Override

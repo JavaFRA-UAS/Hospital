@@ -25,6 +25,7 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import hospital.Log;
 import hospital.Main;
 import hospital.RefreshListener;
 import hospital.VitalsSimulation;
@@ -38,7 +39,9 @@ import hospital.helper.SearchPanel;
 import hospital.model.Doctor;
 import hospital.model.Inpatient;
 import hospital.model.Nurse;
+import hospital.model.Outpatient;
 import hospital.model.Patient;
+import hospital.model.Room;
 import hospital.tablemodel.VitalsTableModel;
 import hospital.window.EditPatientWindow;
 import hospital.window.MainWindow;
@@ -96,19 +99,36 @@ public class VitalsPanel extends JPanel implements RefreshListener, SearchListen
 
 							JMenuItem item;
 
-							Nurse nurse = (p instanceof Inpatient) ? ((Inpatient) p).getNurse() : null;
-							String nurseName = nurse != null ? nurse.getName() : "";
+							final Nurse nurse = (p instanceof Inpatient) ? ((Inpatient) p).getNurse() : null;
+							final String nurseName = nurse != null ? nurse.getName() : "";
 
 							item = new JMenuItem("Alert Nurse " + nurseName);
 							item.addActionListener(new java.awt.event.ActionListener() {
 								@Override
 								public void actionPerformed(java.awt.event.ActionEvent evt) {
-									String alertStr = "alert by "
-											+ parentWindow.getCurrentUser().getClass().getSimpleName() + " "
-											+ parentWindow.getCurrentUser().getName();
-									AlertHelper.getInstance()
-											.createAlert(new Alert(p.getId(), alertStr, 0, 0, 0, alertStr));
+									if (nurse != null) {
+										String alertStr = "alert by " + parentWindow.getCurrentUser().getName();
+										AlertHelper.getInstance()
+												.createAlert(new Alert(p.getId(), alertStr, 0, 0, 0, alertStr));
+									} else {
+										if (p instanceof Outpatient) {
+											Log.showError("Patient " + p.getName()
+													+ " is an outpatient. Outpatients don't have rooms, so there are no nurses which can be notified.");
+										} else if (p instanceof Inpatient) {
+											Inpatient pi = (Inpatient) p;
+											Room room = pi.getRoom();
+											if (room != null) {
+												Log.showError(
+														"Patient " + p.getName() + " is in room \"" + room.getName()
+																+ "\", but no nurse is assigned to that room.");
+											} else {
+												Log.showError("Patient " + p.getName()
+														+ " is not assigned to a room, so there is no nurse which could be notified.");
+											}
+										}
+									}
 								}
+
 							});
 							popup.add(item);
 
