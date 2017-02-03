@@ -86,31 +86,33 @@ public class PatientPanel extends JPanel implements RefreshListener, SearchListe
 					if (p != null) {
 						JPopupMenu popup = new JPopupMenu();
 
-						JMenuItem item = new JMenuItem("Edit");
-						item.addActionListener(new java.awt.event.ActionListener() {
-							@Override
-							public void actionPerformed(java.awt.event.ActionEvent evt) {
-								EditPatientWindow w = new EditPatientWindow(parentWindow);
-								w.setPatient(p);
-								w.setVisible(true);
-							}
-						});
-						popup.add(item);
-
-						item = new JMenuItem("Delete");
-						item.addActionListener(new java.awt.event.ActionListener() {
-							@Override
-							public void actionPerformed(java.awt.event.ActionEvent evt) {
-								p.delete();
-								if (p instanceof Inpatient) {
-									Inpatient.getFactory().save((Inpatient) p);
-								} else if (p instanceof Outpatient) {
-									Outpatient.getFactory().save((Outpatient) p);
+						if (!(parentWindow.getCurrentUser() instanceof Nurse)) {
+							JMenuItem item = new JMenuItem("Edit");
+							item.addActionListener(new java.awt.event.ActionListener() {
+								@Override
+								public void actionPerformed(java.awt.event.ActionEvent evt) {
+									EditPatientWindow w = new EditPatientWindow(parentWindow);
+									w.setPatient(p);
+									w.setVisible(true);
 								}
-								parentWindow.refresh();
-							}
-						});
-						popup.add(item);
+							});
+							popup.add(item);
+
+							item = new JMenuItem("Delete");
+							item.addActionListener(new java.awt.event.ActionListener() {
+								@Override
+								public void actionPerformed(java.awt.event.ActionEvent evt) {
+									p.delete();
+									if (p instanceof Inpatient) {
+										Inpatient.getFactory().save((Inpatient) p);
+									} else if (p instanceof Outpatient) {
+										Outpatient.getFactory().save((Outpatient) p);
+									}
+									parentWindow.refresh();
+								}
+							});
+							popup.add(item);
+						}
 
 						popup.addPopupMenuListener(new PopupMenuListener() {
 							public void popupMenuCanceled(PopupMenuEvent popupMenuEvent) {
@@ -169,6 +171,10 @@ public class PatientPanel extends JPanel implements RefreshListener, SearchListe
 		gbc_searchPanel.gridy = 1;
 		this.add(searchPanel, gbc_searchPanel);
 
+		if (parentWindow.getCurrentUser() instanceof Nurse) {
+			btnNew.setVisible(false);
+
+		}
 	}
 
 	void fillList() {
