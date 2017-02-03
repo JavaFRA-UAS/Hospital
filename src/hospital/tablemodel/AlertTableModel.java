@@ -61,7 +61,7 @@ public class AlertTableModel extends AbstractTableModel {
 		if (a.getEntityName().length() > 0) {
 			return new Object[] { a.getFormattedTime(), p.getName(), a.getEntityName(),
 					String.format("%.2f", a.getEntityValue()), String.format("%.2f", a.getExpectedMin()),
-					String.format("%.2f", a.getExpectedMax()), a.getProblem(), room, doctor };
+					String.format("%.2f", a.getExpectedMax()), a.getProblem(), room, nurse, doctor };
 		} else {
 			return new Object[] { a.getFormattedTime(), (p != null ? p.getName() : ""), "", "", "", "", a.getProblem(),
 					room, nurse, doctor };
