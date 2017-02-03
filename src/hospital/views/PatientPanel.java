@@ -173,7 +173,6 @@ public class PatientPanel extends JPanel implements RefreshListener, SearchListe
 
 		if (parentWindow.getCurrentUser() instanceof Nurse) {
 			btnNew.setVisible(false);
-
 		}
 	}
 
