@@ -33,6 +33,27 @@ public class RoomTableModel extends AbstractTableModel implements SearchListener
 
 		List<Room> l = new ArrayList<Room>();
 		for (Room r : Room.getFactory().list()) {
+
+			if (currentUser instanceof Doctor) {
+				Doctor d = (Doctor) currentUser;
+				boolean found = false;
+				for (Inpatient pi : r.getInpatients()) {
+					if (pi.getDoctorId() == d.getId()) {
+						found = true;
+					}
+				}
+				if (!found) {
+					continue;
+				}
+			}
+
+			if (currentUser instanceof Nurse) {
+				Nurse n = (Nurse) currentUser;
+				if (r.getNurseId() != n.getId()) {
+					continue;
+				}
+			}
+
 			if (filter == null) {
 				l.add(r);
 				continue;
