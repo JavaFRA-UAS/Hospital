@@ -88,6 +88,7 @@ public class Room implements DatabaseRow {
 			List<Room> nurseRooms = n.getRooms();
 			if (nurseRooms.size() >= 10) {
 				Log.showError("Nurse " + n.getName() + " is already assigned to " + nurseRooms.size() + " rooms.");
+				return;
 			}
 		}
 		this.nurseId = nurseId;
