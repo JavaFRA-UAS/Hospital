@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import hospital.Log;
 import hospital.database.DatabaseRow;
 import hospital.database.Factory;
 
@@ -82,6 +83,13 @@ public class Room implements DatabaseRow {
 	}
 
 	public void setNurseId(int nurseId) {
+		if (nurseId > 0) {
+			Nurse n = Nurse.getFactory().get(nurseId);
+			List<Room> nurseRooms = n.getRooms();
+			if (nurseRooms.size() >= 10) {
+				Log.showError("Nurse " + n.getName() + " is already assigned to " + nurseRooms.size() + " rooms.");
+			}
+		}
 		this.nurseId = nurseId;
 	}
 
@@ -91,9 +99,9 @@ public class Room implements DatabaseRow {
 
 	public void setNurse(Nurse nurse) {
 		if (nurse == null)
-			nurseId = 0;
+			setNurseId(0);
 		else
-			nurseId = nurse.getId();
+			setNurseId(nurse.getId());
 	}
 
 	public List<Inpatient> getInpatients() {
