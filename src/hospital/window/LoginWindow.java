@@ -6,6 +6,9 @@ import java.awt.Image;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -150,14 +153,22 @@ public class LoginWindow extends JFrame implements ActionListener {
 		comboBox.removeAllItems();
 		comboBox.addItem("");
 
+		List<String> names = new ArrayList<String>();
+
 		for (Administrator doc : Administrator.getFactory().list()) {
-			comboBox.addItem("Admin " + doc.getName());
+			names.add("Admin " + doc.getName());
 		}
 		for (Doctor doc : Doctor.getFactory().list()) {
-			comboBox.addItem(doc.getName());
+			names.add(doc.getName());
 		}
 		for (Nurse nurse : Nurse.getFactory().list()) {
-			comboBox.addItem("Nurse " + nurse.getName());
+			names.add("Nurse " + nurse.getName());
+		}
+
+		Collections.sort(names);
+
+		for (String name : names) {
+			comboBox.addItem(name);
 		}
 	}
 }
