@@ -187,7 +187,7 @@ public class DatabaseConnection {
 			pat3.setDoctor(Doctor.getFactory().get("Dr. Schwarzkopf"));
 			Inpatient.getFactory().save(pat3);
 
-			for (int i = 0; i < 40; i++) {
+			for (int i = 0; i < 55; i++) {
 				String lastname = lastnames[r.nextInt(lastnames.length)];
 				boolean isMale = r.nextInt(100) > 50;
 				boolean isInpatient = r.nextInt(100) > 50;
