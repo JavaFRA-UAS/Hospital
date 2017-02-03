@@ -103,10 +103,12 @@ public class AlertPanel extends JPanel implements AlertListener {
 		this.add(new JScrollPane(table), gbc_listPatients);
 
 		JButton btnNew = new JButton("A");
+		btnNew.setVisible(false);
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				// NewPatientWindow w = new NewPatientWindow(parentWindow);
-				// w.setVisible(true);
+				 // w.setVisible(false);
 			}
 		});
 		GridBagConstraints gbc_btnNew = new GridBagConstraints();
@@ -117,6 +119,7 @@ public class AlertPanel extends JPanel implements AlertListener {
 		this.add(btnNew, gbc_btnNew);
 
 		JButton btnDelete = new JButton("B");
+		btnDelete.setVisible(false);
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Patient p = listPatients.getSelectedValue();
@@ -138,6 +141,7 @@ public class AlertPanel extends JPanel implements AlertListener {
 	}
 
 	public void refresh() {
+		 setVisible(false);
 		fillList();
 	}
 
