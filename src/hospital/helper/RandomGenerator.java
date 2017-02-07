@@ -26,6 +26,12 @@ public class RandomGenerator {
 
 	public double nextDouble() {
 
+		double d = random.nextDouble() - 0.5;
+		return d;
+	}
+
+	public double nextDouble(int patientId) {
+
 		// 5 % chance that something weird happens
 		if (random.nextInt(100) < 2 && erraticFactor <= 0.1) {
 			double e = (random.nextDouble()) * 2;
@@ -35,12 +41,7 @@ public class RandomGenerator {
 				erraticFactor = e;
 			}
 		}
-
-		double d = random.nextDouble() - 0.5;
-		return d;
-	}
-
-	public double nextDouble(int patientId) {
+		
 		double d = this.nextDouble();
 		
 		if (currentPatientIds.contains((Integer)patientId)) {
