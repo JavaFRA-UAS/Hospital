@@ -27,7 +27,7 @@ public class Lungs {
 	public void breathe() {
 
 		// calculate time to next heartbeat (random)
-		long diff = (long) (random.nextDouble() * 3000);
+		long diff = (long) (random.nextDouble(vitals.getPatientId()) * 3000);
 		millisecondsUntilNextBreath += diff;
 
 		// make sure that the time is realistic

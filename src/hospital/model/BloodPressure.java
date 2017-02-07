@@ -110,10 +110,10 @@ public class BloodPressure {
 
 	public void randomChange() {
 		if (getPatient().isAlive()) {
-			setSys(getSys() + (int) (random.nextDouble() * 3));
+			setSys(getSys() + (int) (random.nextDouble(this.getPatientId()) * 3));
 		}
 		if (getPatient().isAlive()) {
-			setDias(getDias() + (int) (random.nextDouble() * 1.8));
+			setDias(getDias() + (int) (random.nextDouble(this.getPatientId()) * 1.8));
 		}
 	}
 }

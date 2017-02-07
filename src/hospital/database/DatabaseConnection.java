@@ -93,6 +93,7 @@ public class DatabaseConnection {
 				a1.setGender(isMale ? "male" : "female");
 				a1.setPassword("admin");
 				Administrator.getFactory().save(a1);
+				System.out.println("add admin: " + a1.getName());
 			}
 		}
 
@@ -132,6 +133,7 @@ public class DatabaseConnection {
 				d.setPhone(getRandomPhone());
 				d.setGender(isMale ? "male" : "female");
 				Doctor.getFactory().save(d);
+				System.out.println("add doctor: " + d.getName());
 			}
 		}
 
@@ -141,11 +143,11 @@ public class DatabaseConnection {
 		if (Room.getFactory().size() == 0) {
 			final String[] buildings = new String[] { "Building A", "Building B", "Building C" };
 
-			final int countFloor = r.nextInt(4);
-			final int countRoomNo = r.nextInt(15);
+			final int countFloor = 4 + r.nextInt(4);
 
 			for (String building : buildings) {
 				for (int floor = 1; floor <= countFloor; floor++) {
+					final int countRoomNo = 2 + r.nextInt(4);
 					for (int roomNo = 1; roomNo <= countRoomNo; roomNo++) {
 
 						Room r1 = Room.getFactory().get(Room.getFactory().getNewId());
@@ -153,10 +155,13 @@ public class DatabaseConnection {
 						r1.setCapacity(r.nextInt(10) >= 5 ? 4 : 2);
 						Room.getFactory().save(r1);
 						recentlyAddedRooms.add(r1);
+						System.out.println("add room: " + r1.getName());
 					}
 				}
 			}
 		}
+
+		List<Inpatient> recentlyAddedInpatients = new ArrayList<Inpatient>();
 
 		// if there are no patients in the database
 		if (Inpatient.getFactory().size() == 0 && Outpatient.getFactory().size() == 0) {
@@ -187,7 +192,7 @@ public class DatabaseConnection {
 			pat3.setDoctor(Doctor.getFactory().get("Dr. Schwarzkopf"));
 			Inpatient.getFactory().save(pat3);
 
-			for (int i = 0; i < 55; i++) {
+			for (int i = 0; i < Room.getFactory().size() * 3; i++) {
 				String lastname = lastnames[r.nextInt(lastnames.length)];
 				boolean isMale = r.nextInt(100) > 50;
 				boolean isInpatient = r.nextInt(100) > 50;
@@ -195,7 +200,6 @@ public class DatabaseConnection {
 						: firstnamesFemale[r.nextInt(firstnamesFemale.length)];
 
 				Doctor d = Doctor.getFactory().list().get(r.nextInt(Doctor.getFactory().list().size()));
-				Room room = Room.getFactory().list().get(r.nextInt(Room.getFactory().list().size()));
 
 				if (isInpatient) {
 					Inpatient p = Inpatient.getFactory().get(Inpatient.getFactory().getNewId());
@@ -203,9 +207,10 @@ public class DatabaseConnection {
 					p.setTimeOfBirth(getRandomTimeOfBirth());
 					p.setPhone(getRandomPhone());
 					p.setGender(isMale ? "male" : "female");
-					p.setRoom(room);
 					p.setDoctor(d);
 					Inpatient.getFactory().save(p);
+					recentlyAddedInpatients.add(p);
+					System.out.println("add inpatient: " + p.getName());
 				} else {
 					Outpatient p = Outpatient.getFactory().get(Outpatient.getFactory().getNewId());
 					p.setName(firstname + " " + lastname);
@@ -214,6 +219,7 @@ public class DatabaseConnection {
 					p.setGender(isMale ? "male" : "female");
 					p.setDoctor(d);
 					Outpatient.getFactory().save(p);
+					System.out.println("add outpatient: " + p.getName());
 				}
 			}
 		}
@@ -241,7 +247,7 @@ public class DatabaseConnection {
 			nur3.setGender("female");
 			Nurse.getFactory().save(nur3);
 
-			for (int i = 0; i < 15; i++) {
+			for (int i = 0; i < Room.getFactory().size() / 9; i++) {
 				String lastname = lastnames[r.nextInt(lastnames.length)];
 				boolean isMale = r.nextInt(100) > 80;
 				String firstname = isMale ? firstnamesMale[r.nextInt(firstnamesMale.length)]
@@ -253,6 +259,7 @@ public class DatabaseConnection {
 				n.setPhone(getRandomPhone());
 				n.setGender(isMale ? "male" : "female");
 				Nurse.getFactory().save(n);
+				System.out.println("add nurse: " + n.getName());
 			}
 		}
 
@@ -270,7 +277,20 @@ public class DatabaseConnection {
 			if (n != null) {
 				room.setNurse(n);
 				Room.getFactory().save(room);
+				System.out.println("choose nurse room: " + n.getName() + " => " + room.getName());
 			}
+		}
+
+		for (Inpatient p : recentlyAddedInpatients) {
+			Room room = Room.getFactory().list().get(r.nextInt(Room.getFactory().list().size()));
+
+			for (int w = 0; w < 10 && room.getInpatients().size() >= room.getCapacity(); w++) {
+				room = Room.getFactory().list().get(r.nextInt(Room.getFactory().list().size()));
+				System.out.println("choose inpatient room: " + p.getName() + " => " + room.getName());
+			}
+
+			p.setRoom(room);
+			Inpatient.getFactory().save(p);
 		}
 	}
 

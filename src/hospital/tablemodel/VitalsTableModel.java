@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import hospital.helper.RandomGenerator;
 import hospital.helper.SearchListener;
 import hospital.model.Doctor;
 import hospital.model.Employee;
@@ -101,6 +102,8 @@ public class VitalsTableModel extends AbstractTableModel implements SearchListen
 		String timeOfDeath = p.isAlive() ? "" : dtf.format(p.getTimeOfDeathAsLocalDateTime());
 
 		String state = p.isAlive() ? "alive" : ("dead since " + timeOfDeath);
+		
+		RandomGenerator.addPatientId(p.getId());
 
 		String room = "-";
 		String nurse = "-";

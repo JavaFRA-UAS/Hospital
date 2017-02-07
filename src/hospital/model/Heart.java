@@ -27,7 +27,7 @@ public class Heart {
 	public void beat() {
 
 		// calculate time to next heartbeat (random)
-		long diff = (long) (random.nextDouble() * 300);
+		long diff = (long) (random.nextDouble(vitals.getPatientId()) * 300);
 		millisecondsUntilNextHeartbeat += diff;
 
 		// make sure that the time is realistic

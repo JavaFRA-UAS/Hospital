@@ -120,7 +120,7 @@ public class VitalsSimulation {
 
 						// modify body temperature
 						double temperature = patient.getVitals().getBodytemperature();
-						temperature += random.nextDouble() * 0.2;
+						temperature += random.nextDouble(patientId) * 0.2;
 						patient.getVitals().setBodytemperature(temperature);
 
 						// death of old age

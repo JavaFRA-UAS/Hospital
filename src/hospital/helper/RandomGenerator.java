@@ -1,5 +1,6 @@
 package hospital.helper;
 
+import java.util.HashSet;
 import java.util.Random;
 
 public class RandomGenerator {
@@ -13,10 +14,16 @@ public class RandomGenerator {
 		problemFactor += 5;
 	}
 
+	public static HashSet<Integer> currentPatientIds = new HashSet<Integer>();
+
+	public static void addPatientId(int patientId) {
+		currentPatientIds.add(patientId);
+	}
+
 	public double nextDouble() {
 
 		// 5 % chance that something weird happens
-		if (random.nextInt(100) < 1 && erraticFactor <= 0.1) {
+		if (random.nextInt(100) < 2 && erraticFactor <= 0.1) {
 			double e = (random.nextDouble()) * 2;
 			if (erraticFactor > 0) {
 				erraticFactor = -e;
@@ -26,11 +33,19 @@ public class RandomGenerator {
 		}
 
 		double d = random.nextDouble() - 0.5;
-		d += erraticFactor;
-		// System.out.println(String.format("%.2f", erraticFactor));
-		erraticFactor /= 2;
-		d += problemFactor;
-		problemFactor *= 0.95;
+		return d;
+	}
+
+	public double nextDouble(int patientId) {
+		double d = this.nextDouble();
+		
+		if (currentPatientIds.contains((Integer)patientId)) {
+			d += erraticFactor;
+			erraticFactor /= 2;
+			d += problemFactor;
+			problemFactor *= 0.70;
+		}
+		
 		return d;
 	}
 }
