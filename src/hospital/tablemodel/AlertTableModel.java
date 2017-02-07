@@ -40,6 +40,11 @@ public class AlertTableModel extends AbstractTableModel {
 			}
 
 			if (currentUser instanceof Nurse) {
+				Outpatient op = Outpatient.getFactory().get(a.getPatientId());
+				if (op != null) {
+					continue;
+				}
+
 				Nurse n = (Nurse) currentUser;
 				if (a.getNurse() != null && a.getNurse().getId() != n.getId()) {
 					continue;
