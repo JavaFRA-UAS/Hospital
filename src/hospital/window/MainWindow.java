@@ -128,6 +128,15 @@ public class MainWindow extends JFrame implements RefreshableWindow {
 		}
 
 		fillList();
+		
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt){
+                if (panelVitals != null) {
+                	panelVitals.onWindowClosing();
+                }
+            }
+        });
 	}
 
 	public Employee getCurrentUser() {

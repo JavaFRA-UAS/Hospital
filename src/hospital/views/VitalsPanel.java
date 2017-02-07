@@ -286,4 +286,8 @@ public class VitalsPanel extends JPanel implements RefreshListener, SearchListen
 		tableModel.onSearch(text);
 		refresh();
 	}
+
+	public void onWindowClosing() {
+		tableModel.onWindowClosing();
+	}
 }

@@ -20,6 +20,10 @@ public class RandomGenerator {
 		currentPatientIds.add(patientId);
 	}
 
+	public static void removePatientId(int patientId) {
+		currentPatientIds.remove(patientId);
+	}
+
 	public double nextDouble() {
 
 		// 5 % chance that something weird happens

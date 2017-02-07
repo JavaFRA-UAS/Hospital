@@ -29,7 +29,13 @@ public class VitalsTableModel extends AbstractTableModel implements SearchListen
 			"Room", "Nurse", "Doctor" };
 	private String filter;
 
+	private boolean isActive = true;
+
 	public List<Patient> getData() {
+		if (!isActive) {
+			return new ArrayList<Patient>();
+		}
+
 		String[] words = filter != null ? filter.split("\\s+") : new String[0];
 
 		List<Patient> l = new ArrayList<Patient>();
@@ -102,8 +108,10 @@ public class VitalsTableModel extends AbstractTableModel implements SearchListen
 		String timeOfDeath = p.isAlive() ? "" : dtf.format(p.getTimeOfDeathAsLocalDateTime());
 
 		String state = p.isAlive() ? "alive" : ("dead since " + timeOfDeath);
-		
-		RandomGenerator.addPatientId(p.getId());
+
+		if (isActive) {
+			RandomGenerator.addPatientId(p.getId());
+		}
 
 		String room = "-";
 		String nurse = "-";
@@ -185,6 +193,14 @@ public class VitalsTableModel extends AbstractTableModel implements SearchListen
 	@Override
 	public void onSearch(String text) {
 		filter = text;
+	}
+
+	public void onWindowClosing() {
+		List<Patient> patients = getData();
+		isActive = false;
+		for (Patient p : patients) {
+			RandomGenerator.removePatientId(p.getId());
+		}
 	}
 
 }
