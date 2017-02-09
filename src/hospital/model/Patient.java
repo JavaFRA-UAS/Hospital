@@ -95,7 +95,7 @@ public abstract class Patient extends Person {
 				@Override
 				public void run() {
 					AlertHelper.getInstance().createAlert(new Alert(id, "", 0, 1, 1, why));
-					JOptionPane.showMessageDialog(null, name + " " + why + ".");
+					// JOptionPane.showMessageDialog(null, name + " " + why + ".");
 				}
 			});
 
