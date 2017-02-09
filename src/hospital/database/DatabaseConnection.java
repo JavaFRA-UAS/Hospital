@@ -101,21 +101,21 @@ public class DatabaseConnection {
 		if (Doctor.getFactory().size() == 0) {
 			// ... add some doctors
 			Doctor doc1 = Doctor.getFactory().get(Doctor.getFactory().getNewId());
-			doc1.setName("Dr. Heisenberg");
+			doc1.setName("Dr. " + firstnamesMale[r.nextInt(firstnamesMale.length)] + " Heisenberg");
 			doc1.setTimeOfBirth(getRandomTimeOfBirth());
 			doc1.setPhone(getRandomPhone());
 			doc1.setGender("male");
 			Doctor.getFactory().save(doc1);
 
 			Doctor doc2 = Doctor.getFactory().get(Doctor.getFactory().getNewId());
-			doc2.setName("Dr. Bergmann");
+			doc2.setName("Dr. " + firstnamesMale[r.nextInt(firstnamesMale.length)] + " Bergmann");
 			doc2.setTimeOfBirth(getRandomTimeOfBirth());
 			doc2.setPhone(getRandomPhone());
 			doc2.setGender("male");
 			Doctor.getFactory().save(doc2);
 
 			Doctor doc3 = Doctor.getFactory().get(Doctor.getFactory().getNewId());
-			doc3.setName("Dr. Schwarzkopf");
+			doc3.setName("Dr. " + firstnamesMale[r.nextInt(firstnamesMale.length)] + " Schwarzkopf");
 			doc3.setTimeOfBirth(getRandomTimeOfBirth());
 			doc3.setPhone(getRandomPhone());
 			doc3.setGender("male");
@@ -128,7 +128,7 @@ public class DatabaseConnection {
 						: firstnamesFemale[r.nextInt(firstnamesFemale.length)];
 
 				Doctor d = Doctor.getFactory().get(Doctor.getFactory().getNewId());
-				d.setName("Dr. " + lastname);
+				d.setName("Dr. " + firstname + " " + lastname);
 				d.setTimeOfBirth(getRandomTimeOfBirth());
 				d.setPhone(getRandomPhone());
 				d.setGender(isMale ? "male" : "female");
@@ -167,7 +167,7 @@ public class DatabaseConnection {
 		if (Inpatient.getFactory().size() == 0 && Outpatient.getFactory().size() == 0) {
 			// ... add some patients
 			Inpatient pat1 = Inpatient.getFactory().get(Inpatient.getFactory().getNewId());
-			pat1.setName("Fr. Hildegard");
+			pat1.setName(firstnamesFemale[r.nextInt(firstnamesFemale.length)] + " Hildegard");
 			pat1.setTimeOfBirth(getRandomTimeOfBirth());
 			pat1.setPhone(getRandomPhone());
 			pat1.setGender("female");
@@ -176,7 +176,7 @@ public class DatabaseConnection {
 			Inpatient.getFactory().save(pat1);
 
 			Outpatient pat2 = Outpatient.getFactory().get(Outpatient.getFactory().getNewId());
-			pat2.setName("Fr. Esmeralda");
+			pat2.setName(firstnamesFemale[r.nextInt(firstnamesFemale.length)] + " Esmeralda");
 			pat2.setTimeOfBirth(getRandomTimeOfBirth());
 			pat2.setPhone(getRandomPhone());
 			pat2.setGender("female");
@@ -184,7 +184,7 @@ public class DatabaseConnection {
 			Outpatient.getFactory().save(pat2);
 
 			Inpatient pat3 = Inpatient.getFactory().get(Inpatient.getFactory().getNewId());
-			pat3.setName("Hr. Wagner");
+			pat3.setName(firstnamesFemale[r.nextInt(firstnamesFemale.length)] + " Wagner");
 			pat3.setTimeOfBirth(getRandomTimeOfBirth());
 			pat3.setPhone(getRandomPhone());
 			pat3.setGender("male");

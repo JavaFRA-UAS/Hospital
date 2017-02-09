@@ -33,7 +33,7 @@ public class RandomGenerator {
 	public double nextDouble(int patientId) {
 
 		// 5 % chance that something weird happens
-		if (random.nextInt(100) < 2 && erraticFactor <= 0.1) {
+		if (random.nextInt(1000) < 5 && erraticFactor <= 0.1) {
 			double e = (random.nextDouble()) * 2;
 			if (erraticFactor > 0) {
 				erraticFactor = -e;
