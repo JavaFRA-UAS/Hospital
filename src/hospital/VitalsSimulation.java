@@ -44,7 +44,7 @@ public class VitalsSimulation {
 								runningSimulations.add(patientId);
 							}
 						}
-						Thread.sleep(300);
+						Thread.sleep(1000);
 
 						for (RefreshListener rl : refreshListeners) {
 							rl.refresh();

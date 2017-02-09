@@ -102,6 +102,7 @@ public class VitalsPanel extends JPanel implements RefreshListener, SearchListen
 							final Nurse nurse = (p instanceof Inpatient) ? ((Inpatient) p).getNurse() : null;
 							final String nurseName = nurse != null ? nurse.getName() : "";
 
+							if(parentWindow.getCurrentUser() instanceof Doctor){
 							item = new JMenuItem("Alert Nurse " + nurseName);
 							item.addActionListener(new java.awt.event.ActionListener() {
 								@Override
@@ -131,6 +132,7 @@ public class VitalsPanel extends JPanel implements RefreshListener, SearchListen
 
 							});
 							popup.add(item);
+							}
 
 							item = new JMenuItem("Use Defibrillator");
 							item.addActionListener(new java.awt.event.ActionListener() {
